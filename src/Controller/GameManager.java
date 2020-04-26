@@ -1,4 +1,4 @@
-import java.util.HashMap;
+package Controller;
 
 public class GameManager {
     private Player player;
