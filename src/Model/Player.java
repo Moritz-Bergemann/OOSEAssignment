@@ -22,7 +22,52 @@ public class Player extends Character {
     }
 
     @Override
-    public int calcDamage() {
-         
+    public int calcAttack() {
+        return weapon.calcAttack();
     }
+
+    @Override
+    public int calcDefense() {
+        return armour.calcDefense();
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int getMinAttack() {
+        return weapon.getMinAttack();
+    }
+
+    @Override
+    public int getMaxAttack() {
+        return weapon.getMaxAttack();
+    }
+
+    @Override
+    public int getMinDefense() {
+        return armour.getMinDefense();
+    }
+
+    @Override
+    public int getMaxDefense() {
+        return armour.getMaxDefense();
+    }
+
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public void setArmour(Armour armour) {
+        this.armour = armour;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 }
