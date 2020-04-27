@@ -6,16 +6,16 @@ import Controller.Chance;
  * Class for Slime enemy type.
  */
 public class SlimeEnemy extends Enemy {
-    public SlimeEnemy() {
-        super();
+    //Enemy type attributes
+    private static int typeHealth = 10;
+    private static int typeMinAttack = 3;
+    private static int typeMaxAttack = 5;
+    private static int typeMinDefense = 0;
+    private static int typeMaxDefense = 2;
+    private static int typeGold = 10;
 
-        //Initialising slime combat attributes
-        health = 10;
-        minAttack = 3;
-        maxAttack = 5;
-        minDefense = 0;
-        maxDefense = 2;
-        gold = 10;
+    public SlimeEnemy() {
+        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefense, typeMaxDefense, typeGold);
     }
 
     /**

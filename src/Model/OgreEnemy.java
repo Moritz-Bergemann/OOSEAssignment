@@ -6,16 +6,16 @@ import Controller.Chance;
  * Class for ogre enemy type.
  */
 public class OgreEnemy extends Enemy {
-    public OgreEnemy() {
-        super();
+    //Enemy type attributes
+    private static int typeHealth = 40;
+    private static int typeMinAttack = 5;
+    private static int typeMaxAttack = 10;
+    private static int typeMinDefense = 6;
+    private static int typeMaxDefense = 12;
+    private static int typeGold = 40;
 
-        //Initialising ogre combat attributes
-        health = 40;
-        minAttack = 5;
-        maxAttack = 10;
-        minDefense = 6;
-        maxDefense = 12;
-        gold = 40;
+    public OgreEnemy() {
+        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefense, typeMaxDefense, typeGold);
     }
 
     /**

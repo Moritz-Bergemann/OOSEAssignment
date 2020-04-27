@@ -9,12 +9,13 @@ public abstract class Enemy extends Character {
     protected int maxDefense;
     protected int gold;
 
-    /**
-     * Creates a new enemy character with undefined characteristics
-     * (MUST BE DEFINED IN INHERITING CLASS)
-     */
-    public Enemy() {
-        super(0); //Health set statically here for readability when overriding in subclass
+    public Enemy(int health, int minAttack, int maxAttack, int minDefense, int maxDefense, int gold) {
+        super(health);
+        this.minAttack = minAttack;
+        this.maxAttack = maxAttack;
+        this.minDefense = minDefense;
+        this.maxDefense = maxDefense;
+        this.gold = gold;
     }
 
     /**

@@ -12,5 +12,5 @@ public interface Item {
 
     public int getMaxEffect();
 
-    //TODO add getDescription message
+    //TODO add getDescription message?
 }

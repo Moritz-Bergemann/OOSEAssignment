@@ -6,16 +6,16 @@ import Controller.Chance;
  * Class for dragon enemy type.
  */
 public class DragonEnemy extends Enemy {
-    public DragonEnemy() {
-        super();
+    //Enemy type attributes
+    private static int typeHealth = 100;
+    private static int typeMinAttack = 15;
+    private static int typeMaxAttack = 30;
+    private static int typeMinDefense = 15;
+    private static int typeMaxDefense = 20;
+    private static int typeGold = 100;
 
-        //Initialising dragon combat attributes
-        health = 100;
-        minAttack = 15;
-        maxAttack = 30;
-        minDefense = 15;
-        maxDefense = 20;
-        gold = 100;
+    public DragonEnemy() {
+        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefense, typeMaxDefense, typeGold);
     }
 
     /**

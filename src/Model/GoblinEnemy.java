@@ -6,16 +6,16 @@ import Controller.Chance;
  * Class for goblin enemy type.
  */
 public class GoblinEnemy extends Enemy {
-    public GoblinEnemy() {
-        super();
+    //Enemy type attributes
+    private static int typeHealth = 30;
+    private static int typeMinAttack = 3;
+    private static int typeMaxAttack = 8;
+    private static int typeMinDefense = 4;
+    private static int typeMaxDefense = 8;
+    private static int typeGold = 20;
 
-        //Initialising goblin combat attributes
-        health = 30;
-        minAttack = 3;
-        maxAttack = 8;
-        minDefense = 4;
-        maxDefense = 8;
-        gold = 20;
+    public GoblinEnemy() {
+        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefense, typeMaxDefense, typeGold);
     }
 
     /**

@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.Chance;
+
 public class Armour implements Item {
     String name;
     String material;
@@ -15,6 +17,10 @@ public class Armour implements Item {
         this.cost = cost;
     }
 
+    public int calcDefense() {
+        return Chance.randBetween(minDefense, maxDefense);
+    }
+
     @Override
     public String getName() {
         return name;
@@ -22,16 +28,16 @@ public class Armour implements Item {
 
     @Override
     public int getCost() {
-        return 0;
+        return cost;
     }
 
     @Override
     public int getMinEffect() {
-        return 0;
+        return minDefense;
     }
 
     @Override
     public int getMaxEffect() {
-        return 0;
+        return maxDefense;
     }
 }
