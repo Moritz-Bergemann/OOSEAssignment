@@ -1,6 +1,7 @@
-package Model;
+package Model.Enemies;
 
 import Controller.Chance;
+import Model.Character;
 
 public abstract class Enemy extends Character {
     protected int minAttack;

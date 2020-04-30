@@ -1,4 +1,4 @@
-package Model;
+package Model.Items;
 
 import Controller.Chance;
 
@@ -31,5 +31,10 @@ public class FireDamageEnchantment extends WeaponEnchantment {
     @Override
     public int getMaxEffect() {
         return next.getMaxEffect() + 10;
+    }
+
+    @Override
+    public String getDescription() {
+        return next.getDescription() + "\n\t- Fire Damage";
     }
 }

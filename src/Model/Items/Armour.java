@@ -1,6 +1,7 @@
-package Model;
+package Model.Items;
 
 import Controller.Chance;
+import Model.ItemUser;
 
 public class Armour implements Item {
     String name;
@@ -39,5 +40,20 @@ public class Armour implements Item {
     @Override
     public int getMaxEffect() {
         return maxDefence;
+    }
+
+    @Override
+    public void addToInventory(ItemUser itemUser) throws InventoryException {
+        itemUser.addArmour(this);
+    }
+
+    @Override
+    public void removeFromInventory(ItemUser itemUser) throws InventoryException {
+        itemUser.removeArmour(this);
+    }
+
+    @Override
+    public String getDescription() {
+        return String.format("%s armour", material);
     }
 }

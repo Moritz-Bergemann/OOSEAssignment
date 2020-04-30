@@ -1,4 +1,8 @@
-package Model;
+package Model.Items;
+
+import Model.ItemUser;
+import Model.Items.InventoryException;
+import Model.Items.Weapon;
 
 public abstract class WeaponEnchantment implements Weapon {
     protected Weapon next;
@@ -33,7 +37,12 @@ public abstract class WeaponEnchantment implements Weapon {
     }
 
     @Override
-    public void addToInventory(ItemUser itemUser) {
-        next.addToInventory(entity);
+    public void addToInventory(ItemUser itemUser) throws InventoryException {
+        next.addToInventory(itemUser);
+    }
+
+    @Override
+    public void removeFromInventory(ItemUser itemUser) throws InventoryException {
+        next.removeFromInventory(itemUser);
     }
 }

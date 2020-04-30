@@ -1,6 +1,7 @@
-package Model;
+package Model.Items;
 
 import Controller.Chance;
+import Model.Character;
 
 public class DamagingPotion extends Potion {
     int minDamage;
@@ -23,6 +24,13 @@ public class DamagingPotion extends Potion {
     @Override
     public void apply(Character character) {
         character.loseHealth(calcHealing());
+    }
+
+    @Override
+    public String getDescription() {
+        String desc = super.getDescription();
+
+        return desc.replace("_TYPE_", "damage");
     }
 
     @Override

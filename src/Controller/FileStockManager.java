@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.*;
+import Model.Items.*;
 
 import java.io.*;
 import java.util.HashSet;
@@ -16,6 +16,7 @@ public class FileStockManager implements StockManager {
     @Override
     public Set<Item> loadStock() throws StockManagerException {
         Set<Item> items = new HashSet<>();
+        int lineNum = 1;
 
         //Trying to read file with resources
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -23,9 +24,15 @@ public class FileStockManager implements StockManager {
 
             while (line != null) {
                 try {
-                    Item newItem = interpretLine(line);
+                    Item newItem = interpretLine(line, lineNum);
                     items.add(newItem);
                 }
+                catch (FileStockManagerException e) {
+                    System.out.println("Error reading line in file - " + e.getMessage()); //TODO proper error reporting
+                }
+
+                line = br.readLine();
+                lineNum++;
             }
         }
         catch (FileNotFoundException fnf) {
@@ -34,9 +41,11 @@ public class FileStockManager implements StockManager {
         catch (IOException io) {
             throw new StockManagerException("Failed to read file", io);
         }
+
+        return items;
     }
 
-    private Item interpretLine(String line) {
+    private Item interpretLine(String line, int lineNum) throws FileStockManagerException {
         Item newItem = null;
 
         //Splitting line into segments by ',' character
@@ -56,8 +65,8 @@ public class FileStockManager implements StockManager {
                     //Creating new weapon
                     newItem = new WeaponBase(name, weaponType, damageType, minDamage, maxDamage, cost);
                 }
-                catch (NumberFormatException n) { //TODO what exceptions? REPEAT FOR NEXT ONES
-                    //TODO what to do in case of error? Should inform user?
+                catch (NumberFormatException n) {
+                    throw new FileStockManagerException(String.format("Line %d did not contain valid number", lineNum));
                 }
                 break;
             case "A": //Armour
@@ -72,7 +81,8 @@ public class FileStockManager implements StockManager {
                     //Creating new armour
                     newItem = new Armour(name, material, minDefence, maxDefence, cost);
                 }
-                catch () { //TODO
+                catch (NumberFormatException n) {
+                    throw new FileStockManagerException(String.format("Line %d did not contain valid number", lineNum));
                 }
                 break;
             case "P": //Potion
@@ -93,10 +103,12 @@ public class FileStockManager implements StockManager {
                             newItem = new DamagingPotion(name, cost, minEffect, maxEffect);
                             break;
                         default:
-                            //TODO error thing here
+                            throw new FileStockManagerException(String.format("Line %d did not contain valid potion type",
+                                    lineNum));
                     }
                 }
-                catch () { //TODO
+                catch (NumberFormatException n) {
+                    throw new FileStockManagerException(String.format("Line %d did not contain valid number", lineNum));
                 }
                 break;
         }

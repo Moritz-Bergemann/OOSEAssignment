@@ -1,18 +1,25 @@
 package Model;
 
 
-import java.lang.instrument.UnmodifiableClassException;
+import Model.Items.Armour;
+import Model.Items.InventoryException;
+import Model.Items.Potion;
+import Model.Items.Weapon;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Player extends Character implements HasInventory {
-    private static int startingHealth = 30; //Starting health of player
-    private static int startingGold = 100; //Starting gold of player
-    private static int startingItemCapacity = 15; //Starting item capacity of player
+public class Player extends Character implements ItemUser {
+    private static final int startingHealth = 30; //Starting health of player
+    private static final int startingGold = 100; //Starting gold of player
+    private static final int startingItemCapacity = 15; //Starting item capacity of player
 
     private String name;
-    private Set<Item> inventory;
+    private final Set<Weapon> weaponSet;
+    private final Set<Armour> armourSet;
+    private final Set<Potion> potionSet;
+
     int itemCapacity;
     private Weapon weapon;
     private Armour armour;
@@ -20,13 +27,47 @@ public class Player extends Character implements HasInventory {
 
     public Player() {
         super(startingHealth);
-        inventory = new HashSet<>();
+        weaponSet = new HashSet<>();
+        armourSet = new HashSet<>();
+        potionSet = new HashSet<>();
         itemCapacity = startingItemCapacity;
         weapon = null;
         armour = null;
         gold = startingGold;
     }
 
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public void setArmour(Armour armour) {
+        this.armour = armour;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getNumItems() {
+        return weaponSet.size() + armourSet.size() + potionSet.size();
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void addGold(int addedGold) {
+        this.gold += addedGold;
+    }
+
+    public void loseGold(int lostGold) {
+        if (lostGold > this.gold) {
+            throw new IllegalArgumentException(String.format("Cannot lose %d gold (only has %d)",
+                    lostGold, this.gold)); //FIXME should this be a different exception?
+        }
+    }
+
+    //Inherited from 'Character'
     @Override
     public int calcAttack() {
         return weapon.calcAttack();
@@ -61,84 +102,71 @@ public class Player extends Character implements HasInventory {
     public int getMaxDefence() {
         return armour.getMaxEffect();
     }
-    
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
-    }
 
-    public void setArmour(Armour armour) {
-        this.armour = armour;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    //Methods from HasInventory interface
+    //Inherited from 'ItemUser'
     @Override
-    public Set<Item> getItemSet() {
-        return Collections.unmodifiableSet(inventory);
+    public void addWeapon(Weapon weapon) throws InventoryException {
+        if (getNumItems() >= itemCapacity) {
+            throw new InventoryException("Inventory is full!");
+        }
+        weaponSet.add(weapon);
+    }
+
+    @Override
+    public void addArmour(Armour armour) throws InventoryException {
+        if (getNumItems() >= itemCapacity) {
+            throw new InventoryException("Inventory is full!");
+        }
+        armourSet.add(armour);
+    }
+
+    @Override
+    public void addPotion(Potion potion) throws InventoryException {
+        if (getNumItems() >= itemCapacity) {
+            throw new InventoryException("Inventory is full!");
+        }
+        potionSet.add(potion);
     }
 
     @Override
     public Set<Weapon> getWeaponSet() {
-        Set<Weapon> weaponSet = new HashSet<>();
-
-        for (Item i : inventory) {
-            if (i instanceof Weapon) {
-                weaponSet.add((Weapon)i);
-            }
-        }
-
         return Collections.unmodifiableSet(weaponSet);
     }
 
     @Override
     public Set<Armour> getArmourSet() {
-        Set<Armour> armourSet = new HashSet<>();
-
-        for (Item i : inventory) {
-            if (i instanceof Armour) {
-                armourSet.add((Armour)i);
-            }
-        }
-
         return Collections.unmodifiableSet(armourSet);
     }
 
     @Override
     public Set<Potion> getPotionSet() {
-        Set<Potion> potionSet = new HashSet<>();
-
-        for (Item i : inventory) {
-            if (i instanceof Potion) {
-                potionSet.add((Potion)i);
-            }
-        }
-
         return Collections.unmodifiableSet(potionSet);
     }
 
     @Override
-    public int getNumItems() {
-        return inventory.size();
-    }
+    public void removeWeapon(Weapon weapon) throws InventoryException {
+        boolean present = weaponSet.remove(weapon);
 
-    @Override
-    public void addItem(Item item) throws InventoryException {
-        if (getNumItems() == itemCapacity) {
-            throw new InventoryException("Inventory is full");
+        if (!present) {
+            throw new IllegalArgumentException("Item not present!");
         }
-
-        inventory.add(item);
     }
 
     @Override
-    public void removeItem(Item item) throws InventoryException {
-        boolean itemRemoved = inventory.remove(item);
+    public void removeArmour(Armour armour) throws InventoryException {
+        boolean present = armourSet.remove(armour);
 
-        if (!itemRemoved) {
-            throw new InventoryException("Item is not in inventory");
+        if (!present) {
+            throw new IllegalArgumentException("Item not present!");
+        }
+    }
+
+    @Override
+    public void removePotion(Potion potion) throws InventoryException {
+        boolean present = potionSet.remove(potion);
+
+        if (!present) {
+            throw new IllegalArgumentException("Item not present!");
         }
     }
 }

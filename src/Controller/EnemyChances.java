@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Enemies.Enemy;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,10 +11,13 @@ public class EnemyChances {
     public EnemyChances() {
         chances = new HashMap<>();
 
-        //Adding all chances to map (update as new classes get added)
-        chances.put(
+
+        //TODO everything
+//        //Adding all chances to map (update as new classes get added)
+//        chances.put(
     }
 
     public Enemy getRandomEnemy() { //TODO
+        return null;
     }
 }

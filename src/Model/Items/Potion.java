@@ -1,4 +1,7 @@
-package Model;
+package Model.Items;
+
+import Model.Character;
+import Model.ItemUser;
 
 public abstract class Potion implements Item{
     private String name;
@@ -25,4 +28,23 @@ public abstract class Potion implements Item{
      * @param character
      */
     public abstract void apply(Character character);
+
+    @Override
+    public void addToInventory(ItemUser itemUser) throws InventoryException {
+        itemUser.addPotion(this);
+    }
+
+    @Override
+    public void removeFromInventory(ItemUser itemUser) throws InventoryException {
+        itemUser.removePotion(this);
+    }
+    
+    /**
+     * Gives description of potion. Inheriting potion types should replace the '_TYPE_' flag with the potion's type.
+     * @return potion description
+     */
+    @Override
+    public String getDescription() {
+        return "Potion of _TYPE_";
+    }
 }

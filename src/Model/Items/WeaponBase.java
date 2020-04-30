@@ -1,5 +1,6 @@
-package Model;
+package Model.Items;
 import Controller.Chance;
+import Model.ItemUser;
 
 public class WeaponBase implements Weapon {
     String name;
@@ -43,7 +44,17 @@ public class WeaponBase implements Weapon {
     }
 
     @Override
-    public void addToInventory(ItemUser itemUser) {
+    public void addToInventory(ItemUser itemUser) throws InventoryException {
         itemUser.addWeapon(this);
+    }
+
+    @Override
+    public void removeFromInventory(ItemUser itemUser) throws InventoryException {
+        itemUser.removeWeapon(this);
+    }
+
+    @Override
+    public String getDescription() {
+        return String.format("%s %s", damageType, weaponType);
     }
 }

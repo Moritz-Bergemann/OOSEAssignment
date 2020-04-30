@@ -1,4 +1,4 @@
-package Model;
+package Model.Items;
 
 public class DamageUp2Enchantment extends WeaponEnchantment {
     private static int cost = 5;
@@ -29,5 +29,10 @@ public class DamageUp2Enchantment extends WeaponEnchantment {
     @Override
     public int getMaxEffect() {
         return next.getMaxEffect() + 2;
+    }
+
+    @Override
+    public String getDescription() {
+        return next.getDescription() + "\n\t- Damage up 2";
     }
 }

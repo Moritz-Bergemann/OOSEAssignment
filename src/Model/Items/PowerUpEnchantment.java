@@ -1,6 +1,4 @@
-package Model;
-
-import Controller.Chance;
+package Model.Items;
 
 public class PowerUpEnchantment extends WeaponEnchantment {
     private static int cost = 10;
@@ -31,5 +29,10 @@ public class PowerUpEnchantment extends WeaponEnchantment {
     @Override
     public int getMaxEffect() {
         return (int)Math.round(next.getMaxEffect() * 1.1);
+    }
+
+    @Override
+    public String getDescription() {
+        return next.getDescription() + "\n\t- Power Up";
     }
 }

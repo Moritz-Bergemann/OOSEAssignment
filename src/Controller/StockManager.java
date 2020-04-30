@@ -1,8 +1,7 @@
 package Controller;
 
-import Model.Item;
+import Model.Items.Item;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
