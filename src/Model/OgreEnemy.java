@@ -10,12 +10,12 @@ public class OgreEnemy extends Enemy {
     private static int typeHealth = 40;
     private static int typeMinAttack = 5;
     private static int typeMaxAttack = 10;
-    private static int typeMinDefense = 6;
-    private static int typeMaxDefense = 12;
+    private static int typeMinDefence = 6;
+    private static int typeMaxDefence = 12;
     private static int typeGold = 40;
 
     public OgreEnemy() {
-        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefense, typeMaxDefense, typeGold);
+        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefence, typeMaxDefence, typeGold);
     }
 
     /**

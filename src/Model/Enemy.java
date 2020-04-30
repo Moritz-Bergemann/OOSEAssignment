@@ -5,16 +5,16 @@ import Controller.Chance;
 public abstract class Enemy extends Character {
     protected int minAttack;
     protected int maxAttack;
-    protected int minDefense;
-    protected int maxDefense;
+    protected int minDefence;
+    protected int maxDefence;
     protected int gold;
 
-    public Enemy(int health, int minAttack, int maxAttack, int minDefense, int maxDefense, int gold) {
+    public Enemy(int health, int minAttack, int maxAttack, int minDefence, int maxDefence, int gold) {
         super(health);
         this.minAttack = minAttack;
         this.maxAttack = maxAttack;
-        this.minDefense = minDefense;
-        this.maxDefense = maxDefense;
+        this.minDefence = minDefence;
+        this.maxDefence = maxDefence;
         this.gold = gold;
     }
 
@@ -27,11 +27,11 @@ public abstract class Enemy extends Character {
     }
 
     /**
-     * Logic for standard defense of enemy (no special abilities)
-     * @return amount of damage for enemy's next defense
+     * Logic for standard Defence of enemy (no special abilities)
+     * @return amount of damage for enemy's next Defence
      */
-    public int calcDefense() {
-        return Chance.randBetween(minDefense, maxDefense);
+    public int calcDefence() {
+        return Chance.randBetween(minDefence, maxDefence);
     }
 
     //Getters
@@ -43,12 +43,12 @@ public abstract class Enemy extends Character {
         return maxAttack;
     }
 
-    public int getMinDefense() {
-        return minDefense;
+    public int getMinDefence() {
+        return minDefence;
     }
 
-    public int getMaxDefense() {
-        return maxDefense;
+    public int getMaxDefence() {
+        return maxDefence;
     }
 
     public int getGold() {

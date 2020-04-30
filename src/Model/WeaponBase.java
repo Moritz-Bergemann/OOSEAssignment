@@ -41,4 +41,9 @@ public class WeaponBase implements Weapon {
     public int getMaxEffect() {
         return maxAttack;
     }
+
+    @Override
+    public void addToInventory(ItemUser itemUser) {
+        itemUser.addWeapon(this);
+    }
 }

@@ -12,5 +12,7 @@ public interface Item {
 
     public int getMaxEffect();
 
+    public void addToInventory(ItemUser itemUser);
+
     //TODO add getDescription message?
 }

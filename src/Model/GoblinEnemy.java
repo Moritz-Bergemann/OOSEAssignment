@@ -10,12 +10,12 @@ public class GoblinEnemy extends Enemy {
     private static int typeHealth = 30;
     private static int typeMinAttack = 3;
     private static int typeMaxAttack = 8;
-    private static int typeMinDefense = 4;
-    private static int typeMaxDefense = 8;
+    private static int typeMinDefence = 4;
+    private static int typeMaxDefence = 8;
     private static int typeGold = 20;
 
     public GoblinEnemy() {
-        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefense, typeMaxDefense, typeGold);
+        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefence, typeMaxDefence, typeGold);
     }
 
     /**

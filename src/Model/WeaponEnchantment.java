@@ -31,4 +31,9 @@ public abstract class WeaponEnchantment implements Weapon {
     public int getMaxEffect() {
         return next.getMaxEffect();
     }
+
+    @Override
+    public void addToInventory(ItemUser itemUser) {
+        next.addToInventory(entity);
+    }
 }

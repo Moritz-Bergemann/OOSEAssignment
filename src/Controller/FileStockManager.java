@@ -64,13 +64,13 @@ public class FileStockManager implements StockManager {
                 try {
                     //Getting values from string
                     String name = seg[1].strip();
-                    int minDefense = Integer.parseInt(seg[2].strip());
-                    int maxDefense = Integer.parseInt(seg[3].strip());
+                    int minDefence = Integer.parseInt(seg[2].strip());
+                    int maxDefence = Integer.parseInt(seg[3].strip());
                     int cost = Integer.parseInt(seg[4].strip());
                     String material = seg[5];
 
                     //Creating new armour
-                    newItem = new Armour(name, material, minDefense, maxDefense, cost);
+                    newItem = new Armour(name, material, minDefence, maxDefence, cost);
                 }
                 catch () { //TODO
                 }

@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Player;
+
 public class GameManager {
     private Player player;
 

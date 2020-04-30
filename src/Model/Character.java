@@ -52,10 +52,10 @@ public abstract class Character {
     public abstract int calcAttack();
 
     /**
-     * Calculates the amount of defense the character should have against an oncoming attack
-     * @return amount of defense against attack
+     * Calculates the amount of Defence the character should have against an oncoming attack
+     * @return amount of Defence against attack
      */
-    public abstract int calcDefense();
+    public abstract int calcDefence();
 
     //GETTERS
     public int getHealth() {
@@ -85,10 +85,10 @@ public abstract class Character {
     /**
      * @return character's minimum defence
      */
-    public abstract int getMinDefense();
+    public abstract int getMinDefence();
 
     /**
      * @return character's maximum defence
      */
-    public abstract int getMaxDefense();
+    public abstract int getMaxDefence();
 }

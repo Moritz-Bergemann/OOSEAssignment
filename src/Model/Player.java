@@ -33,8 +33,8 @@ public class Player extends Character implements HasInventory {
     }
 
     @Override
-    public int calcDefense() {
-        return armour.calcDefense();
+    public int calcDefence() {
+        return armour.calcDefence();
     }
 
     @Override
@@ -53,12 +53,12 @@ public class Player extends Character implements HasInventory {
     }
 
     @Override
-    public int getMinDefense() {
+    public int getMinDefence() {
         return armour.getMinEffect();
     }
 
     @Override
-    public int getMaxDefense() {
+    public int getMaxDefence() {
         return armour.getMaxEffect();
     }
     

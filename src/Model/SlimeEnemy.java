@@ -10,12 +10,12 @@ public class SlimeEnemy extends Enemy {
     private static int typeHealth = 10;
     private static int typeMinAttack = 3;
     private static int typeMaxAttack = 5;
-    private static int typeMinDefense = 0;
-    private static int typeMaxDefense = 2;
+    private static int typeMinDefence = 0;
+    private static int typeMaxDefence = 2;
     private static int typeGold = 10;
 
     public SlimeEnemy() {
-        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefense, typeMaxDefense, typeGold);
+        super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefence, typeMaxDefence, typeGold);
     }
 
     /**
