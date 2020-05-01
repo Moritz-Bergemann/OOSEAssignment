@@ -1,9 +1,9 @@
 package Model.Enemies;
 
 import Controller.Chance;
-import Model.Character;
+import Model.GameCharacter;
 
-public abstract class Enemy extends Character {
+public abstract class Enemy extends GameCharacter {
     protected int minAttack;
     protected int maxAttack;
     protected int minDefence;

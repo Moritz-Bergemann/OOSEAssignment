@@ -1,9 +1,7 @@
 package Model.Items;
 
 import Controller.Chance;
-import Model.Character;
-
-import java.util.Objects;
+import Model.GameCharacter;
 
 public class HealingPotion extends Potion {
     int minHealing;
@@ -29,11 +27,11 @@ public class HealingPotion extends Potion {
 
     /**
      * Application of potion - here causing a certain amount of healing
-     * @param character the character to be healed
+     * @param gameCharacter the character to be healed
      */
     @Override
-    public void apply(Character character) {
-        character.gainHealth(calcHealing());
+    public void apply(GameCharacter gameCharacter) {
+        gameCharacter.gainHealth(calcHealing());
     }
 
     @Override

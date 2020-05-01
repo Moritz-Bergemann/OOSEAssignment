@@ -1,39 +1,53 @@
 package Controller;
 
-import Model.Player;
+import Model.*;
+import Model.Enemies.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameManager {
-    private Player player;
-
-    public GameManager() {
-        player = new Player();
-
-    }
-
     public static void main(String[] args) {
-        //TODO Perform setup (read file maybe?)
+        Player player = new Player();
+        ChanceEnemyFactory enemyGen = new ChanceEnemyFactory(setEnemyChances(), setEnemyChanceUpdates());
 
-        runGame();
-    }
+        //Starting main game loop
+        boolean gameOver = false;
+        boolean quit = false;
 
-    public static void runGame() {
-        EnemyChances chances = new EnemyChances();
+        while (!gameOver && !quit) {
+            quit = MenuManager.intermediateMenu(player);
 
-        while (!player.getIsDead() && !player.getSlainDragon()) {
-            //Running intermediate stage between battles
-            runIntermediate();
-
-            Enemy enemy = chances.getRandomEnemy();
-
-            BattleManager battle = new BattleManager(player, enemy);
-
-            battle.run();
+            GameCharacter enemy = enemyGen.makeEnemy(); //FIXME can I get away with polymorphism here?
+            gameOver = BattleManager.runBattle(player, enemy);
         }
 
-        MainMenu.showStats(player);
+        if (gameOver) {
+            MenuManager.showStatistics(player);
+        }
     }
 
-    public static void runIntermediate() {
+    /**
+     * Sets up initial probabilities for spawning of enemies
+     * @return Map of enemy names and corresponding probabilities
+     */
+    public static Map<String, Double> setEnemyChances() {
+        Map<String, Double> enemyChances = new HashMap<>();
 
+        enemyChances.put("Slime", 0.5);
+        enemyChances.put("Goblin", 0.30);
+        enemyChances.put("Ogre", 0.2);
+        enemyChances.put("Dragon", 0.0);
+
+        return enemyChances;
+    }
+
+    public static Map<String, Double> setEnemyChanceUpdates() {
+        Map<String, Double> enemyChanceUpdates = new HashMap<>();
+
+        enemyChanceUpdates.put("Slime", -0.05);
+        enemyChanceUpdates.put("Goblin", -0.05);
+        enemyChanceUpdates.put("Ogre", -0.05);
+        enemyChanceUpdates.put("Dragon", 0.15);
     }
 }

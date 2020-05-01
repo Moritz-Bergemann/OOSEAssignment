@@ -60,8 +60,8 @@ public class ModelTest {
         Armour eArmour = player.getArmourSet().iterator().next();
         System.out.println(String.format("Player - equipping %s weapon and %s armour", eWeapon.getName(), eArmour.getName()));
 
-        player.setWeapon(eWeapon);
-        player.setArmour(eArmour);
+        player.setCurWeapon(eWeapon);
+        player.setCurArmour(eArmour);
 
         System.out.println(String.format("Player attack: %s-%s", player.getMinAttack(), player.getMaxAttack()));
         System.out.println(String.format("Player defence: %s-%s", player.getMinDefence(), player.getMaxDefence()));

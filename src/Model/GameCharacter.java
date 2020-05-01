@@ -3,7 +3,7 @@ import java.lang.Math;
 
 /** Class representing a character with health that can attack and defend within the game.
  */
-public abstract class Character {
+public abstract class GameCharacter {
     protected int maxHealth; //Maximum health of character
     protected int health; //Current health of character
 
@@ -11,7 +11,7 @@ public abstract class Character {
      * Creates a new character with the input character health
      * @param health Maximum/starting health of character
      */
-    public Character(int health) {
+    public GameCharacter(int health) {
         //Asserting health not less than 0
         if (health < 0) {
             throw new IllegalArgumentException("Health cannot be negative");

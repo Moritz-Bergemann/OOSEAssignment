@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Player extends Character implements ItemUser {
+public class Player extends GameCharacter implements ItemUser {
     private static final int startingHealth = 30; //Starting health of player
     private static final int startingGold = 100; //Starting gold of player
     private static final int startingItemCapacity = 15; //Starting item capacity of player
@@ -21,33 +21,54 @@ public class Player extends Character implements ItemUser {
     private final Set<Potion> potionSet;
 
     int itemCapacity;
-    private Weapon weapon;
-    private Armour armour;
+    private Weapon curWeapon;
+    private Armour curArmour;
     private int gold;
 
+    /**
+     * Default constructor
+     * NOTE: name, weapon and armour variables should be initialised before character can attempt a battle
+     */
     public Player() {
         super(startingHealth);
+        name = null;
         weaponSet = new HashSet<>();
         armourSet = new HashSet<>();
         potionSet = new HashSet<>();
         itemCapacity = startingItemCapacity;
-        weapon = null;
-        armour = null;
+        curWeapon = null;
+        curArmour = null;
         gold = startingGold;
     }
 
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
+    /**
+     * Sets the characters weapon
+     * @param weapon weapon for character to equip
+     */
+    public void setCurWeapon(Weapon weapon) {
+        this.curWeapon = weapon;
     }
 
-    public void setArmour(Armour armour) {
-        this.armour = armour;
+    /**
+     * Sets the characters weapon
+     * @param armour armour for character to equip
+     */
+    public void setCurArmour(Armour armour) {
+        this.curArmour = armour;
     }
 
+    /**
+     * Updates the character's name (initially null)
+     * @param name new name for character
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get the number of items currently held by the player
+     * @return number of items player holds
+     */
     public int getNumItems() {
         return weaponSet.size() + armourSet.size() + potionSet.size();
     }
@@ -56,26 +77,45 @@ public class Player extends Character implements ItemUser {
         return gold;
     }
 
+    /**
+     * Adds the imported amount of gold
+     * @param addedGold amount of gold to add
+     */
     public void addGold(int addedGold) {
         this.gold += addedGold;
     }
 
-    public void loseGold(int lostGold) {
+    /**
+     * Removes the imported amount of gold (throws InventoryException if would reduce gold to below zero)
+     * @param lostGold amount of gold to lose
+     */
+    public void loseGold(int lostGold) throws InventoryException {
         if (lostGold > this.gold) {
-            throw new IllegalArgumentException(String.format("Cannot lose %d gold (only has %d)",
-                    lostGold, this.gold)); //FIXME should this be a different exception?
+            throw new InventoryException(String.format("Cannot lose %d gold (only has %d)",
+                    lostGold, this.gold));
         }
+    }
+
+    /**
+     * Determines whether the player has been appropriately set to be ready for battle
+     * @return whether the character is ready for battle
+     */
+    public boolean readyForBattle() {
+        return name == null
+                && !name.strip().equals("")
+                && curWeapon == null
+                && curArmour == null;
     }
 
     //Inherited from 'Character'
     @Override
     public int calcAttack() {
-        return weapon.calcAttack();
+        return curWeapon.calcAttack();
     }
 
     @Override
     public int calcDefence() {
-        return armour.calcDefence();
+        return curArmour.calcDefence();
     }
 
     @Override
@@ -85,22 +125,22 @@ public class Player extends Character implements ItemUser {
 
     @Override
     public int getMinAttack() {
-        return weapon.getMinEffect();
+        return curWeapon.getMinEffect();
     }
 
     @Override
     public int getMaxAttack() {
-        return weapon.getMaxEffect();
+        return curWeapon.getMaxEffect();
     }
 
     @Override
     public int getMinDefence() {
-        return armour.getMinEffect();
+        return curArmour.getMinEffect();
     }
 
     @Override
     public int getMaxDefence() {
-        return armour.getMaxEffect();
+        return curArmour.getMaxEffect();
     }
 
     //Inherited from 'ItemUser'

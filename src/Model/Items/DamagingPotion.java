@@ -1,9 +1,7 @@
 package Model.Items;
 
 import Controller.Chance;
-import Model.Character;
-
-import java.util.Objects;
+import Model.GameCharacter;
 
 public class DamagingPotion extends Potion {
     int minDamage;
@@ -29,11 +27,11 @@ public class DamagingPotion extends Potion {
 
     /**
      * Application of potion - here causing a certain amount of damage
-     * @param character the character to be damaged
+     * @param gameCharacter the character to be damaged
      */
     @Override
-    public void apply(Character character) {
-        character.loseHealth(calcHealing());
+    public void apply(GameCharacter gameCharacter) {
+        gameCharacter.loseHealth(calcHealing());
     }
 
     @Override

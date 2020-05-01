@@ -1,9 +1,7 @@
 package Model.Items;
 
-import Model.Character;
+import Model.GameCharacter;
 import Model.ItemUser;
-
-import java.util.Objects;
 
 public abstract class Potion implements Item{
     private String name;
@@ -34,9 +32,9 @@ public abstract class Potion implements Item{
      * Applies the potion to a character.
      * The logic for this is defined in the 'Potion' class rather than the controller (like applying attacks is)
      *  as the logic for what should be done by the potion is highly correlated with the potion itself.
-     * @param character
+     * @param gameCharacter
      */
-    public abstract void apply(Character character);
+    public abstract void apply(GameCharacter gameCharacter);
 
     @Override
     public void addToInventory(ItemUser itemUser) throws InventoryException {
