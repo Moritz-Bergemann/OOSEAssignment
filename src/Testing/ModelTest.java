@@ -27,6 +27,7 @@ public class ModelTest {
                 System.out.println("Name: " + item.getName());
                 System.out.println("Description: " + item.getDescription());
                 System.out.println(String.format("Min-Max Effect: %s-%s", item.getMinEffect(), item.getMaxEffect()));
+                System.out.println("Cost: " + item.getCost());
                 System.out.println("=======================");
 
                 //Adding item from shop to player
@@ -47,7 +48,7 @@ public class ModelTest {
         for (Item i : player.getArmourSet()) {
             outStr += i.getName() + ",";
         }
-        System.out.println("\nPotions:");
+        outStr += ("\nPotions:");
         for (Item i : player.getPotionSet()) {
             outStr += i.getName() + ",";
         }
@@ -65,13 +66,15 @@ public class ModelTest {
         System.out.println(String.format("Player attack: %s-%s", player.getMinAttack(), player.getMaxAttack()));
         System.out.println(String.format("Player defence: %s-%s", player.getMinDefence(), player.getMaxDefence()));
 
-        System.out.println("Calculating player attack 3 times");
-        for (int ii = 0; ii < 3; ii++) {
+        System.out.println("Calculating player attack 10 times");
+        for (int ii = 0; ii < 10; ii++) {
             System.out.println(player.calcAttack());
         }
-        System.out.println("Calculating player defence 3 times");
-        for (int ii = 0; ii < 3; ii++) {
+        System.out.println("Calculating player defence 10 times");
+        for (int ii = 0; ii < 10; ii++) {
             System.out.println(player.calcDefence());
         }
+
+        System.out.println(String.format("Quick test: \"%s\")", "                ".strip()));
     }
 }

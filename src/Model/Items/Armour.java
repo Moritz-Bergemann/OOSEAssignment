@@ -3,6 +3,8 @@ package Model.Items;
 import Controller.Chance;
 import Model.ItemUser;
 
+import java.util.Objects;
+
 public class Armour implements Item {
     String name;
     String material;
@@ -11,6 +13,16 @@ public class Armour implements Item {
     int cost;
 
     public Armour(String name, String material, int minDefence, int maxDefence, int cost) {
+        if (name.length() == 0 || material.length() == 0) {
+            throw new IllegalArgumentException("String cannot be empty");
+        }
+        if (minDefence < 0 || maxDefence < 0 || cost < 0) {
+            throw new IllegalArgumentException("Value cannot be less than 0");
+        }
+        if (minDefence > maxDefence) {
+            throw new IllegalArgumentException("Minimum defence cannot be greater than maximum defence");
+        }
+        
         this.name = name;
         this.material = material;
         this.minDefence = minDefence;
@@ -55,5 +67,24 @@ public class Armour implements Item {
     @Override
     public String getDescription() {
         return String.format("%s armour", material);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Armour armour = (Armour) o;
+        return minDefence == armour.minDefence &&
+                maxDefence == armour.maxDefence &&
+                cost == armour.cost &&
+                name.equals(armour.name) &&
+                material.equals(armour.material);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, material, minDefence, maxDefence, cost);
     }
 }

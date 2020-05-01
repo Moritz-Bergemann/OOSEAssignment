@@ -3,12 +3,22 @@ package Model.Items;
 import Controller.Chance;
 import Model.Character;
 
+import java.util.Objects;
+
 public class DamagingPotion extends Potion {
     int minDamage;
     int maxDamage;
 
     public DamagingPotion(String name, int cost, int minDamage, int maxDamage) {
         super(name, cost);
+        
+        if (this.minDamage < 0 || this.maxDamage < 0) {
+            throw new IllegalArgumentException("Number cannot be less than 0");
+        }
+        if (this.minDamage > this.maxDamage) {
+            throw new IllegalArgumentException("Minimum damage cannot be greater than maximum");
+        }
+        
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
     }
@@ -35,11 +45,22 @@ public class DamagingPotion extends Potion {
 
     @Override
     public int getMinEffect() {
-        return 0;
+        return minDamage;
     }
 
     @Override
     public int getMaxEffect() {
-        return 0;
+        return maxDamage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DamagingPotion that = (DamagingPotion) o;
+        return minDamage == that.minDamage &&
+                maxDamage == that.maxDamage;
     }
 }

@@ -37,4 +37,14 @@ public class FireDamageEnchantment extends WeaponEnchantment {
     public String getDescription() {
         return next.getDescription() + "\n\t- Fire Damage";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FireDamageEnchantment that = (FireDamageEnchantment) o;
+        return next.equals(that.next);
+    }
 }

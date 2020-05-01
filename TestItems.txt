@@ -13,4 +13,4 @@ A, , 10, 18, 50, Chain
 A, Chain Mail, -10, 18, 50, Chain
 A, Chain Mail, 10, 9999999999999999999999999, 50, Chain
 A, Chain Mail, 10, 18, e, Chain
-A, Chain Mail, 10, 18, 50, 123
+A, Chain Mail, 10, 18, 50, Chain

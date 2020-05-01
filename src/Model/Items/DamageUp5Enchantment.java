@@ -35,4 +35,14 @@ public class DamageUp5Enchantment extends WeaponEnchantment {
     public String getDescription() {
         return next.getDescription() + "\n\t- Damage up 5";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DamageUp5Enchantment that = (DamageUp5Enchantment)o;
+        return next.equals(that.next);
+    }
 }

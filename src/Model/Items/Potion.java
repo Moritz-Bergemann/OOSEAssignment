@@ -3,11 +3,20 @@ package Model.Items;
 import Model.Character;
 import Model.ItemUser;
 
+import java.util.Objects;
+
 public abstract class Potion implements Item{
     private String name;
     private int cost;
 
     public Potion(String name, int cost) {
+        if (name.length() == 0) {
+            throw new IllegalArgumentException("String cannot be empty");
+        }
+        if (cost < 0) {
+            throw new IllegalArgumentException("Number cannot be less than 0");
+        }
+
         this.name = name;
         this.cost = cost;
     }
@@ -45,6 +54,9 @@ public abstract class Potion implements Item{
      */
     @Override
     public String getDescription() {
-        return "Potion of _TYPE_";
+        return "_TYPE_ potion";
     }
+
+    //Declaring equals method as abstract to ensure it is implemented by subclasses
+    public abstract boolean equals(Object o);
 }

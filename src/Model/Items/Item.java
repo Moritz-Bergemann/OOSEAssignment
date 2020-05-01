@@ -19,6 +19,4 @@ public interface Item {
     public void addToInventory(ItemUser itemUser) throws InventoryException;
 
     public void removeFromInventory(ItemUser itemUser) throws InventoryException;
-
-    //TODO add getDescription message?
 }

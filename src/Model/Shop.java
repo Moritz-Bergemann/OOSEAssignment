@@ -22,7 +22,7 @@ public class Shop {
     public void acquireStock(StockManager loader) {
         //Replacing inventory with that loaded from external source
         try {
-            Set<Item> inventory = loader.loadStock();
+            stock = loader.loadStock();
         }
         catch (StockManagerException s) {
             System.out.println("Shop received stock manager exception");

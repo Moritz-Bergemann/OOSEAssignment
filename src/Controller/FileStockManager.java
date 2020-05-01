@@ -62,11 +62,17 @@ public class FileStockManager implements StockManager {
                     String damageType = seg[5];
                     String weaponType = seg[6];
 
-                    //Creating new weapon
-                    newItem = new WeaponBase(name, weaponType, damageType, minDamage, maxDamage, cost);
+                    //Creating new weapon (& verifying parameters are valid via constructor)
+                    try {
+                        newItem = new WeaponBase(name, weaponType, damageType, minDamage, maxDamage, cost);
+                    }
+                    catch (IllegalArgumentException i) {
+                        throw new FileStockManagerException(String.format("Line %d contains invalid parameters for " +
+                                "weapon - %s", lineNum, i.getMessage()));
+                    }
                 }
                 catch (NumberFormatException n) {
-                    throw new FileStockManagerException(String.format("Line %d did not contain valid number", lineNum));
+                    throw new FileStockManagerException(String.format("Line %d does not contain valid number", lineNum));
                 }
                 break;
             case "A": //Armour
@@ -78,11 +84,17 @@ public class FileStockManager implements StockManager {
                     int cost = Integer.parseInt(seg[4].strip());
                     String material = seg[5];
 
-                    //Creating new armour
-                    newItem = new Armour(name, material, minDefence, maxDefence, cost);
+                    //Creating new armour (& verifying parameters are valid via constructor)
+                    try {
+                        newItem = new Armour(name, material, minDefence, maxDefence, cost);
+                    }
+                    catch (IllegalArgumentException i) {
+                        throw new FileStockManagerException(String.format("Line %d contains invalid parameters for " +
+                                "armour - %s", lineNum, i.getMessage()));
+                    }
                 }
                 catch (NumberFormatException n) {
-                    throw new FileStockManagerException(String.format("Line %d did not contain valid number", lineNum));
+                    throw new FileStockManagerException(String.format("Line %d does not contain valid number", lineNum));
                 }
                 break;
             case "P": //Potion
@@ -94,23 +106,31 @@ public class FileStockManager implements StockManager {
                     int cost = Integer.parseInt(seg[4].strip());
                     String type = seg[5].strip();
 
-                    //Creating new potion
-                    switch (type) {
-                        case "H":
-                            newItem = new HealingPotion(name, cost, minEffect, maxEffect);
-                            break;
-                        case "D":
-                            newItem = new DamagingPotion(name, cost, minEffect, maxEffect);
-                            break;
-                        default:
-                            throw new FileStockManagerException(String.format("Line %d did not contain valid potion type",
-                                    lineNum));
+                    //Creating new potion (& verifying parameters are valid via constructor)
+                    try {
+                        switch (type) {
+                            case "H":
+                                newItem = new HealingPotion(name, cost, minEffect, maxEffect);
+                                break;
+                            case "D":
+                                newItem = new DamagingPotion(name, cost, minEffect, maxEffect);
+                                break;
+                            default:
+                                throw new FileStockManagerException(String.format("Line %d did not contain valid " +
+                                                "potion type", lineNum));
+                        }
+                    }
+                    catch (IllegalArgumentException i) {
+                        throw new FileStockManagerException(String.format("Line %d contains invalid parameters for " +
+                                "potion - %s", lineNum, i.getMessage()));
                     }
                 }
                 catch (NumberFormatException n) {
-                    throw new FileStockManagerException(String.format("Line %d did not contain valid number", lineNum));
+                    throw new FileStockManagerException(String.format("Line %d does not contain valid number", lineNum));
                 }
                 break;
+            default:
+                throw new FileStockManagerException(String.format("Line %d did not contain valid item type", lineNum));
         }
 
         return newItem;

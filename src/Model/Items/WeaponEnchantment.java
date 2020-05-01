@@ -4,6 +4,8 @@ import Model.ItemUser;
 import Model.Items.InventoryException;
 import Model.Items.Weapon;
 
+import java.util.Objects;
+
 public abstract class WeaponEnchantment implements Weapon {
     protected Weapon next;
 
@@ -11,6 +13,7 @@ public abstract class WeaponEnchantment implements Weapon {
         this.next = next;
     }
 
+    //Standard implementations for weapon properties (may be overridden depending on the enchantment)
     @Override
     public int calcAttack() {
         return next.calcAttack();
@@ -45,4 +48,7 @@ public abstract class WeaponEnchantment implements Weapon {
     public void removeFromInventory(ItemUser itemUser) throws InventoryException {
         next.removeFromInventory(itemUser);
     }
+
+    @Override
+    public abstract boolean equals(Object o);
 }
