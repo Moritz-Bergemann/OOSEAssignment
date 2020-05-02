@@ -4,8 +4,8 @@ import Model.GameCharacter;
 import Model.ItemUser;
 
 public abstract class Potion implements Item{
-    private String name;
-    private int cost;
+    protected String name;
+    protected int cost;
 
     public Potion(String name, int cost) {
         if (name.length() == 0) {

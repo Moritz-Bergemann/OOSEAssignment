@@ -19,11 +19,12 @@ public class Player extends GameCharacter implements ItemUser {
     private final Set<Weapon> weaponSet;
     private final Set<Armour> armourSet;
     private final Set<Potion> potionSet;
-
     int itemCapacity;
     private Weapon curWeapon;
     private Armour curArmour;
     private int gold;
+
+    private boolean wonGame;
 
     /**
      * Default constructor
@@ -39,6 +40,7 @@ public class Player extends GameCharacter implements ItemUser {
         curWeapon = null;
         curArmour = null;
         gold = startingGold;
+        wonGame = false;
     }
 
     /**
@@ -81,7 +83,7 @@ public class Player extends GameCharacter implements ItemUser {
      * Adds the imported amount of gold
      * @param addedGold amount of gold to add
      */
-    public void addGold(int addedGold) {
+    public void gainGold(int addedGold) {
         this.gold += addedGold;
     }
 
@@ -94,6 +96,30 @@ public class Player extends GameCharacter implements ItemUser {
             throw new InventoryException(String.format("Cannot lose %d gold (only has %d)",
                     lostGold, this.gold));
         }
+    }
+
+    /**
+     * Sets the player's gold to the imported value.
+     * Should only be used if gainGold or loseGold are inappropriate.
+     * @param gold new value for gold
+     */
+    public void setGold(int gold) {
+        if (gold < 0) {
+            throw new IllegalArgumentException("Cannot set gold to negative value");
+        }
+
+        this.gold = gold;
+    }
+
+    /**
+     * Make the player indicate that they have won the game.
+     */
+    public void setWonGame() {
+        wonGame = true;
+    }
+
+    public boolean wonGame() {
+        return wonGame;
     }
 
     /**
@@ -185,19 +211,27 @@ public class Player extends GameCharacter implements ItemUser {
 
     @Override
     public void removeWeapon(Weapon weapon) throws InventoryException {
+        if (weapon.equals(curWeapon)) {
+            throw new InventoryException("Cannot remove current weapon");
+        }
+
         boolean present = weaponSet.remove(weapon);
 
         if (!present) {
-            throw new IllegalArgumentException("Item not present!");
+            throw new IllegalArgumentException("Item not present");
         }
     }
 
     @Override
     public void removeArmour(Armour armour) throws InventoryException {
+        if (armour.equals(curArmour)) {
+            throw new InventoryException("Cannot remove current armour");
+        }
+
         boolean present = armourSet.remove(armour);
 
         if (!present) {
-            throw new IllegalArgumentException("Item not present!");
+            throw new IllegalArgumentException("Item not present");
         }
     }
 
@@ -206,7 +240,7 @@ public class Player extends GameCharacter implements ItemUser {
         boolean present = potionSet.remove(potion);
 
         if (!present) {
-            throw new IllegalArgumentException("Item not present!");
+            throw new IllegalArgumentException("Item not present");
         }
     }
 }

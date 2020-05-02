@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FileStockManager implements StockManager {
-    String filePath;
+    private String filePath;
 
     public FileStockManager(String filePath) {
         this.filePath = filePath;

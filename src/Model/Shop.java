@@ -30,7 +30,7 @@ public class Shop {
         }
     }
 
-    public Set<Item> getStock() {
+    public Set<Item> getCurrentStock() {
         return Collections.unmodifiableSet(stock);
     }
 }

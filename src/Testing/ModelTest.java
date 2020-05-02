@@ -20,7 +20,7 @@ public class ModelTest {
         shop.acquireStock(stockManager);
 
         System.out.println("\nITEMS IN SHOP:");
-        for (Item item : shop.getStock()) {
+        for (Item item : shop.getCurrentStock()) {
             try {
                 //Describing item in shop
                 System.out.println("=======================");
