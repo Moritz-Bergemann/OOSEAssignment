@@ -4,14 +4,14 @@ import Model.Items.Armour;
 import Model.Items.Weapon;
 import Model.Player;
 
-public class MenuManager {
+public class IntermediateManager {
     private Player player; //Player playing the game
     private ShopManager shopManager; //Shop manager to take control in case player chooses to visit shop
 
     private boolean exitedMenu; //Tracks whether the menu should be exited to continue with the game control flow
     private boolean quitGame; //Tracks whether the player has chosen to quit the game
 
-    public MenuManager(Player player, ShopManager shopManager) {
+    public IntermediateManager(Player player, ShopManager shopManager) {
         this.player = player;
         this.shopManager = shopManager;
         exitedMenu = false;

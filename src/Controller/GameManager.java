@@ -1,7 +1,8 @@
 package Controller;
 
 import Model.*;
-import Model.Enemies.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +12,14 @@ import java.util.Map;
  * TODO add causes to rethrown exceptions
  */
 
-public class GameManager {
+public class GameManager extends Application {
     public static void main(String[] args) {
+        Application.launch(args); //Launching JavaFX application
+    }
+
+    public void start(Stage stage) {
+        stage.setTitle("OOSE Quest II: TWOOSE");
+
         Player player = new Player();
         Shop shop = new Shop();
 
@@ -20,7 +27,15 @@ public class GameManager {
 
         StockManager stock = new FileStockManager("items.txt"); //TODO make this get file name from somewhere else?
         ShopManager shopManager = new ShopManager(shop, stock);
-        MenuManager menus = new MenuManager(player, shopManager);
+        IntermediateManager intermediate = new IntermediateManager(player, shopManager);
+
+        //Equipping player with shop's cheapest gear to start adventure
+        try {
+            stock.loadStock();
+        }
+        catch (StockManagerException s) {
+            System.out.println("Failed to start game, could not load items - " + s.getMessage()); //TODO what here?
+        }
 
         shopManager.giveCheapestGear(player);
 
@@ -28,7 +43,7 @@ public class GameManager {
         boolean gameOver = false;
         boolean quit = false;
         while (!gameOver && !quit) {
-            quit = menus.intermediateMenu();
+            quit = intermediate.intermediateMenu();
 
             GameCharacter enemy = enemyGen.makeEnemy(); //FIXME can I get away with polymorphism here?
             BattleManager battle = new BattleManager(player, enemy);
@@ -36,7 +51,7 @@ public class GameManager {
         }
 
         if (gameOver) {
-            MenuManager.showStatistics();
+            IntermediateManager.showStatistics();
         }
     }
 
