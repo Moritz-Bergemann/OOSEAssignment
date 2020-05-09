@@ -11,19 +11,27 @@ import Model.Shop;
 //TODO should shop operations catch & rethrow ANY exception to ensure gold amounts remain accurate? CHECK WITH TUTOR
 
 public class ShopManager {
-    private StockManager stockLoader;
-    private Shop shop;
+    private StockManager stockLoader; //Loads items from shop
+    private Shop shop; //Shop model object containing inventory
 
     public ShopManager(Shop shop, StockManager stockLoader) {
         this.stockLoader = stockLoader;
         this.shop = shop;
     }
 
+    /**
+     * Provides the imported item user with the cheapest gear available in the shop.
+     * @param user Item user to equip gear with
+     */
     public void giveCheapestGear(ItemUser user) {
         //Loading shop
         shop.acquireStock(stockLoader);
 
         //TODO figure this shit out
+
+        for (Item item : shop.getCurrentStock()) {
+
+        }
     }
 
     public void runShop(Player player) {

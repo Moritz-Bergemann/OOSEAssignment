@@ -18,17 +18,21 @@ public class MenuManager {
         quitGame = false;
     }
 
-    public void intermediateMenu() {
+    /**
+     * Runs the intermediate menu between battles and before the first battle.
+     * @return whether the player choose to quit the game or not
+     */
+    public boolean intermediateMenu() {
         exitedMenu = false;
 
         //TODO create listeners
 
         //Continue displaying main menu until player exits the menu
-        while (!exitedMenu) {
+        while (!exitedMenu && !quitGame) {
             MainMenu.showMenu();
         }
 
-        return
+        return quitGame;
     }
 
     public void gameOverMenu() {
@@ -68,6 +72,7 @@ public class MenuManager {
     }
 
     private void exitGame() {
-
+        MainMenu.showMessage("Exiting game...");
+        quitGame = true;
     }
 }
