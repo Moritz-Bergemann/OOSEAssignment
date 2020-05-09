@@ -5,6 +5,9 @@ import Model.Items.*;
 import Model.Player;
 import Model.Shop;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 /*TODO should buying an item create a duplicate of it? Or is it fine to have multiple items in the player's inventory
     refer to the same base object?
  */
@@ -20,18 +23,32 @@ public class ShopManager {
     }
 
     /**
-     * Provides the imported item user with the cheapest gear available in the shop.
-     * @param user Item user to equip gear with
+     * Provides the imported player with the cheapest gear available in the shop.
+     * @param player Player to equip gear with
      */
-    public void giveCheapestGear(ItemUser user) {
+    public void giveCheapestGear(Player player) {
         //Loading shop
         shop.acquireStock(stockLoader);
 
-        //TODO figure this shit out
+        //Getting cheapest weapon & cheapest armour using Comparator
+        Weapon cheapestWeapon = Collections.min(shop.getWeaponStock(),
+                Comparator.comparing(Item::getCost));
+        Armour cheapestArmour = Collections.min(shop.getArmourStock(),
+                Comparator.comparing(Item::getCost));
 
-        for (Item item : shop.getCurrentStock()) {
-
+        //Adding cheapest weapon & armour to player's inventory
+        try {
+            cheapestWeapon.addToInventory(player);
+            cheapestArmour.addToInventory(player);
         }
+        catch (InventoryException inv) {
+            throw new IllegalArgumentException("Failed to add cheapest weapon and armour",
+                    inv); //TODO make sure this is right for final design
+        }
+
+        //Making player equip cheapest weapon & armour FIXME should we do this?
+        player.setCurWeapon(cheapestWeapon);
+        player.setCurArmour(cheapestArmour);
     }
 
     public void runShop(Player player) {

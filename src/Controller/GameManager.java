@@ -40,8 +40,6 @@ public class GameManager {
         }
     }
 
-    public void intermediateMenu()
-
     /**
      * Sets up initial probabilities for spawning of enemies
      * @return Map of enemy names and corresponding probabilities

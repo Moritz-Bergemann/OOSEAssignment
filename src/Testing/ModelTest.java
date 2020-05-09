@@ -74,7 +74,18 @@ public class ModelTest {
         for (int ii = 0; ii < 10; ii++) {
             System.out.println(player.calcDefence());
         }
+        System.out.println();
 
-        System.out.println(String.format("Quick test: \"%s\")", "                ".strip()));
+        System.out.println("Clearing player...");
+        player = new Player();
+
+        ShopManager shopManager = new ShopManager(shop, stockManager);
+
+        System.out.println("Giving player cheapest weapon and armour...");
+        shopManager.giveCheapestGear(player);
+
+        System.out.println("Player's current weapons: " + player.getWeaponSet());
+        System.out.println("Player's current armour: " + player.getArmourSet());
+        System.out.println("Player's current potions: " + player.getPotionSet());
     }
 }

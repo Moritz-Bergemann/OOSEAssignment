@@ -2,17 +2,24 @@ package Model;
 
 import Controller.StockManager;
 import Controller.StockManagerException;
+import Model.Items.Armour;
 import Model.Items.Item;
+import Model.Items.Potion;
+import Model.Items.Weapon;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Shop {
-    public Set<Item> stock;
+    private Set<Weapon> weaponStock;
+    private Set<Armour> armourStock;
+    private Set<Potion> potionStock;
 
     public Shop() {
-        stock = new HashSet<>();
+        weaponStock = new HashSet<>();
+        armourStock = new HashSet<>();
+        potionStock = new HashSet<>();
     }
 
     /**
@@ -22,7 +29,13 @@ public class Shop {
     public void acquireStock(StockManager loader) {
         //Replacing inventory with that loaded from external source
         try {
-            stock = loader.loadStock();
+            //Loading stock
+            loader.loadStock();
+
+            //Replacing individual item types with loaded stock
+            weaponStock = loader.getLoadedWeapons();
+            armourStock = loader.getLoadedArmour();
+            potionStock = loader.getLoadedPotions();
         }
         catch (StockManagerException s) {
             System.out.println("Shop received stock manager exception");
@@ -30,7 +43,29 @@ public class Shop {
         }
     }
 
+    /**
+     * Retrieve the shop's entire stock as a set of items
+     * @return the shop's entire stock
+     */
     public Set<Item> getCurrentStock() {
-        return Collections.unmodifiableSet(stock);
+        Set<Item> entireStock = new HashSet<>();
+
+        entireStock.addAll(weaponStock);
+        entireStock.addAll(armourStock);
+        entireStock.addAll(potionStock);
+
+        return Collections.unmodifiableSet(entireStock);
+    }
+
+    public Set<Weapon> getWeaponStock() {
+        return Collections.unmodifiableSet(weaponStock);
+    }
+
+    public Set<Armour> getArmourStock() {
+        return Collections.unmodifiableSet(armourStock);
+    }
+
+    public Set<Potion> getPotionStock() {
+        return Collections.unmodifiableSet(potionStock);
     }
 }
