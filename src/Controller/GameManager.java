@@ -51,7 +51,7 @@ public class GameManager extends Application {
         }
 
         if (gameOver) {
-            IntermediateManager.showStatistics();
+            intermediate.gameOverMenu();
         }
     }
 

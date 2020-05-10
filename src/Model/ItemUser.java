@@ -1,9 +1,6 @@
 package Model;
 
-import Model.Items.Armour;
-import Model.Items.InventoryException;
-import Model.Items.Potion;
-import Model.Items.Weapon;
+import Model.Items.*;
 
 import java.util.Set;
 
@@ -23,6 +20,8 @@ public interface ItemUser {
     public Set<Armour> getArmourSet();
 
     public Set<Potion> getPotionSet();
+
+    public Set<Item> getItemSet();
 
     public void removeWeapon(Weapon weapon) throws InventoryException;
 

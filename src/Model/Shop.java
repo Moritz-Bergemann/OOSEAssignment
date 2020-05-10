@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+//FIXME is this class even necessary?
+
 public class Shop {
     private Set<Weapon> weaponStock;
     private Set<Armour> armourStock;

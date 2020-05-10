@@ -3,10 +3,12 @@ package Controller;
 import Model.Items.Armour;
 import Model.Items.Weapon;
 import Model.Player;
+import View.MainMenu;
 
 public class IntermediateManager {
     private Player player; //Player playing the game
     private ShopManager shopManager; //Shop manager to take control in case player chooses to visit shop
+    private MainMenu menu;
 
     private boolean exitedMenu; //Tracks whether the menu should be exited to continue with the game control flow
     private boolean quitGame; //Tracks whether the player has chosen to quit the game
@@ -29,7 +31,7 @@ public class IntermediateManager {
 
         //Continue displaying main menu until player exits the menu
         while (!exitedMenu && !quitGame) {
-            MainMenu.showMenu();
+            menu.showMenu();
         }
 
         return quitGame;

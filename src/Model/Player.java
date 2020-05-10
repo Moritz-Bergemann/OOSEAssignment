@@ -1,10 +1,7 @@
 package Model;
 
 
-import Model.Items.Armour;
-import Model.Items.InventoryException;
-import Model.Items.Potion;
-import Model.Items.Weapon;
+import Model.Items.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -41,6 +38,20 @@ public class Player extends GameCharacter implements ItemUser {
         curArmour = null;
         gold = startingGold;
         wonGame = false;
+    }
+
+    /**
+     * @return currently equipped weapon
+     */
+    public Weapon getCurWeapon() {
+        return curWeapon;
+    }
+
+    /**
+     * @return currently equipped armour
+     */
+    public Armour getCurArmour() {
+        return curArmour;
     }
 
     /**
@@ -207,6 +218,17 @@ public class Player extends GameCharacter implements ItemUser {
     @Override
     public Set<Potion> getPotionSet() {
         return Collections.unmodifiableSet(potionSet);
+    }
+
+    @Override
+    public Set<Item> getItemSet() {
+        Set<Item> allItems = new HashSet<>();
+
+        allItems.addAll(weaponSet);
+        allItems.addAll(armourSet);
+        allItems.addAll(potionSet);
+
+        return Collections.unmodifiableSet(allItems);
     }
 
     @Override

@@ -1,14 +1,15 @@
 package View;
 
-import javafx.application.Application;
+import Model.Items.Armour;
+import Model.Items.Item;
+import Model.Items.Weapon;
+import Model.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -18,71 +19,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MainMenu {
-    private Stage stage;
+    private Stage mainStage;
+    private Player player;
 
-    public MainMenu(Stage stage) {
-        this.stage = stage;
+    public MainMenu(Stage mainStage) {
+        this.mainStage = mainStage;
     }
 
     public void showMenu() {
-        stage.show();
-    }
-}
-
-// TESTED STUFF
-import javafx.application.Application;
-        import javafx.event.ActionEvent;
-        import javafx.event.EventHandler;
-        import javafx.geometry.Insets;
-        import javafx.geometry.Pos;
-        import javafx.scene.Group;
-        import javafx.scene.Node;
-        import javafx.scene.Scene;
-        import javafx.scene.control.*;
-        import javafx.scene.layout.*;
-        import javafx.scene.paint.Color;
-        import javafx.scene.text.Font;
-        import javafx.scene.text.FontWeight;
-        import javafx.scene.text.Text;
-        import javafx.stage.Stage;
-
-        import java.util.HashSet;
-        import java.util.Set;
-
-public class Main extends Application {
-    static Set<String> weaponList;
-    static Set<String> armourList;
-
-    @Override
-    public void start(Stage stage) throws Exception {
-
-        //FOR SIMULATING GAME ELEMENTS//
-        weaponList = new HashSet<>();
-        weaponList.add("Weapon1");
-        weaponList.add("Weapon2 - this one has an extremely long name and \n a line break in it! how about that");
-        weaponList.add("Weapon3");
-        weaponList.add("Weapon4");
-        weaponList.add("Weapon5");
-        weaponList.add("Weapon6");
-        weaponList.add("Weapon7");
-        weaponList.add("Weapon8");
-        weaponList.add("Weapon9");
-        weaponList.add("Weapon10");
-        weaponList.add("Weapon11");
-        weaponList.add("Weapon12");
-
-        armourList = new HashSet<>();
-        armourList.add("Armour1");
-        armourList.add("Armour2");
-        armourList.add("Armour3");
-        armourList.add("Armour4");
-        armourList.add("Armour5");
-        armourList.add("Armour6");
-        armourList.add("Armour7");
-
-        //ACTUAL CODE STARTS HERE
-        stage.setTitle("Test");
-
         //Creating buttons for performing options
         Button chooseWeaponButton, chooseArmourButton, chooseNameButton, exitButton, storeButton, battleButton;
         chooseWeaponButton = new Button("Choose Weapon");
@@ -139,12 +83,18 @@ public class Main extends Application {
         playerInfoGrid.setVgap(10);
         playerInfoGrid.setAlignment(Pos.CENTER);
 
-        Text nameText = new Text("Name: " + "PLAYER_NAME");
-        Text goldText = new Text("Gold: " + "PLAYER_GOLD");
-        Text weaponText = new Text("Weapon: " + "PLAYER_WEAPON");
-        Text armourText = new Text("Armour: " + "PLAYER_ARMOUR");
-        Text healthText = new Text("Health: " + "PLAYER_HEALTH");
+        Text nameText = new Text("Name: " + player.getName());
+        Text goldText = new Text("Gold: " + player.getGold());
+        Text weaponText = new Text("Weapon: " + player.getCurWeapon().getName());
+        Text armourText = new Text("Armour: " + player.getCurArmour().getName());
+        Text healthText = new Text(String.format("Health: %d/%d", player.getHealth(), player.getMaxHealth()));
         Button inventoryButton = new Button("Show Inventory");
+        inventoryButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                showInventory();
+            }
+        });
 
         playerInfoGrid.add(nameText, 0, 0);
         playerInfoGrid.add(healthText, 1, 0);
@@ -175,26 +125,43 @@ public class Main extends Application {
 
         Scene scene = new Scene(rootVBox); //Creating scene with this grid pane
 
-        stage.setTitle("Player Menu");
-        stage.setScene(scene);
+        mainStage.setTitle("Player Menu");
+        mainStage.setScene(scene);
 
-        stage.show();
+        mainStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public void showInventory() {
+        Set<Text> textSet = new HashSet<>();
+
+        for (Item item : player.getItemSet()) {
+            Text newText = new Text(item.getDescription());
+            textSet.add(newText);
+        }
+
+        VBox itemList = new VBox();
+        itemList.setPadding(new Insets(10, 10, 10, 10));
+        itemList.getChildren().addAll(textSet);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(itemList);
+
+        Stage popup = new Stage();
+        popup.setTitle("Entire Inventory");
+        popup.setScene(new Scene(scrollPane));
+        popup.show();
     }
 
     public void chooseWeapon() {
         Set<Button> buttonSet = new HashSet<>();
 
         //Creating a button for each weapon and adding it to the set
-        for (String str : weaponList) { //TODO change this to weapon
-            Button weaponButton = new Button(str);
+        for (Weapon weapon : player.getWeaponSet()) {
+            Button weaponButton = new Button(weapon.getDescription());
             weaponButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    System.out.println(str + " selected!");
+                    System.out.println(weapon.getName() + " selected!"); //TODO what here
                 }
             });
 
@@ -219,12 +186,12 @@ public class Main extends Application {
         Set<Button> buttonSet = new HashSet<>();
 
         //Creating a button for each armour and adding it to the set
-        for (String str : armourList) { //TODO change this to armour
-            Button armourButton = new Button(str);
+        for (Armour armour : player.getArmourSet()) { /
+            Button armourButton = new Button(armour.getDescription());
             armourButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    System.out.println(str + " selected!"); //TODO catch exception
+                    System.out.println(armour.getName() + " selected!"); //TODO what here
                 }
             });
 
