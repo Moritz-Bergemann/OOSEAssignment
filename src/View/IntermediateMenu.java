@@ -1,8 +1,7 @@
 package View;
 
-import Model.Items.Armour;
-import Model.Items.Item;
-import Model.Items.Weapon;
+import Controller.IntermediateManager;
+import Model.Items.*;
 import Model.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,17 +15,30 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
-public class MainMenu {
-    private Stage mainStage;
+public class IntermediateMenu {
+    private Stage menuStage;
     private Player player;
+    private IntermediateManager manager;
 
-    public MainMenu(Stage mainStage) {
-        this.mainStage = mainStage;
+    public IntermediateMenu(Stage mainStage, Player player) {
+        this.player = player;
+        this.manager = null;
+        menuStage = new Stage();
+        menuStage.initOwner(mainStage); //Setting this menu's parent as main window
+    }
+
+    public void addManager(IntermediateManager manager) {
+        this.manager = manager;
     }
 
     public void showMenu() {
+        if (manager == null) {
+            throw new IllegalArgumentException("No manager added to menu to perform actions!");
+        }
+
         //Creating buttons for performing options
         Button chooseWeaponButton, chooseArmourButton, chooseNameButton, exitButton, storeButton, battleButton;
         chooseWeaponButton = new Button("Choose Weapon");
@@ -53,11 +65,11 @@ public class MainMenu {
             }
         });
 
-        storeButton = new Button("Visit Store");
+        storeButton = new Button("Go to Shop");
         storeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //TODO visit store here
+                manager.goToShop();
             }
         });
 
@@ -73,7 +85,7 @@ public class MainMenu {
         exitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //TODO exit game here
+                exitPrompt();
             }
         });
 
@@ -125,17 +137,18 @@ public class MainMenu {
 
         Scene scene = new Scene(rootVBox); //Creating scene with this grid pane
 
-        mainStage.setTitle("Player Menu");
-        mainStage.setScene(scene);
+        menuStage.setTitle("Player Menu");
+        menuStage.setScene(scene);
 
-        mainStage.show();
+        //Run the menu and hold the program here (don't return to controller) until the window is closed
+        menuStage.showAndWait();
     }
 
     public void showInventory() {
         Set<Text> textSet = new HashSet<>();
 
         for (Item item : player.getItemSet()) {
-            Text newText = new Text(item.getDescription());
+            Text newText = new Text(String.format("%s (%s)", item.getName(), item.getDescription()));
             textSet.add(newText);
         }
 
@@ -146,22 +159,57 @@ public class MainMenu {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(itemList);
 
-        Stage popup = new Stage();
+        Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Entire Inventory");
         popup.setScene(new Scene(scrollPane));
         popup.show();
     }
 
-    public void chooseWeapon() {
+    public void showNotReadyForBattle() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        alert.setTitle("Not ready for battle");
+        alert.setHeaderText(null);
+        alert.setContentText("You are not yet ready for battle. To be ready for battle, you must be equipped with a " +
+                "weapon, a set of armour and must have chosen your name.");
+        alert.showAndWait();
+    }
+
+    public void exitPrompt() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Quit Game");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to quit?");
+
+        //Creating custom option buttons and adding them to the dialog
+        ButtonType quitButtonType = new ButtonType("Quit");
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(quitButtonType, cancelButtonType);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        System.out.println(result.get());
+        if (result.get().equals(quitButtonType)) { //If user confirmed choice to quit game
+            //FIXME are these two synchronised properly?
+            manager.exitGame();
+            menuStage.close();
+        }
+    }
+
+    private void chooseWeapon() {
+        Stage popup = MenuUtils.createPopup(menuStage);
+        popup.setTitle("Choose Weapon");
+
         Set<Button> buttonSet = new HashSet<>();
 
         //Creating a button for each weapon and adding it to the set
         for (Weapon weapon : player.getWeaponSet()) {
-            Button weaponButton = new Button(weapon.getDescription());
+            Button weaponButton = new Button(String.format("%s (%s)", weapon.getName(), weapon.getDescription()));
             weaponButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     System.out.println(weapon.getName() + " selected!"); //TODO what here
+                    manager.chooseWeapon(weapon);
                 }
             });
 
@@ -176,22 +224,25 @@ public class MainMenu {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(weaponList);
 
-        Stage popup = new Stage();
-        popup.setTitle("Choose Weapon");
         popup.setScene(new Scene(scrollPane));
         popup.show();
     }
 
-    public void chooseArmour() {
+    private void chooseArmour() {
+        Stage popup = MenuUtils.createPopup(menuStage);
+        popup.setTitle("Choose Armour");
+
         Set<Button> buttonSet = new HashSet<>();
 
         //Creating a button for each armour and adding it to the set
-        for (Armour armour : player.getArmourSet()) { /
-            Button armourButton = new Button(armour.getDescription());
+        for (Armour armour : player.getArmourSet()) {
+            Button armourButton = new Button(String.format("%s (%s)", armour.getName(), armour.getDescription()));
             armourButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    System.out.println(armour.getName() + " selected!"); //TODO what here
+                    System.out.println(armour.getName() + " selected!");
+                    manager.chooseArmour(armour);
+
                 }
             });
 
@@ -206,13 +257,14 @@ public class MainMenu {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(armourList);
 
-        Stage popup = new Stage();
-        popup.setTitle("Choose Armour");
         popup.setScene(new Scene(scrollPane));
         popup.show();
     }
 
-    public void chooseName() {
+    private void chooseName() {
+        Stage popup = MenuUtils.createPopup(menuStage);
+        popup.setTitle("Choose Name");
+
         TextField nameField = new TextField();
         Button submitButton = new Button("Submit");
 
@@ -220,7 +272,13 @@ public class MainMenu {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String inputName = nameField.getText();
-                System.out.println("User input name " + inputName);
+                try {
+                    manager.chooseCharacterName(inputName);
+                    System.out.println("User input name " + inputName);
+                }
+                catch (IllegalArgumentException i) {
+                    MenuUtils.showError("Invalid input", i.getMessage(), menuStage);
+                }
 
                 //Closing pop-up window after submission
                 Stage stage = (Stage) submitButton.getScene().getWindow();
@@ -232,8 +290,6 @@ public class MainMenu {
         root.setSpacing(10);
         root.setPadding(new Insets(10, 10, 10, 10));
 
-        Stage popup = new Stage();
-        popup.setTitle("Choose Name");
         popup.setScene(new Scene(root));
         popup.show();
     }

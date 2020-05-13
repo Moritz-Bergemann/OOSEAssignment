@@ -4,14 +4,17 @@ import Model.GameCharacter;
 import Model.Items.InventoryException;
 import Model.Items.Potion;
 import Model.Player;
+import View.BattleMenu;
 
 public class BattleManager {
     private Player player;
     private GameCharacter enemy;
+    private BattleMenu battleMenu;
 
-    public BattleManager(Player player, GameCharacter enemy) {
+    public BattleManager(Player player, GameCharacter enemy, BattleMenu battleMenu) {
         this.player = player;
         this.enemy = enemy;
+        this.battleMenu = battleMenu;
     }
 
     /**
@@ -21,15 +24,15 @@ public class BattleManager {
     public boolean runBattle() {
         //TODO create listeners for enemy that can then be added here
 
-        BattleMenu.mainMenu();
+        battleMenu.showMenu();
 
-        while (player.isAlive() && enemy.isAlive()) {
-            playerTurn();
-
-            if (enemy.isAlive()) {
-                enemyTurn();
-            }
-        }
+//        while (player.isAlive() && enemy.isAlive()) {
+//            playerTurn();
+//
+//            if (enemy.isAlive()) {
+//                enemyTurn();
+//            }
+//        }
 
         return player.isAlive();
     }
@@ -41,7 +44,7 @@ public class BattleManager {
 
     private void playerTurn() {
         //TODO observers here
-        BattleMenu.playerMenu();
+        battleMenu.playerTurn();
     }
 
     public void runAttack(GameCharacter attacker, GameCharacter defender) {
@@ -55,7 +58,7 @@ public class BattleManager {
         //Dealing damage to defender
         defender.loseHealth(damageDone);
 
-        BattleMenu.showMessage(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
+        battleMenu.addEvent(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
                 attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence)); //TODO refactor, should probably just pass values to view
     }
 

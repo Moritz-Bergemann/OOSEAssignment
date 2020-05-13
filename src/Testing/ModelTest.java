@@ -6,6 +6,7 @@ import Model.Items.InventoryException;
 import Model.Items.Item;
 import Model.Items.Weapon;
 import Controller.*;
+import View.ShopMenu;
 
 public class ModelTest {
     public static void main(String[] args) {
@@ -79,7 +80,8 @@ public class ModelTest {
         System.out.println("Clearing player...");
         player = new Player();
 
-        ShopManager shopManager = new ShopManager(shop, stockManager);
+        ShopMenu shopMenu = null;
+        ShopManager shopManager = new ShopManager(shop, stockManager, shopMenu);
 
         System.out.println("Giving player cheapest weapon and armour...");
         shopManager.giveCheapestGear(player);

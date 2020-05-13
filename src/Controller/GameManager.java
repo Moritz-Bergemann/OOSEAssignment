@@ -1,7 +1,13 @@
 package Controller;
 
 import Model.*;
+import View.BattleMenu;
+import View.IntermediateMenu;
+import View.ShopMenu;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -17,26 +23,42 @@ public class GameManager extends Application {
         Application.launch(args); //Launching JavaFX application
     }
 
-    public void start(Stage stage) {
-        stage.setTitle("OOSE Quest II: TWOOSE");
+    public void start(Stage mainStage) {
+        try {
+            runGame(mainStage);
+        } //TODO change exception messages from println to JavaFX related
+        catch (GameException g) {
+            System.out.println("Failed to run game - " + g.getMessage());
+        }
+//        catch (Exception e) {
+//            System.out.println("An unexpected exception has occurred - " + e.getMessage());
+//        }
+    }
+
+    public void runGame(Stage mainStage) throws GameException {
+        mainStage.setTitle("OOSE Quest II: TWOOSE");
+
+        mainStage.setScene(new Scene(new VBox(new Text("OOSE Quest II: TWOOSE"))));
 
         Player player = new Player();
         Shop shop = new Shop();
 
         ChanceEnemyFactory enemyGen = new ChanceEnemyFactory(setEnemyChances(), setEnemyChanceUpdates());
 
+        //Creating managers for game components
         StockManager stock = new FileStockManager("items.txt"); //TODO make this get file name from somewhere else?
-        ShopManager shopManager = new ShopManager(shop, stock);
-        IntermediateManager intermediate = new IntermediateManager(player, shopManager);
+        ShopMenu shopMenu = new ShopMenu(mainStage, shop, player);
+        ShopManager shopManager = new ShopManager(shop, stock, shopMenu);
+        IntermediateMenu intermediateMenu = new IntermediateMenu(mainStage, player);
+        IntermediateManager intermediate = new IntermediateManager(player, shopManager, intermediateMenu);
 
         //Equipping player with shop's cheapest gear to start adventure
         try {
             stock.loadStock();
         }
         catch (StockManagerException s) {
-            System.out.println("Failed to start game, could not load items - " + s.getMessage()); //TODO what here?
+            throw new GameException("Could not load items - " + s.getMessage(), s);
         }
-
         shopManager.giveCheapestGear(player);
 
         //Starting main game loop
@@ -46,13 +68,15 @@ public class GameManager extends Application {
             quit = intermediate.intermediateMenu();
 
             GameCharacter enemy = enemyGen.makeEnemy(); //FIXME can I get away with polymorphism here?
-            BattleManager battle = new BattleManager(player, enemy);
+            BattleMenu battleMenu = new BattleMenu(player, enemy, mainStage);
+            BattleManager battle = new BattleManager(player, enemy, battleMenu);
             gameOver = battle.runBattle();
         }
 
         if (gameOver) {
-            intermediate.gameOverMenu();
+            intermediate.gameOverMenu(); //FIXME maybe here instead? Or OtherMenu class
         }
+
     }
 
     /**
@@ -81,5 +105,7 @@ public class GameManager extends Application {
         enemyChanceUpdates.put("Goblin", -0.05);
         enemyChanceUpdates.put("Ogre", -0.05);
         enemyChanceUpdates.put("Dragon", 0.15);
+
+        return enemyChanceUpdates;
     }
 }

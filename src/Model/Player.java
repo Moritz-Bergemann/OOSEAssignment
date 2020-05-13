@@ -75,6 +75,13 @@ public class Player extends GameCharacter implements ItemUser {
      * @param name new name for character
      */
     public void setName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
+        else if (name.strip() == "") {
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
+
         this.name = name;
     }
 

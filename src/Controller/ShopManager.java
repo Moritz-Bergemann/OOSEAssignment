@@ -4,6 +4,7 @@ import Model.ItemUser;
 import Model.Items.*;
 import Model.Player;
 import Model.Shop;
+import View.ShopMenu;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,10 +17,12 @@ import java.util.Comparator;
 public class ShopManager {
     private StockManager stockLoader; //Loads items from shop
     private Shop shop; //Shop model object containing inventory
+    private ShopMenu shopMenu;
 
-    public ShopManager(Shop shop, StockManager stockLoader) {
+    public ShopManager(Shop shop, StockManager stockLoader, ShopMenu shopMenu) {
         this.stockLoader = stockLoader;
         this.shop = shop;
+        this.shopMenu = shopMenu;
     }
 
     /**
@@ -56,8 +59,7 @@ public class ShopManager {
         shop.acquireStock(stockLoader);
 
         //TODO create observers here
-
-        ShopMenu.run(); //TODO put observers here and stuff
+        shopMenu.runMenu(); //TODO put observers here and stuff
     }
 
     public void purchaseItem(Item item, Player player) {
@@ -70,13 +72,13 @@ public class ShopManager {
             //Adding item to player's inventory (throws exception if insufficient inventory capacity)
             item.addToInventory(player);
 
-            ShopMenu.showMessage(String.format("You bought %s!", item.getName()));
+            shopMenu.showPopup(String.format("You bought '%s' for %d!", item.getName(), item.getCost()));
         }
         catch (InventoryException inv) {
             //Resetting player's gold amount
             player.setGold(initialGold);
 
-            ShopMenu.showMessage("Could not purchase item - " + inv.getMessage());
+            shopMenu.showPopup("Could not purchase item - " + inv.getMessage());
         }
     }
 
@@ -90,13 +92,13 @@ public class ShopManager {
             //Removing item from player's inventory (throws exception if item is currently equipped) //TODO test this
             item.removeFromInventory(player);
 
-            ShopMenu.showMessage(String.format("You bought %s!", item.getCost()));
+            shopMenu.showPopup(String.format("You sold '%s' for %d!", item.getName(), item.getCost() / 2));
         }
         catch (InventoryException inv) {
             //Resetting player's gold amount
             player.setGold(initialGold);
 
-            ShopMenu.showMessage("Could not purchase item - " + inv.getMessage());
+            shopMenu.showPopup("Could not purchase item - " + inv.getMessage());
         }
     }
 
@@ -116,7 +118,7 @@ public class ShopManager {
             //Resetting player's gold amount
             player.setGold(initialGold);
 
-            ShopMenu.showMessage("Could not apply enchantment - " + inv.getMessage());
+            shopMenu.showPopup("Could not apply enchantment - " + inv.getMessage());
         }
     }
 }
