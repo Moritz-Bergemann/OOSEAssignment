@@ -1,6 +1,5 @@
 package Controller;
 
-import Model.ItemUser;
 import Model.Items.*;
 import Model.Player;
 import Model.Shop;
@@ -8,6 +7,7 @@ import View.ShopMenu;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 
 /*TODO should buying an item create a duplicate of it? Or is it fine to have multiple items in the player's inventory
     refer to the same base object?
@@ -27,6 +27,7 @@ public class ShopManager {
 
     /**
      * Provides the imported player with the cheapest gear available in the shop.
+     *
      * @param player Player to equip gear with
      */
     public void giveCheapestGear(Player player) {
@@ -54,12 +55,13 @@ public class ShopManager {
         player.setCurArmour(cheapestArmour);
     }
 
-    public void runShop(Player player) {
+    public void runShop(Player player) { //FIXME unused import here
         //Re-acquiring stock for shop (in case has been updated)
         shop.acquireStock(stockLoader);
 
-        //TODO create observers here
-        shopMenu.runMenu(); //TODO put observers here and stuff
+        shopMenu.setManager(this);
+
+        shopMenu.runMenu();
     }
 
     public void purchaseItem(Item item, Player player) {
@@ -72,17 +74,19 @@ public class ShopManager {
             //Adding item to player's inventory (throws exception if insufficient inventory capacity)
             item.addToInventory(player);
 
-            shopMenu.showPopup(String.format("You bought '%s' for %d!", item.getName(), item.getCost()));
+            shopMenu.showMessage(String.format("You bought '%s' for %d gold!", item.getName(), item.getCost()));
         }
         catch (InventoryException inv) {
             //Resetting player's gold amount
             player.setGold(initialGold);
 
-            shopMenu.showPopup("Could not purchase item - " + inv.getMessage());
+            shopMenu.showMessage("Could not purchase item - " + inv.getMessage());
         }
+
+        System.out.println("DEBUG player gold after purchase - " + player.getGold());
     }
 
-    public void sellItem(Item item, Player player) {
+    public void sellItem(Player player, Item item) {
         int initialGold = player.getGold();
 
         try {
@@ -92,16 +96,24 @@ public class ShopManager {
             //Removing item from player's inventory (throws exception if item is currently equipped) //TODO test this
             item.removeFromInventory(player);
 
-            shopMenu.showPopup(String.format("You sold '%s' for %d!", item.getName(), item.getCost() / 2));
+            shopMenu.showMessage(String.format("You sold '%s' for %d gold!", item.getName(), item.getCost() / 2));
         }
         catch (InventoryException inv) {
             //Resetting player's gold amount
             player.setGold(initialGold);
 
-            shopMenu.showPopup("Could not purchase item - " + inv.getMessage());
+            shopMenu.showMessage("Could not purchase item - " + inv.getMessage());
         }
     }
 
+    /**
+     * Enchants a weapon with the enchantment decorator identified by a string. Throws exception if string does
+     * not correlate to a known enchantment
+     *
+     * @param player          Player buying enchantment
+     * @param weapon          weapon to enchant
+     * @param enchantmentName name of enchantment to add
+     */
     public void purchaseEnchantment(Player player, Weapon weapon, String enchantmentName) {
         int initialGold = player.getGold();
 
@@ -113,12 +125,43 @@ public class ShopManager {
 
             //Applying enchantment to imported weapon
             EnchantmentFactory.applyEnchantment(enchantmentName, weapon);
+
+            shopMenu.showMessage(String.format("You bought '%s' for %d gold!", enchantmentName, cost));
         }
         catch (InventoryException inv) {
             //Resetting player's gold amount
             player.setGold(initialGold);
 
-            shopMenu.showPopup("Could not apply enchantment - " + inv.getMessage());
+            shopMenu.showMessage("Could not apply enchantment - " + inv.getMessage());
         }
+    }
+
+    /**
+     * Calls Enchantment Factory for information on enchantment names (to avoid enchantmentMenu requiring knowledge
+     *  about the factory)
+     * @return set of all enchantment names
+     */
+    public Set<String> getAllEnchantmentNames() {
+        return EnchantmentFactory.getAllEnchantmentNames();
+    }
+
+    /**
+     * Calls Enchantment Factory for enchantment description (to avoid enchantmentMenu requiring knowledge
+     * about the factory)
+     * @param name name of enchantment
+     * @return enchantment description
+     */
+    public String getEnchantmentDescription(String name) {
+        return EnchantmentFactory.getEnchantmentDescription(name);
+    }
+
+    /**
+     * Calls Enchantment Factory for enchantment cost (to avoid enchantmentMenu requiring knowledge
+     * about the factory)
+     * @param name name of enchantment
+     * @return enchantment cost
+     */
+    public int getEnchantmentCost(String name) {
+        return EnchantmentFactory.getEnchantmentCost(name);
     }
 }

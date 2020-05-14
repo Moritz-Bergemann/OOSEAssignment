@@ -20,6 +20,18 @@ public class MenuUtils {
     }
 
     public static void showError(String title, String message, Stage parent) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(parent);
+
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
+
+    public static void showMessage(String title, String message, Stage parent)
+    {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.initOwner(parent);
 

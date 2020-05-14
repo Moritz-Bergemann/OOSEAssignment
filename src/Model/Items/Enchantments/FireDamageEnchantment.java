@@ -1,12 +1,18 @@
-package Model.Items;
+package Model.Items.Enchantments;
 
 import Controller.Chance;
+import Model.Items.Weapon;
+import Model.Items.WeaponEnchantment;
 
 public class FireDamageEnchantment extends WeaponEnchantment {
     private static int cost = 20;
 
     public static int getIndividualCost() {
         return cost;
+    }
+
+    public static String getIndividualDescripton() {
+        return "Increases weapon damage by 5-10 (randomly)";
     }
 
     public FireDamageEnchantment(Weapon next) {

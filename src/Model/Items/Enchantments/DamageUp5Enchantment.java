@@ -1,10 +1,17 @@
-package Model.Items;
+package Model.Items.Enchantments;
+
+import Model.Items.Weapon;
+import Model.Items.WeaponEnchantment;
 
 public class DamageUp5Enchantment extends WeaponEnchantment {
     private static int cost = 10;
 
     public static int getIndividualCost() {
         return cost;
+    }
+
+    public static String getIndividualDescripton() {
+        return "Increases weapon damage by 5";
     }
 
     public DamageUp5Enchantment(Weapon next) {

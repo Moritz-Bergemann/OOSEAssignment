@@ -40,7 +40,7 @@ public class IntermediateManager {
         exitedMenu = false;
 
         //Adding this manager to menu so the menu can call its methods
-        menu.addManager(this);
+        menu.setManager(this);
 
         //Continue displaying main menu until player exits the menu
         menu.showMenu();

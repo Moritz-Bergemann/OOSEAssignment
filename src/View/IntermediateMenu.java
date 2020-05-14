@@ -30,7 +30,7 @@ public class IntermediateMenu {
         menuStage.initOwner(mainStage); //Setting this menu's parent as main window
     }
 
-    public void addManager(IntermediateManager manager) {
+    public void setManager(IntermediateManager manager) {
         this.manager = manager;
     }
 
@@ -145,22 +145,22 @@ public class IntermediateMenu {
     }
 
     public void showInventory() {
-        Set<Text> textSet = new HashSet<>();
-
-        for (Item item : player.getItemSet()) {
-            Text newText = new Text(String.format("%s (%s)", item.getName(), item.getDescription()));
-            textSet.add(newText);
-        }
+        Stage popup = MenuUtils.createPopup(menuStage);
+        popup.setTitle("Entire Inventory");
 
         VBox itemList = new VBox();
         itemList.setPadding(new Insets(10, 10, 10, 10));
-        itemList.getChildren().addAll(textSet);
+
+
+        for (Item item : player.getItemSet()) {
+            Text newText = new Text(String.format("%s (%s)", item.getName(), item.getDescription()));
+
+            itemList.getChildren().add(newText);
+        }
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(itemList);
 
-        Stage popup = MenuUtils.createPopup(menuStage);
-        popup.setTitle("Entire Inventory");
         popup.setScene(new Scene(scrollPane));
         popup.show();
     }
@@ -190,7 +190,7 @@ public class IntermediateMenu {
 
         System.out.println(result.get());
         if (result.get().equals(quitButtonType)) { //If user confirmed choice to quit game
-            //FIXME are these two synchronised properly?
+            //FIXME are these two synchronised properly? Probably yes
             manager.exitGame();
             menuStage.close();
         }

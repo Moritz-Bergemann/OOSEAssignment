@@ -114,6 +114,8 @@ public class Player extends GameCharacter implements ItemUser {
             throw new InventoryException(String.format("Cannot lose %d gold (only has %d)",
                     lostGold, this.gold));
         }
+
+        gold -= lostGold;
     }
 
     /**
