@@ -147,10 +147,16 @@ public class Player extends GameCharacter implements ItemUser {
      * @return whether the character is ready for battle
      */
     public boolean readyForBattle() {
-        return name == null
-                && !name.strip().equals("")
-                && curWeapon == null
-                && curArmour == null;
+        //Checking whether player name is null/empty, weapon is null & armour is null (all must be false
+        //   for player to be ready for battle
+        if (name == null) {
+            return false;
+        }
+        else {
+            return !name.strip().equals("")
+                && curWeapon != null
+                && curArmour != null;
+        }
     }
 
     //Inherited from 'Character'

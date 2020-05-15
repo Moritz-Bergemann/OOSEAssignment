@@ -21,17 +21,27 @@ public class DamagingPotion extends Potion {
         this.maxDamage = maxDamage;
     }
 
-    private int calcHealing() {
+    private int calcDamage() {
         return Chance.randBetween(minDamage, maxDamage);
     }
 
     /**
      * Application of potion - here causing a certain amount of damage
      * @param gameCharacter the character to be damaged
+     * @return damage done
      */
     @Override
-    public void apply(GameCharacter gameCharacter) {
-        gameCharacter.loseHealth(calcHealing());
+    public int apply(GameCharacter gameCharacter) {
+        int damage = calcDamage();
+
+        gameCharacter.loseHealth(damage);
+
+        return damage;
+    }
+
+    @Override
+    public String getEffectType() {
+        return "damage";
     }
 
     @Override

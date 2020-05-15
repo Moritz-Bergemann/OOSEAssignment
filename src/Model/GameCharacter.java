@@ -42,7 +42,7 @@ public abstract class GameCharacter {
      * @return whether or not character is currently alive
      */
     public boolean isAlive() {
-        return (health <= 0);
+        return (health > 0);
     }
 
     /**
@@ -91,4 +91,9 @@ public abstract class GameCharacter {
      * @return character's maximum defence
      */
     public abstract int getMaxDefence();
+
+    /**
+     * @return character's gold
+     */
+    public abstract int getGold();
 }

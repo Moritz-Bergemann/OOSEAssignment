@@ -22,7 +22,9 @@ public class ChanceEnemyFactory {
      * Returns a new enemy randomly depending on the current state of this object's probabilities.
      * @return selected enemy
      */
-    public Enemy makeEnemy() { //TODO
+    public Enemy makeEnemy() { //TODO add commenting
+        System.out.println("DEBUG Making enemy: " + chances.toString());
+
         double randChance = Math.random();
         double chanceHit = 0.0;
         String chosenEnemy = null;
@@ -32,6 +34,7 @@ public class ChanceEnemyFactory {
 
             if (chanceHit > randChance) {
                 chosenEnemy = enemyName;
+                break;
             }
         }
 
@@ -83,8 +86,9 @@ public class ChanceEnemyFactory {
                 break;
             case "Dragon":
                 newEnemy = new DragonEnemy();
+                break;
             default:
-                throw new IllegalArgumentException("Invalid enemy parameter provided");
+                throw new IllegalArgumentException(String.format("Invalid enemy parameter '%s' provided", name));
         }
 
         return newEnemy;

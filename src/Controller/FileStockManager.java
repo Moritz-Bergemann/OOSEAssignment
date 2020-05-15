@@ -23,6 +23,11 @@ public class FileStockManager implements StockManager {
 
     @Override
     public void loadStock() throws StockManagerException {
+        //Resetting all item sets
+        weapons = new HashSet<>();
+        armour = new HashSet<>();
+        potions = new HashSet<>();
+
         int lineNum = 1;
 
         //Trying to read file with resources
@@ -93,8 +98,8 @@ public class FileStockManager implements StockManager {
                     int minDamage = Integer.parseInt(seg[2].strip());
                     int maxDamage = Integer.parseInt(seg[3].strip());
                     int cost = Integer.parseInt(seg[4].strip());
-                    String damageType = seg[5];
-                    String weaponType = seg[6];
+                    String damageType = seg[5].strip().toLowerCase();
+                    String weaponType = seg[6].strip().toLowerCase();
 
                     //Creating new weapon & adding it to weapon set (& verifying parameters are valid via constructor)
                     try {
@@ -117,7 +122,7 @@ public class FileStockManager implements StockManager {
                     int minDefence = Integer.parseInt(seg[2].strip());
                     int maxDefence = Integer.parseInt(seg[3].strip());
                     int cost = Integer.parseInt(seg[4].strip());
-                    String material = seg[5];
+                    String material = seg[5].strip().toLowerCase();
 
                     //Creating new armour & adding it to armour set (& verifying parameters are valid via constructor)
                     try {

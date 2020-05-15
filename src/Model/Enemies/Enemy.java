@@ -31,27 +31,33 @@ public abstract class Enemy extends GameCharacter {
      * Logic for standard Defence of enemy (no special abilities)
      * @return amount of damage for enemy's next Defence
      */
+    @Override
     public int calcDefence() {
         return Chance.randBetween(minDefence, maxDefence);
     }
 
     //Getters
+    @Override
     public int getMinAttack() {
         return minAttack;
     }
 
+    @Override
     public int getMaxAttack() {
         return maxAttack;
     }
 
+    @Override
     public int getMinDefence() {
         return minDefence;
     }
 
+    @Override
     public int getMaxDefence() {
         return maxDefence;
     }
 
+    @Override
     public int getGold() {
         return gold;
     }

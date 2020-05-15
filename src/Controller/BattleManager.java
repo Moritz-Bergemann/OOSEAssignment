@@ -1,20 +1,31 @@
 package Controller;
 
+import Model.Enemies.DragonEnemy;
 import Model.GameCharacter;
 import Model.Items.InventoryException;
 import Model.Items.Potion;
 import Model.Player;
 import View.BattleMenu;
 
+import java.util.HashSet;
+import java.util.Set;
+
+//TODO prettify
 public class BattleManager {
     private Player player;
     private GameCharacter enemy;
     private BattleMenu battleMenu;
+    private BattleState state;
+
+    private Set<BattleEventListener> battleEventListeners;
 
     public BattleManager(Player player, GameCharacter enemy, BattleMenu battleMenu) {
         this.player = player;
         this.enemy = enemy;
         this.battleMenu = battleMenu;
+        this.battleEventListeners = new HashSet<>();
+        this.state = new PlayerTurn(this); //Setting default state to avoid null value
+        this.state = new PlayerTurn(this); //Setting default state to avoid null value
     }
 
     /**
@@ -22,29 +33,21 @@ public class BattleManager {
      * @return whether the battle has killed the player TODO change this?
      */
     public boolean runBattle() {
-        //TODO create listeners for enemy that can then be added here
+        //Setting initial turn to player turn
+        state = new PlayerTurn(this);
+
+        battleMenu.setManager(this);
 
         battleMenu.showMenu();
 
-//        while (player.isAlive() && enemy.isAlive()) {
-//            playerTurn();
-//
-//            if (enemy.isAlive()) {
-//                enemyTurn();
-//            }
-//        }
+        //FIXME is there a better way?
+        //Making player win if killed dragon
+        if (!enemy.isAlive() && enemy instanceof DragonEnemy) {
+            player.setWonGame();
+            return true;
+        }
 
-        return player.isAlive();
-    }
-
-    private void enemyTurn() {
-        //Making player attack enemy (could be updated for further functionality in the future)
-        runAttack(enemy, player);
-    }
-
-    private void playerTurn() {
-        //TODO observers here
-        battleMenu.playerTurn();
+        return !player.isAlive();
     }
 
     public void runAttack(GameCharacter attacker, GameCharacter defender) {
@@ -58,7 +61,7 @@ public class BattleManager {
         //Dealing damage to defender
         defender.loseHealth(damageDone);
 
-        battleMenu.addEvent(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
+        notifyBattleEventListeners(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
                 attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence)); //TODO refactor, should probably just pass values to view
     }
 
@@ -71,9 +74,86 @@ public class BattleManager {
             throw new IllegalArgumentException("Tried to use potion not in inventory", inv);
         }
 
-        //TODO create listeners for potions that can then be added here
+        int effect = potion.apply(target);
 
-        potion.apply(target);
-
+        notifyBattleEventListeners(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(),
+                effect, potion.getEffectType()));
     }
-}
+
+
+    //Methods for interaction with state:
+    /**
+     * Gets the battle's menu (so the state can send it information)
+     * @return The battle manager's menu
+     */
+    public BattleMenu getMenu() {
+        return battleMenu;
+    }
+
+    /**
+     * Sets the state of the battle manager
+     * @param state the state to set the battle to
+     */
+    public void setState(BattleState state) {
+        this.state = state;
+    }
+
+    public GameCharacter getEnemy() {
+        return enemy;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+//    TODO remove these + dependencies
+
+    /**
+     * Ends the current turn (likely causing move to next turn)
+     */
+    public void endTurn() {
+        state.endTurn();
+    }
+
+    /**
+     * Checks whether the player or enemy have died and ends the battle if this is the case. If not, the next turn of
+     *  the battle is run.
+     */
+    public void continueBattle() {
+        if (!player.isAlive()) { //If player has died
+            System.out.println("DEBUG " + player.getHealth());
+            battleMenu.showBattleEnded(String.format("%s has been defeated!", player.getName()));
+        }
+        else if (!enemy.isAlive()) { //If enemy has died
+            player.gainGold(enemy.getGold());
+            System.out.println("DEBUG " + enemy.getHealth());
+            battleMenu.showBattleEnded(String.format("%s has been defeated! %d gold earned.",
+                    enemy.getName(), enemy.getGold()));
+        }
+        else { //If battle is still ongoing
+            state.runTurn(); //Continue battle
+        }
+    }
+
+    //For listeners
+    public void notifyBattleEventListeners(String message) {
+        for (BattleEventListener listener : battleEventListeners) {
+            listener.notifyBattleEvent(message);
+        }
+    }
+
+    /**
+     * Adds battle event listener
+     * @param listener listener to be added
+     */
+    public void addBattleEventListener(BattleEventListener listener) {
+        battleEventListeners.add(listener);
+    }
+
+    /**
+     * Removes battle event listener
+     * @param listener listener to be removed
+     */
+    public void removeBattleEventListener(BattleEventListener listener) {
+        battleEventListeners.remove(listener);
+    }}

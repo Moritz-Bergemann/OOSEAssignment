@@ -68,6 +68,7 @@ public class IntermediateManager {
     public void startBattle() {
         if (player.readyForBattle()) {
             exitedMenu = true;
+            menu.startBattle();
         }
         else {
             menu.showNotReadyForBattle();

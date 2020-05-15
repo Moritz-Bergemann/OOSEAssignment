@@ -12,6 +12,11 @@ public class Chance {
             throw new IllegalArgumentException("Lower bound cannot be greater than upper bound");
         }
 
+        //Returning value directly if min & max equal (since rand.nextInt cannot take in negative integers)
+        if (min == max) {
+            return min;
+        }
+
         Random rand = new Random();
 
         //Getting number by setting lower bound as min & upper bound as max (standard bound is between 0 & import - 1)

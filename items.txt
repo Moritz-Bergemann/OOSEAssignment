@@ -7,3 +7,5 @@ A, Dragon Skin, 20, 30, 80, Dragon Scale
 P, Potion of Healing, 5, 10, 12, H
 P, Potion of Greater Healing, 15, 20, 20, H
 P, Explosive Potion, 20, 20, 20, D
+W, Mega Blast Laser (Devs only!), 9999, 9999, 0, blasting, laser
+W, Mega Blast Laser (Devs only!), 9999, 9999, -30, blasting, laser

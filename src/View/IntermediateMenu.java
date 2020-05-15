@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -77,7 +78,7 @@ public class IntermediateMenu {
         battleButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //TODO start battle here
+                manager.startBattle();
             }
         });
 
@@ -89,6 +90,7 @@ public class IntermediateMenu {
             }
         });
 
+        //Setting up grid showing player information
         GridPane playerInfoGrid = new GridPane();
         playerInfoGrid.setMinSize(100, 80);
         playerInfoGrid.setHgap(10);
@@ -140,6 +142,13 @@ public class IntermediateMenu {
         menuStage.setTitle("Player Menu");
         menuStage.setScene(scene);
 
+        menuStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                exitPrompt();
+            }
+        });
+
         //Run the menu and hold the program here (don't return to controller) until the window is closed
         menuStage.showAndWait();
     }
@@ -151,7 +160,7 @@ public class IntermediateMenu {
         VBox itemList = new VBox();
         itemList.setPadding(new Insets(10, 10, 10, 10));
 
-
+        //Creating list of items
         for (Item item : player.getItemSet()) {
             Text newText = new Text(String.format("%s (%s)", item.getName(), item.getDescription()));
 
@@ -160,6 +169,15 @@ public class IntermediateMenu {
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(itemList);
+
+        //Adding button to close menu
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                popup.close();
+            }
+        });
 
         popup.setScene(new Scene(scrollPane));
         popup.show();
@@ -173,6 +191,10 @@ public class IntermediateMenu {
         alert.setContentText("You are not yet ready for battle. To be ready for battle, you must be equipped with a " +
                 "weapon, a set of armour and must have chosen your name.");
         alert.showAndWait();
+    }
+
+    public void startBattle() {
+        menuStage.close();
     }
 
     public void exitPrompt() {
@@ -210,6 +232,7 @@ public class IntermediateMenu {
                 public void handle(ActionEvent actionEvent) {
                     System.out.println(weapon.getName() + " selected!"); //TODO what here
                     manager.chooseWeapon(weapon);
+                    popup.close();
                 }
             });
 
@@ -242,7 +265,7 @@ public class IntermediateMenu {
                 public void handle(ActionEvent actionEvent) {
                     System.out.println(armour.getName() + " selected!");
                     manager.chooseArmour(armour);
-
+                    popup.close();
                 }
             });
 

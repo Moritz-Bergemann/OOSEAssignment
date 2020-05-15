@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 import View.BattleMenu;
 import View.IntermediateMenu;
+import View.MenuUtils;
 import View.ShopMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -65,18 +66,25 @@ public class GameManager extends Application {
         boolean gameOver = false;
         boolean quit = false;
         while (!gameOver && !quit) {
+            //Running intermediate menu (including option to go to shop)
             quit = intermediate.intermediateMenu();
 
-            GameCharacter enemy = enemyGen.makeEnemy(); //FIXME can I get away with polymorphism here?
-            BattleMenu battleMenu = new BattleMenu(player, enemy, mainStage);
-            BattleManager battle = new BattleManager(player, enemy, battleMenu);
-            gameOver = battle.runBattle();
+            if (!quit) {
+                //Running battle
+                GameCharacter enemy = enemyGen.makeEnemy(); //FIXME can I get away with polymorphism here?
+                BattleMenu battleMenu = new BattleMenu(player, enemy, mainStage);
+                BattleManager battle = new BattleManager(player, enemy, battleMenu);
+                gameOver = battle.runBattle();
+
+                //Updating enemy chances for next battle (if it occurs)
+                enemyGen.updateChances();
+            }
         }
 
         if (gameOver) {
-            intermediate.gameOverMenu(); //FIXME maybe here instead? Or OtherMenu class
+            //Showing the menu for the game ending (victory menu if player won, defeat menu if player died)
+            MenuUtils.gameEndedMenu(player);
         }
-
     }
 
     /**

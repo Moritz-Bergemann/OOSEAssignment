@@ -32,14 +32,22 @@ public abstract class Potion implements Item{
      * Applies the potion to a character.
      * The logic for this is defined in the 'Potion' class rather than the controller (like applying attacks is)
      *  as the logic for what should be done by the potion is highly correlated with the potion itself.
-     * @param gameCharacter
+     * @param target target for the potion application
+     * @return the amount of effect caused by the potion (as an integer)
      */
-    public abstract void apply(GameCharacter gameCharacter);
+    public abstract int apply(GameCharacter target);
 
     @Override
     public void addToInventory(ItemUser itemUser) throws InventoryException {
         itemUser.addPotion(this);
     }
+
+    /**
+     * Returns the effect of the potion. Used PURELY for interface purposes, not as an instanceof equivalent.
+     * @return Type of potion (as a string)
+     */
+    public abstract String getEffectType();
+
 
     @Override
     public void removeFromInventory(ItemUser itemUser) throws InventoryException {
