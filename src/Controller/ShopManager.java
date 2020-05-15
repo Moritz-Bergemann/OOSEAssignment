@@ -64,6 +64,7 @@ public class ShopManager {
         shopMenu.runMenu();
     }
 
+    //TODO FIXME need to add item duplicates instead of item itself (so that can buy multiple of same item) OR just make items a list instead of a set?
     public void purchaseItem(Item item, Player player) {
         int initialGold = player.getGold();
 
@@ -72,6 +73,7 @@ public class ShopManager {
             player.loseGold(item.getCost());
 
             //Adding item to player's inventory (throws exception if insufficient inventory capacity)
+
             item.addToInventory(player);
 
             shopMenu.showMessage(String.format("You bought '%s' for %d gold!", item.getName(), item.getCost()));
@@ -110,11 +112,11 @@ public class ShopManager {
      * Enchants a weapon with the enchantment decorator identified by a string. Throws exception if string does
      * not correlate to a known enchantment
      *
-     * @param player          Player buying enchantment
-     * @param weapon          weapon to enchant
+     * @param player Player buying enchantment
+     * @param weapon weapon to enchant
      * @param enchantmentName name of enchantment to add
      */
-    public void purchaseEnchantment(Player player, Weapon weapon, String enchantmentName) {
+    public void purchaseEnchantment(Player player, Weapon weapon, String enchantmentName) { //FIXME need to replace in inventory doofus
         int initialGold = player.getGold();
 
         try {
@@ -123,8 +125,13 @@ public class ShopManager {
             //Making player pay cost of item (throws exception if insufficient gold)
             player.loseGold(cost);
 
+
             //Applying enchantment to imported weapon
-            EnchantmentFactory.applyEnchantment(enchantmentName, weapon);
+            Weapon enchantedWeapon = EnchantmentFactory.applyEnchantment(enchantmentName, weapon);
+
+            //Removing original weapon from set & re-adding enchanted weapon
+            player.removeWeapon(weapon);
+            player.addWeapon(enchantedWeapon);
 
             shopMenu.showMessage(String.format("You bought '%s' for %d gold!", enchantmentName, cost));
         }

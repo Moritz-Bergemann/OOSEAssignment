@@ -40,6 +40,11 @@ public abstract class WeaponEnchantment implements Weapon {
     }
 
     @Override
+    public String getType() {
+        return next.getType();
+    }
+
+    @Override
     public void addToInventory(ItemUser itemUser) throws InventoryException {
         next.addToInventory(itemUser);
     }

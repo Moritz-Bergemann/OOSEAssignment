@@ -63,6 +63,11 @@ public abstract class Potion implements Item{
         return "_TYPE_ potion";
     }
 
+    @Override
+    public String getType() {
+        return "potion";
+    }
+
     //Declaring equals method as abstract to ensure it is implemented by subclasses
     public abstract boolean equals(Object o);
 }

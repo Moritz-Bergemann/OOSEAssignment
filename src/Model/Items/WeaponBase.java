@@ -72,6 +72,11 @@ public class WeaponBase implements Weapon {
     }
 
     @Override
+    public String getType() {
+        return "weapon";
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) {

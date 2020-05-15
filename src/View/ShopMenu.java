@@ -174,7 +174,7 @@ public class ShopMenu {
         popup.setTitle("Confirm Purchase");
 
         //Creating item info
-        Text itemText = new Text(String.format("%s (%s) - %s", item.getName(), "TYPE_HERE", item.getDescription()));
+        Text itemText = new Text(String.format("%s (%s) - %s", item.getName(), item.getType(), item.getDescription()));
 
         Text confirmText = new Text("Are you sure you want to buy this item?");
 
@@ -196,7 +196,14 @@ public class ShopMenu {
         });
 
         HBox buttons = new HBox(yesButton, noButton);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setSpacing(10);
+
         VBox root = new VBox(itemText, confirmText, buttons);
+        root.setSpacing(10);
+        root.setPadding(new Insets(10, 10, 10, 10));
+        root.setAlignment(Pos.CENTER);
+
         popup.setScene(new Scene(root));
         popup.showAndWait();
     }
@@ -283,6 +290,8 @@ public class ShopMenu {
                     popup.close();
                 }
             });
+
+            itemList.getChildren().add(itemButton);
         }
 
         ScrollPane scrollPane = new ScrollPane(itemList);

@@ -10,24 +10,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class EnchantmentFactory {
-    public static void applyEnchantment(String name, Weapon weapon) {
+    public static Weapon applyEnchantment(String name, Weapon weapon) {
+        Weapon enchantedWeapon;
+
         //Applying enchantment based on name
         switch (name) {
             case "DamageUp2":
-                weapon = new DamageUp2Enchantment(weapon);
+                enchantedWeapon = new DamageUp2Enchantment(weapon);
                 break;
             case "DamageUp5":
-                weapon = new DamageUp5Enchantment(weapon);
+                enchantedWeapon = new DamageUp5Enchantment(weapon);
                 break;
             case "FireDamage":
-                weapon = new FireDamageEnchantment(weapon);
+                enchantedWeapon = new FireDamageEnchantment(weapon);
                 break;
             case "PowerUp":
-                weapon = new PowerUpEnchantment(weapon);
+                enchantedWeapon = new PowerUpEnchantment(weapon);
                 break;
             default:
                 throw new IllegalArgumentException("Non-existent enchantment name");
         }
+
+        return enchantedWeapon;
     }
 
     public static int getEnchantmentCost(String name) {
