@@ -2,11 +2,9 @@ package Model;
 
 
 import Model.Items.*;
+import Model.Observers.*;
 
-import java.util.Collections;
-import java.util. ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Player extends GameCharacter implements ItemUser {
     private static final int startingHealth = 30; //Starting health of player
@@ -24,6 +22,13 @@ public class Player extends GameCharacter implements ItemUser {
 
     private boolean wonGame;
 
+    //Observers
+    private List<NameChangeObserver> nameChangeObservers;
+    private List<WeaponChangeObserver> weaponChangeObservers;
+    private List<ArmourChangeObserver> armourChangeObservers;
+    private List<GoldChangeObserver> goldChangeObservers;
+
+
     /**
      * Default constructor
      * NOTE: name, weapon and armour variables should be initialised before character can attempt a battle
@@ -39,6 +44,13 @@ public class Player extends GameCharacter implements ItemUser {
         curArmour = null;
         gold = startingGold;
         wonGame = false;
+
+        //Setting up observers
+        nameChangeObservers = new LinkedList<>();
+        goldChangeObservers = new LinkedList<>();
+        healthChangeObservers = new LinkedList<>();
+        weaponChangeObservers = new LinkedList<>();
+        armourChangeObservers = new LinkedList<>();
     }
 
     /**
@@ -61,6 +73,8 @@ public class Player extends GameCharacter implements ItemUser {
      */
     public void setCurWeapon(Weapon weapon) {
         this.curWeapon = weapon;
+
+        notifyWeaponChangeObservers(weapon);
     }
 
     /**
@@ -69,6 +83,8 @@ public class Player extends GameCharacter implements ItemUser {
      */
     public void setCurArmour(Armour armour) {
         this.curArmour = armour;
+
+        notifyArmourChangeObservers(armour);
     }
 
     /**
@@ -84,6 +100,8 @@ public class Player extends GameCharacter implements ItemUser {
         }
 
         this.name = name;
+
+        notifyNameChangeObservers(this.name);
     }
 
     /**
@@ -103,7 +121,9 @@ public class Player extends GameCharacter implements ItemUser {
      * @param addedGold amount of gold to add
      */
     public void gainGold(int addedGold) {
-        this.gold += addedGold;
+        gold += addedGold;
+
+        notifyGoldChangeObservers(gold);
     }
 
     /**
@@ -117,6 +137,8 @@ public class Player extends GameCharacter implements ItemUser {
         }
 
         gold -= lostGold;
+
+        notifyGoldChangeObservers(gold);
     }
 
     /**
@@ -130,6 +152,8 @@ public class Player extends GameCharacter implements ItemUser {
         }
 
         this.gold = gold;
+
+        notifyGoldChangeObservers(gold);
     }
 
     /**
@@ -249,11 +273,14 @@ public class Player extends GameCharacter implements ItemUser {
 
     @Override
     public void removeWeapon(Weapon weapon) throws InventoryException {
-        if (weapon.equals(curWeapon)) {
+        if (weapon == curWeapon) { /*NOTE: '==' used over '.equals()' since checking if the imported weapon is the SAME
+            object, not just one with the same attributes*/
             throw new InventoryException("Cannot remove current weapon");
         }
 
-        boolean present = weaponSet.remove(weapon);
+        //Remove this specific object from the list (since there may be multiple objects with identical properties in
+        // the list if the player removes multiple of the same item
+        boolean present = weaponSet.removeIf(e -> e == weapon);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
@@ -262,11 +289,11 @@ public class Player extends GameCharacter implements ItemUser {
 
     @Override
     public void removeArmour(Armour armour) throws InventoryException {
-        if (armour.equals(curArmour)) {
+        if (armour == curArmour) { //Same as removeWeapon note
             throw new InventoryException("Cannot remove current armour");
         }
 
-        boolean present = armourSet.remove(armour);
+        boolean present = armourSet.removeIf(e -> e == armour);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
@@ -275,10 +302,67 @@ public class Player extends GameCharacter implements ItemUser {
 
     @Override
     public void removePotion(Potion potion) throws InventoryException {
-        boolean present = potionSet.remove(potion);
+        boolean present = potionSet.removeIf(e -> e == potion);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
+        }
+    }
+
+    //Methods for using observers
+    public void addNameChangeObserver(NameChangeObserver observer) {
+        nameChangeObservers.add(observer);
+    }
+
+    public void addWeaponChangeObserver(WeaponChangeObserver observer) {
+        weaponChangeObservers.add(observer);
+    }
+
+    public void addArmourChangeObserver(ArmourChangeObserver observer) {
+        armourChangeObservers.add(observer);
+    }
+
+    public void addGoldChangeObserver(GoldChangeObserver observer) {
+        goldChangeObservers.add(observer);
+    }
+
+    public void removeNameChangeObserver(NameChangeObserver observer) {
+        nameChangeObservers.remove(observer);
+    }
+
+    public void removeWeaponChangeObserver(WeaponChangeObserver observer) {
+        weaponChangeObservers.remove(observer);
+    }
+
+    public void removeArmourChangeObserver(ArmourChangeObserver observer) {
+        armourChangeObservers.remove(observer);
+    }
+
+    public void removeGoldChangeObserver(GoldChangeObserver observer) {
+        goldChangeObservers.remove(observer);
+    }
+
+    public void notifyNameChangeObservers(String newName) {
+        for (NameChangeObserver observer : nameChangeObservers) {
+            observer.notify(newName);
+        }
+    }
+
+    public void notifyWeaponChangeObservers(Weapon newWeapon) {
+        for (WeaponChangeObserver observer : weaponChangeObservers) {
+            observer.notify(newWeapon);
+        }
+    }
+
+    public void notifyArmourChangeObservers(Armour newArmour) {
+        for (ArmourChangeObserver observer : armourChangeObservers) {
+            observer.notify(newArmour);
+        }
+    }
+
+    public void notifyGoldChangeObservers(int newGold) {
+        for (GoldChangeObserver observer : goldChangeObservers) {
+            observer.notify(newGold);
         }
     }
 }

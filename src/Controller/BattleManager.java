@@ -7,7 +7,6 @@ import Model.Items.Potion;
 import Model.Player;
 import View.BattleMenu;
 
-import java.util. ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,7 @@ public class BattleManager {
     private BattleMenu battleMenu;
     private BattleState state;
 
-    private Set<BattleEventListener> battleEventListeners;
+    private Set<BattleEventObserver> battleEventListeners;
 
     public BattleManager(Player player, GameCharacter enemy, BattleMenu battleMenu) {
         this.player = player;
@@ -62,7 +61,7 @@ public class BattleManager {
         //Dealing damage to defender
         defender.loseHealth(damageDone);
 
-        notifyBattleEventListeners(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
+        notifyBattleEventObservers(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
                 attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence)); //TODO refactor, should probably just pass values to view
     }
 
@@ -77,7 +76,7 @@ public class BattleManager {
 
         int effect = potion.apply(target);
 
-        notifyBattleEventListeners(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(),
+        notifyBattleEventObservers(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(),
                 effect, potion.getEffectType()));
     }
 
@@ -137,9 +136,9 @@ public class BattleManager {
     }
 
     //For listeners
-    public void notifyBattleEventListeners(String message) {
-        for (BattleEventListener listener : battleEventListeners) {
-            listener.notifyBattleEvent(message);
+    public void notifyBattleEventObservers(String message) {
+        for (BattleEventObserver listener : battleEventListeners) {
+            listener.notify(message);
         }
     }
 
@@ -147,7 +146,7 @@ public class BattleManager {
      * Adds battle event listener
      * @param listener listener to be added
      */
-    public void addBattleEventListener(BattleEventListener listener) {
+    public void addBattleEventObserver(BattleEventObserver listener) {
         battleEventListeners.add(listener);
     }
 
@@ -155,6 +154,6 @@ public class BattleManager {
      * Removes battle event listener
      * @param listener listener to be removed
      */
-    public void removeBattleEventListener(BattleEventListener listener) {
+    public void removeBattleEventObserver(BattleEventObserver listener) {
         battleEventListeners.remove(listener);
     }}

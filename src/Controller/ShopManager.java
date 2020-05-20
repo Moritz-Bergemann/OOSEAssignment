@@ -97,7 +97,7 @@ public class ShopManager {
             player.gainGold(item.getCost() / 2);
 
             //Removing item from player's inventory (throws exception if item is currently equipped) //TODO test this
-            item.removeFromInventory(player);
+            item.removeFromInventory(player); //BUG - this doesn't necessarily remove the exact same item
 
             shopMenu.showMessage(String.format("You sold '%s' for %d gold!", item.getName(), item.getCost() / 2));
         }

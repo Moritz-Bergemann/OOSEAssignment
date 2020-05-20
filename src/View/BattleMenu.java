@@ -1,9 +1,11 @@
 package View;
 
-import Controller.BattleEventListener;
+import Controller.BattleEventObserver;
 import Controller.BattleManager;
+import Controller.RemovableObserver;
 import Model.GameCharacter;
 import Model.Items.Potion;
+import Model.Observers.HealthChangeObserver;
 import Model.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +25,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class BattleMenu {
@@ -31,12 +35,14 @@ public class BattleMenu {
     private Stage menuStage;
     private BattleManager manager;
 
+    private List<RemovableObserver> observers;
     private Text stateInfo;
 
     public BattleMenu(Player player, GameCharacter enemy, Stage mainStage) {
         this.player = player;
         this.enemy = enemy;
         this.manager = null;
+        this.observers = new LinkedList<>();
         menuStage = new Stage();
         menuStage.initOwner(mainStage);
     }
@@ -58,14 +64,19 @@ public class BattleMenu {
 
         //Setting up list of events
         VBox eventList = new VBox();
-        BattleEventListener eventListListener = new BattleEventListener() {
+        BattleEventObserver eventListListener = new BattleEventObserver() {
             @Override
-            public void notifyBattleEvent(String message) {
+            public void notify(String message) {
                 eventList.getChildren().add(new Text(message));
+            }
+
+            @Override
+            public void removeSelf() {
+                manager.removeBattleEventObserver(this);
             }
         };
 
-        manager.addBattleEventListener(eventListListener);
+        manager.addBattleEventObserver(eventListListener);
 
         ScrollPane scrollPane = new ScrollPane(eventList);
         scrollPane.setMinSize(50, 250);
@@ -124,9 +135,10 @@ public class BattleMenu {
         manager.continueBattle();
         menuStage.showAndWait();
 
-        //Removing the single battle event listener - this could be expanded to a class-field and method if more
-        //  listeners are added in the future
-        manager.removeBattleEventListener(eventListListener);
+        //Removing all observers
+        for (RemovableObserver observer : observers) {
+            observer.removeSelf();
+        }
     }
 
     /**
@@ -149,6 +161,22 @@ public class BattleMenu {
         Text defenseText = new Text(String.format("Defense: %d - %d", character.getMinDefence(),
                 character.getMaxDefence()));
 
+        //Creating & adding observer to update GameCharacter's health when it changes
+        HealthChangeObserver healthObs = new HealthChangeObserver() {
+            @Override
+            public void notify(int newHealth) {
+                healthText.setText(String.format("Health: %d/%d", newHealth, character.getMaxHealth()));
+            }
+
+            @Override
+            public void removeSelf() {
+                character.removeHealthChangeObserver(this);
+            }
+        };
+        character.addHealthChangeObserver(healthObs); //Actually adds observer to character
+        observers.add(healthObs); //Adding observer so it removes itself when the battle is over
+
+        //Inserting information into grid
         infoGrid.add(nameText, 0, 0);
         infoGrid.add(healthText, 0, 1);
         infoGrid.add(attackText, 0, 2);
@@ -221,6 +249,7 @@ public class BattleMenu {
 
     public void setStateInfo(String stateMessage) {
         stateInfo.setText(stateMessage);
+        System.out.println("State info set!");
     }
 
     public void showBattleEnded(String message) {

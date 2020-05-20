@@ -1,11 +1,17 @@
 package Model;
+import Model.Observers.HealthChangeObserver;
+
 import java.lang.Math;
+import java.util.LinkedList;
+import java.util.List;
 
 /** Class representing a character with health that can attack and defend within the game.
  */
 public abstract class GameCharacter {
     protected int maxHealth; //Maximum health of character
     protected int health; //Current health of character
+
+    protected List<HealthChangeObserver> healthChangeObservers; //Observers to notify when health change occurs
 
     /**
      * Creates a new character with the input character health
@@ -20,6 +26,8 @@ public abstract class GameCharacter {
         //Initialising character health to imported value & giving them full health
         this.maxHealth = health;
         this.health = health;
+
+        healthChangeObservers = new LinkedList<>();
     }
 
     /**
@@ -28,6 +36,8 @@ public abstract class GameCharacter {
      */
     public void loseHealth(int lostHealth) {
         health = Math.max(0, health - lostHealth);
+
+        notifyHealthChangeObservers(health);
     }
 
     /**
@@ -36,6 +46,8 @@ public abstract class GameCharacter {
      */
     public void gainHealth(int gainedHealth) {
         health = Math.min(maxHealth, health + gainedHealth);
+
+        notifyHealthChangeObservers(health);
     }
 
     /**
@@ -96,4 +108,19 @@ public abstract class GameCharacter {
      * @return character's gold
      */
     public abstract int getGold();
+
+
+    public void addHealthChangeObserver(HealthChangeObserver observer) {
+        healthChangeObservers.add(observer);
+    }
+
+    public void removeHealthChangeObserver(HealthChangeObserver observer) {
+        healthChangeObservers.remove(observer);
+    }
+
+    public void notifyHealthChangeObservers(int newHealth) {
+        for (HealthChangeObserver observer : healthChangeObservers) {
+            observer.notify(newHealth);
+        }
+    }
 }

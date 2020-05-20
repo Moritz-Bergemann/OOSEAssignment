@@ -18,6 +18,7 @@ public abstract class Enemy extends GameCharacter {
         this.maxDefence = maxDefence;
         this.gold = gold;
     }
+    //TODO implement ability observers here
 
     /**
      * Logic for standard attack of enemy (no special abilities)

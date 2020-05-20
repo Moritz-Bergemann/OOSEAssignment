@@ -1,8 +1,10 @@
 package View;
 
+import Controller.RemovableObserver;
 import Controller.ShopManager;
 import Model.Items.Item;
 import Model.Items.Weapon;
+import Model.Observers.GoldChangeObserver;
 import Model.Player;
 import Model.Shop;
 import javafx.event.ActionEvent;
@@ -22,11 +24,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class ShopMenu {
     private Shop shop;
     private Player player;
     private Stage menuStage;
     private ShopManager manager;
+
+    private List<RemovableObserver> observers;
 
     public ShopMenu(Stage parentStage, Shop shop, Player player) {
         this.player = player;
@@ -36,6 +43,8 @@ public class ShopMenu {
         menuStage.initOwner(parentStage);
         menuStage.initModality(Modality.APPLICATION_MODAL); /*Ensures player cannot interact with intermediate menu
             while in the shop*/
+
+        observers = new LinkedList<>();
     }
 
     public void setManager(ShopManager manager) {
@@ -155,6 +164,21 @@ public class ShopMenu {
         //Creating text showing current gold
         Text goldAmount = new Text(String.format("Current gold - %d", player.getGold()));
 
+        //Adding observer for player's current gold
+        GoldChangeObserver goldObs = new GoldChangeObserver() {
+            @Override
+            public void notify(int newGoldAmount) {
+                goldAmount.setText(String.format("Current gold - %d", newGoldAmount));
+            }
+
+            @Override
+            public void removeSelf() {
+                player.removeGoldChangeObserver(this);
+            }
+        };
+        player.addGoldChangeObserver(goldObs);
+        observers.add(goldObs);
+
         VBox root = new VBox(title, table, goldAmount, buttons);
         root.setSpacing(10);
         Scene scene = new Scene(root);
@@ -162,6 +186,18 @@ public class ShopMenu {
         menuStage.setWidth(800); //Ensures all columns of shop are shown in window
         menuStage.setScene(scene);
         menuStage.showAndWait();
+
+        for (RemovableObserver observer : observers) {
+            observer.removeSelf();
+            observer.removeSelf();
+            observer.removeSelf();
+            observer.removeSelf();
+            observer.removeSelf();
+            observer.removeSelf();
+            observer.removeSelf();
+            observer.removeSelf();
+            observer.removeSelf();
+        }
     }
 
     private void buyItemPrompt(Item item) {

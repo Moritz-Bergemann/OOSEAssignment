@@ -1,7 +1,9 @@
 package View;
 
 import Controller.IntermediateManager;
+import Controller.RemovableObserver;
 import Model.Items.*;
+import Model.Observers.*;
 import Model.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,20 +17,22 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class IntermediateMenu {
     private Stage menuStage;
     private Player player;
     private IntermediateManager manager;
 
+    private List<RemovableObserver> observers;
+
     public IntermediateMenu(Stage mainStage, Player player) {
         this.player = player;
         this.manager = null;
         menuStage = new Stage();
         menuStage.initOwner(mainStage); //Setting this menu's parent as main window
+
+        observers = new LinkedList<>();
     }
 
     public void setManager(IntermediateManager manager) {
@@ -110,6 +114,78 @@ public class IntermediateMenu {
             }
         });
 
+        //Creating observers to update name, weapon, armour, health & gold when this occurs
+        NameChangeObserver nameObs = new NameChangeObserver() {
+            @Override
+            public void notify(String newName) {
+                nameText.setText("Name: " + newName);
+            }
+
+            @Override
+            public void removeSelf() {
+                player.removeNameChangeObserver(this);
+            }
+        };
+        player.addNameChangeObserver(nameObs);
+        observers.add(nameObs);
+
+        HealthChangeObserver healthObs = new HealthChangeObserver() {
+            @Override
+            public void notify(int newHealth) {
+                healthText.setText(String.format("Health: %d/%d", newHealth, player.getMaxHealth()));
+            }
+
+            @Override
+            public void removeSelf() {
+                player.removeHealthChangeObserver(this);
+            }
+        };
+        player.addHealthChangeObserver(healthObs);
+        observers.add(healthObs);
+
+        GoldChangeObserver goldObs = new GoldChangeObserver() {
+            @Override
+            public void notify(int newGoldAmount) {
+                goldText.setText("Gold: " + newGoldAmount);
+            }
+
+            @Override
+            public void removeSelf() {
+                player.removeGoldChangeObserver(this);
+            }
+        };
+        player.addGoldChangeObserver(goldObs);
+        observers.add(goldObs);
+
+        WeaponChangeObserver weaponObs = new WeaponChangeObserver() {
+            @Override
+            public void notify(Weapon newWeapon) {
+                weaponText.setText("Weapon: " + newWeapon.getName());
+            }
+
+            @Override
+            public void removeSelf() {
+                player.removeWeaponChangeObserver(this);
+            }
+        };
+        player.addWeaponChangeObserver(weaponObs);
+        observers.add(weaponObs);
+
+        ArmourChangeObserver armourObs = new ArmourChangeObserver() {
+            @Override
+            public void notify(Armour newArmour) {
+                armourText.setText("Armour: " + newArmour.getName());
+            }
+
+            @Override
+            public void removeSelf() {
+                player.removeArmourChangeObserver(this);
+            }
+        };
+        player.addArmourChangeObserver(armourObs);
+        observers.add(armourObs);
+
+        //Adding information grid to structured grid
         playerInfoGrid.add(nameText, 0, 0);
         playerInfoGrid.add(healthText, 1, 0);
         playerInfoGrid.add(weaponText, 0, 1);
@@ -151,6 +227,11 @@ public class IntermediateMenu {
 
         //Run the menu and hold the program here (don't return to controller) until the window is closed
         menuStage.showAndWait();
+
+        //Removing all observers once window closes
+        for (RemovableObserver observer : observers) {
+            observer.removeSelf();
+        }
     }
 
     public void showInventory() {

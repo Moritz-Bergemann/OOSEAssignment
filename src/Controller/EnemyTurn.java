@@ -9,17 +9,16 @@ public class EnemyTurn extends BattleState {
 
     @Override
     public void runTurn() {
-        battle.getMenu().setStateInfo("Enemy Turn");
+        battle.getMenu().setStateInfo("Enemy Turn"); //FIXME this doesn't work properly
 
         //Making enemy attack player
         battle.runAttack(battle.getEnemy(), battle.getPlayer());
 
-        //TODO maybe move this
         try {
             TimeUnit.MILLISECONDS.sleep(500);
         }
         catch (InterruptedException interrupt) {
-            System.out.println("DEBUG sleep interrupted"); //TODO what here?
+            System.out.println("Error - enemy turn sleep interrupted"); //TODO add debugPrint()
         }
 
         //End the turn (since the enemy cannot do anything else)

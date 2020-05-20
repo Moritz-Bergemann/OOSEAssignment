@@ -15,8 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 /*
  * GENERAL NOTES
- * TODO where do unhandled exceptions (i.e. IllegalArgumentException) go?
- * TODO add causes to rethrown exceptions
+ *  TODO where do unhandled exceptions (i.e. IllegalArgumentException) go?
+ *  TODO add causes to rethrown exceptions
+ *  TODO make flavour text better
+ *  TODO fix bug with item selection (removes every item (SHOULD ONLY REMOVE FIRST))
+ *  TODO fix player/enemy turn timing wonkiness
  */
 
 public class GameManager extends Application {
