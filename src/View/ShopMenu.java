@@ -19,13 +19,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
-import javax.naming.Name;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ShopMenu {
     private Shop shop;
@@ -248,7 +243,7 @@ public class ShopMenu {
         Weapon chosenWeapon = null;
 
         //Creating a button for each weapon and adding it to the list
-        for (Weapon weapon : player.getWeaponSet()) {
+        for (Weapon weapon : player.getWeaponList()) {
             Button weaponButton = new Button(String.format("%s (%s) - %s to %s damage", weapon.getName(),
                     weapon.getDescription(), weapon.getMinEffect(), weapon.getMaxEffect()));
             weaponButton.setOnAction(new EventHandler<ActionEvent>() {

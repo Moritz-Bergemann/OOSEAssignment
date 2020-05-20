@@ -7,21 +7,20 @@ import Model.Items.Item;
 import Model.Items.Potion;
 import Model.Items.Weapon;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util. ArrayList;
+import java.util.List;
 
 //FIXME is this class even necessary?
 
 public class Shop {
-    private Set<Weapon> weaponStock;
-    private Set<Armour> armourStock;
-    private Set<Potion> potionStock;
+    private List<Weapon> weaponStock;
+    private List<Armour> armourStock;
+    private List<Potion> potionStock;
 
     public Shop() {
-        weaponStock = new HashSet<>();
-        armourStock = new HashSet<>();
-        potionStock = new HashSet<>();
+        weaponStock = new  ArrayList<>();
+        armourStock = new  ArrayList<>();
+        potionStock = new  ArrayList<>();
     }
 
     /**
@@ -49,25 +48,25 @@ public class Shop {
      * Retrieve the shop's entire stock as a set of items
      * @return the shop's entire stock
      */
-    public Set<Item> getCurrentStock() {
-        Set<Item> entireStock = new HashSet<>();
+    public List<Item> getCurrentStock() {
+        List<Item> entireStock = new  ArrayList<>();
 
         entireStock.addAll(weaponStock);
         entireStock.addAll(armourStock);
         entireStock.addAll(potionStock);
 
-        return Collections.unmodifiableSet(entireStock);
+        return entireStock;
     }
 
-    public Set<Weapon> getWeaponStock() {
-        return Collections.unmodifiableSet(weaponStock);
+    public List<Weapon> getWeaponStock() {
+        return weaponStock;
     }
 
-    public Set<Armour> getArmourStock() {
-        return Collections.unmodifiableSet(armourStock);
+    public List<Armour> getArmourStock() {
+        return armourStock;
     }
 
-    public Set<Potion> getPotionStock() {
-        return Collections.unmodifiableSet(potionStock);
+    public List<Potion> getPotionStock() {
+        return potionStock;
     }
 }

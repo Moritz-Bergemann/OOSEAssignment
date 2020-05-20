@@ -51,7 +51,9 @@ public abstract class WeaponEnchantment implements Weapon {
 
     @Override
     public void removeFromInventory(ItemUser itemUser) throws InventoryException {
-        next.removeFromInventory(itemUser);
+        //Removing the item from the ItemUser's inventory (referring to it by the enchantment reference rather than the
+        // base weapon's reference since the removeWeapon() method works with references)
+        itemUser.removeWeapon(this);
     }
 
     @Override

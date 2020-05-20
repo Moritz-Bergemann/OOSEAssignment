@@ -7,6 +7,7 @@ import View.ShopMenu;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 /*TODO should buying an item create a duplicate of it? Or is it fine to have multiple items in the player's inventory
@@ -116,7 +117,7 @@ public class ShopManager {
      * @param weapon weapon to enchant
      * @param enchantmentName name of enchantment to add
      */
-    public void purchaseEnchantment(Player player, Weapon weapon, String enchantmentName) { //FIXME need to replace in inventory doofus
+    public void purchaseEnchantment(Player player, Weapon weapon, String enchantmentName) {
         int initialGold = player.getGold();
 
         try {
@@ -148,7 +149,7 @@ public class ShopManager {
      *  about the factory)
      * @return set of all enchantment names
      */
-    public Set<String> getAllEnchantmentNames() {
+    public List<String> getAllEnchantmentNames() {
         return EnchantmentFactory.getAllEnchantmentNames();
     }
 

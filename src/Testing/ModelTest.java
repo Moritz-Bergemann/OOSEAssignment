@@ -42,23 +42,23 @@ public class ModelTest {
         System.out.println("PLAYER ITEMS:");
         String outStr = "";
         outStr += "Weapons:";
-        for (Item i : player.getWeaponSet()) {
+        for (Item i : player.getWeaponList()) {
             outStr += i.getName() + ",";
         }
         outStr += "\nArmour:";
-        for (Item i : player.getArmourSet()) {
+        for (Item i : player.getArmourList()) {
             outStr += i.getName() + ",";
         }
         outStr += ("\nPotions:");
-        for (Item i : player.getPotionSet()) {
+        for (Item i : player.getPotionList()) {
             outStr += i.getName() + ",";
         }
         System.out.println(outStr);
 
         System.out.println("\nLAYER INTERACTION TESTS");
         //Making player equip first weapon & first armour
-        Weapon eWeapon = player.getWeaponSet().iterator().next();
-        Armour eArmour = player.getArmourSet().iterator().next();
+        Weapon eWeapon = player.getWeaponList().iterator().next();
+        Armour eArmour = player.getArmourList().iterator().next();
         System.out.println(String.format("Player - equipping %s weapon and %s armour", eWeapon.getName(), eArmour.getName()));
 
         player.setCurWeapon(eWeapon);
@@ -86,8 +86,8 @@ public class ModelTest {
         System.out.println("Giving player cheapest weapon and armour...");
         shopManager.giveCheapestGear(player);
 
-        System.out.println("Player's current weapons: " + player.getWeaponSet());
-        System.out.println("Player's current armour: " + player.getArmourSet());
-        System.out.println("Player's current potions: " + player.getPotionSet());
+        System.out.println("Player's current weapons: " + player.getWeaponList());
+        System.out.println("Player's current armour: " + player.getArmourList());
+        System.out.println("Player's current potions: " + player.getPotionList());
     }
 }

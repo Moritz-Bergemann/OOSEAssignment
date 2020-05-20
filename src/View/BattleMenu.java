@@ -171,7 +171,7 @@ public class BattleMenu {
         characterSet.add(enemy);
 
         VBox potionList = new VBox();
-        for (Potion potion : player.getPotionSet()) {
+        for (Potion potion : player.getPotionList()) {
             Button potionButton = new Button(String.format("%s (%s)", potion.getName(), potion.getDescription()));
             potionButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override

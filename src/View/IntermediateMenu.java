@@ -225,7 +225,7 @@ public class IntermediateMenu {
         Set<Button> buttonSet = new HashSet<>();
 
         //Creating a button for each weapon and adding it to the set
-        for (Weapon weapon : player.getWeaponSet()) {
+        for (Weapon weapon : player.getWeaponList()) {
             Button weaponButton = new Button(String.format("%s (%s)", weapon.getName(), weapon.getDescription()));
             weaponButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -258,7 +258,7 @@ public class IntermediateMenu {
         Set<Button> buttonSet = new HashSet<>();
 
         //Creating a button for each armour and adding it to the set
-        for (Armour armour : player.getArmourSet()) {
+        for (Armour armour : player.getArmourList()) {
             Button armourButton = new Button(String.format("%s (%s)", armour.getName(), armour.getDescription()));
             armourButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override

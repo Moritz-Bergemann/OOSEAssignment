@@ -6,8 +6,8 @@ import Model.Items.Enchantments.DamageUp5Enchantment;
 import Model.Items.Enchantments.FireDamageEnchantment;
 import Model.Items.Enchantments.PowerUpEnchantment;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util. ArrayList;
+import java.util.List;
 
 public class EnchantmentFactory {
     public static Weapon applyEnchantment(String name, Weapon weapon) {
@@ -80,8 +80,8 @@ public class EnchantmentFactory {
         return description;
     }
 
-    public static Set<String> getAllEnchantmentNames() {
-        Set<String> nameSet = new HashSet<>();
+    public static List<String> getAllEnchantmentNames() {
+        List<String> nameSet = new  ArrayList<>();
         nameSet.add("DamageUp2");
         nameSet.add("DamageUp5");
         nameSet.add("FireDamage");

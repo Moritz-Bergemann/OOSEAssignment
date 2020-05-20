@@ -2,6 +2,7 @@ package Model;
 
 import Model.Items.*;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,13 +16,13 @@ public interface ItemUser {
 
     public void addPotion(Potion potion) throws InventoryException;
 
-    public Set<Weapon> getWeaponSet();
+    public List<Weapon> getWeaponList();
 
-    public Set<Armour> getArmourSet();
+    public List<Armour> getArmourList();
 
-    public Set<Potion> getPotionSet();
+    public List<Potion> getPotionList();
 
-    public Set<Item> getItemSet();
+    public List<Item> getItemSet();
 
     public void removeWeapon(Weapon weapon) throws InventoryException;
 

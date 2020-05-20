@@ -4,29 +4,29 @@ import Model.Items.*;
 
 import java.io.*;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util. ArrayList;
+import java.util.List;
 
 public class FileStockManager implements StockManager {
     private String filePath;
-    private Set<Weapon> weapons;
-    private Set<Armour> armour;
-    private Set<Potion> potions;
+    private List<Weapon> weapons;
+    private List<Armour> armour;
+    private List<Potion> potions;
 
 
     public FileStockManager(String filePath) {
         this.filePath = filePath;
-        weapons = new HashSet<>();
-        armour = new HashSet<>();
-        potions = new HashSet<>();
+        weapons = new  ArrayList<>();
+        armour = new  ArrayList<>();
+        potions = new  ArrayList<>();
     }
 
     @Override
     public void loadStock() throws StockManagerException {
         //Resetting all item sets
-        weapons = new HashSet<>();
-        armour = new HashSet<>();
-        potions = new HashSet<>();
+        weapons = new  ArrayList<>();
+        armour = new  ArrayList<>();
+        potions = new  ArrayList<>();
 
         int lineNum = 1;
 
@@ -55,29 +55,29 @@ public class FileStockManager implements StockManager {
     }
 
     @Override
-    public Set<Item> getLoadedStock() throws StockManagerException {
-        Set<Item> entireStock = new HashSet<>();
+    public List<Item> getLoadedStock() throws StockManagerException {
+        List<Item> entireStock = new  ArrayList<>();
 
         entireStock.addAll(weapons);
         entireStock.addAll(armour);
         entireStock.addAll(potions);
 
-        return Collections.unmodifiableSet(entireStock);
+        return entireStock;
     }
 
     @Override
-    public Set<Weapon> getLoadedWeapons() throws StockManagerException {
-        return Collections.unmodifiableSet(weapons);
+    public List<Weapon> getLoadedWeapons() throws StockManagerException {
+        return weapons;
     }
 
     @Override
-    public Set<Armour> getLoadedArmour() throws StockManagerException {
-        return Collections.unmodifiableSet(armour);
+    public List<Armour> getLoadedArmour() throws StockManagerException {
+        return armour;
     }
 
     @Override
-    public Set<Potion> getLoadedPotions() throws StockManagerException {
-        return Collections.unmodifiableSet(potions);
+    public List<Potion> getLoadedPotions() throws StockManagerException {
+        return potions;
     }
 
     /**

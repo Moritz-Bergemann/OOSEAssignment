@@ -4,7 +4,8 @@ package Model;
 import Model.Items.*;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util. ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Player extends GameCharacter implements ItemUser {
@@ -13,9 +14,9 @@ public class Player extends GameCharacter implements ItemUser {
     private static final int startingItemCapacity = 15; //Starting item capacity of player
 
     private String name;
-    private final Set<Weapon> weaponSet;
-    private final Set<Armour> armourSet;
-    private final Set<Potion> potionSet;
+    private final List<Weapon> weaponSet;
+    private final List<Armour> armourSet;
+    private final List<Potion> potionSet;
     int itemCapacity;
     private Weapon curWeapon;
     private Armour curArmour;
@@ -30,9 +31,9 @@ public class Player extends GameCharacter implements ItemUser {
     public Player() {
         super(startingHealth);
         name = null;
-        weaponSet = new HashSet<>();
-        armourSet = new HashSet<>();
-        potionSet = new HashSet<>();
+        weaponSet = new  ArrayList<>();
+        armourSet = new  ArrayList<>();
+        potionSet = new  ArrayList<>();
         itemCapacity = startingItemCapacity;
         curWeapon = null;
         curArmour = null;
@@ -221,29 +222,29 @@ public class Player extends GameCharacter implements ItemUser {
     }
 
     @Override
-    public Set<Weapon> getWeaponSet() {
-        return Collections.unmodifiableSet(weaponSet);
+    public List<Weapon> getWeaponList() {
+        return weaponSet;
     }
 
     @Override
-    public Set<Armour> getArmourSet() {
-        return Collections.unmodifiableSet(armourSet);
+    public List<Armour> getArmourList() {
+        return armourSet;
     }
 
     @Override
-    public Set<Potion> getPotionSet() {
-        return Collections.unmodifiableSet(potionSet);
+    public List<Potion> getPotionList() {
+        return potionSet;
     }
 
     @Override
-    public Set<Item> getItemSet() {
-        Set<Item> allItems = new HashSet<>();
+    public List<Item> getItemSet() {
+        List<Item> allItems = new  ArrayList<>();
 
         allItems.addAll(weaponSet);
         allItems.addAll(armourSet);
         allItems.addAll(potionSet);
 
-        return Collections.unmodifiableSet(allItems);
+        return allItems;
     }
 
     @Override
