@@ -377,7 +377,7 @@ public class IntermediateMenu {
             public void handle(ActionEvent actionEvent) {
                 String inputName = nameField.getText();
                 try {
-                    manager.chooseCharacterName(inputName);
+                    manager.chooseCharacterName(inputName.strip());
                     System.out.println("User input name " + inputName);
                 }
                 catch (IllegalArgumentException i) {

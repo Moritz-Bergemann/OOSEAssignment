@@ -38,6 +38,7 @@ public class GoblinEnemy extends Enemy {
         //Adding 50% chance for attack to have 3 extra damage
         if (Chance.chance(0.5)) {
             attack += 3;
+            notifyAbilityObservers("The goblin tries extra hard on this attack, increasing its damage by 3.");
         }
 
         return attack;

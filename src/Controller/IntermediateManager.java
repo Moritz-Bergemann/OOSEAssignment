@@ -21,17 +21,6 @@ public class IntermediateManager {
         quitGame = false;
     }
 
-
-//    public void gameOverMenu() { //TODO put this somewhere else
-//        if (!player.isAlive()) {
-//            menu.showDiedMenu(player);
-//        }
-//        else if (player.wonGame()) {
-//            menu.showWonMenu(player);
-//        }
-//    }
-
-
     /**
      * Runs the intermediate menu between battles and before the first battle.
      * @return whether the player choose to quit the game or not

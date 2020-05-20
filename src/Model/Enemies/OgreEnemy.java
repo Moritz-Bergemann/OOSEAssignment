@@ -38,6 +38,7 @@ public class OgreEnemy extends Enemy {
         //Adding 20% chance for attack to happen twice
         if (Chance.chance(0.5)) {
             attack += super.calcAttack();
+            notifyAbilityObservers("The ogre uses its strength to attack twice in one movement!");
         }
 
         return attack;

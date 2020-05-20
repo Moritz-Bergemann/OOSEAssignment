@@ -39,9 +39,11 @@ public class DragonEnemy extends Enemy {
         if (Chance.chance(0.35)) { //Chance for any ability at all
             if (Chance.chance(0.25/0.35)) { //25% out of 35% chance
                 attack *= 2;
+                notifyAbilityObservers("The dragon uses it's arcane powers to double its damage!");
             }
             else { //Remaining 10%/35% chance
                 this.gainHealth(10);
+                notifyAbilityObservers("The dragon's immortal energy causes it to regain 10 health!");
             }
         }
 

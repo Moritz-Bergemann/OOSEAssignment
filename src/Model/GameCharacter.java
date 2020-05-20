@@ -1,4 +1,5 @@
 package Model;
+import Model.Observers.AbilityObserver;
 import Model.Observers.HealthChangeObserver;
 
 import java.lang.Math;
@@ -12,6 +13,7 @@ public abstract class GameCharacter {
     protected int health; //Current health of character
 
     protected List<HealthChangeObserver> healthChangeObservers; //Observers to notify when health change occurs
+    protected List<AbilityObserver> abilityObservers;
 
     /**
      * Creates a new character with the input character health
@@ -28,6 +30,7 @@ public abstract class GameCharacter {
         this.health = health;
 
         healthChangeObservers = new LinkedList<>();
+        abilityObservers = new LinkedList<>();
     }
 
     /**
@@ -123,4 +126,19 @@ public abstract class GameCharacter {
             observer.notify(newHealth);
         }
     }
+
+    public void addAbilityObserver(AbilityObserver observer) {
+        abilityObservers.add(observer);
+    }
+
+    public void removeAbilityObserver(AbilityObserver observer) {
+        abilityObservers.remove(observer);
+    }
+
+    public void notifyAbilityObservers(String message) {
+        for (AbilityObserver observer : abilityObservers) {
+            observer.notify(message);
+        }
+    }
+
 }

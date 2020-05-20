@@ -2,6 +2,10 @@ package Model.Enemies;
 
 import Controller.Chance;
 import Model.GameCharacter;
+import Model.Observers.AbilityObserver;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Enemy extends GameCharacter {
     protected int minAttack;
@@ -18,7 +22,6 @@ public abstract class Enemy extends GameCharacter {
         this.maxDefence = maxDefence;
         this.gold = gold;
     }
-    //TODO implement ability observers here
 
     /**
      * Logic for standard attack of enemy (no special abilities)

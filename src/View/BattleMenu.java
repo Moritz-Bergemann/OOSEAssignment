@@ -5,6 +5,7 @@ import Controller.BattleManager;
 import Controller.RemovableObserver;
 import Model.GameCharacter;
 import Model.Items.Potion;
+import Model.Observers.AbilityObserver;
 import Model.Observers.HealthChangeObserver;
 import Model.Player;
 import javafx.event.ActionEvent;
@@ -64,7 +65,9 @@ public class BattleMenu {
 
         //Setting up list of events
         VBox eventList = new VBox();
-        BattleEventObserver eventListListener = new BattleEventObserver() {
+
+        //Adding observer to track each event that occurs in the battle (notified by controller)
+        BattleEventObserver eventListObserver = new BattleEventObserver() {
             @Override
             public void notify(String message) {
                 eventList.getChildren().add(new Text(message));
@@ -75,8 +78,23 @@ public class BattleMenu {
                 manager.removeBattleEventObserver(this);
             }
         };
+        manager.addBattleEventObserver(eventListObserver);
+        observers.add(eventListObserver);
 
-        manager.addBattleEventObserver(eventListListener);
+        //Adding observer to track special abilities used by enemies
+        AbilityObserver enemyAbilityObserver = new AbilityObserver() { //TODO maybe move this to controller?
+            @Override
+            public void notify(String message) {
+                eventList.getChildren().add(new Text(message));
+            }
+
+            @Override
+            public void removeSelf() {
+                enemy.removeAbilityObserver(this);
+            }
+        };
+        enemy.addAbilityObserver(enemyAbilityObserver);
+        observers.add(enemyAbilityObserver);
 
         ScrollPane scrollPane = new ScrollPane(eventList);
         scrollPane.setMinSize(50, 250);

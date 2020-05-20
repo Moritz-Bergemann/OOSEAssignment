@@ -38,6 +38,7 @@ public class SlimeEnemy extends Enemy {
         //Adding 20% chance for attack to have no damage
         if (Chance.chance(0.2)) {
             attack = 0;
+            notifyAbilityObservers("This slime wasn't really feeling it this turn, and does no damage.");
         }
 
         return attack;
