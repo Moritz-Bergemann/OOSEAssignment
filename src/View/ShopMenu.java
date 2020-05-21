@@ -2,11 +2,11 @@ package View;
 
 import Controller.RemovableObserver;
 import Controller.ShopManager;
+import Controller.StockManager;
 import Model.Items.Item;
 import Model.Items.Weapon;
 import Model.Observers.GoldChangeObserver;
 import Model.Player;
-import Model.Shop;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -28,16 +28,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ShopMenu {
-    private Shop shop;
+    private StockManager stock;
     private Player player;
     private Stage menuStage;
     private ShopManager manager;
 
     private List<RemovableObserver> observers;
 
-    public ShopMenu(Stage parentStage, Shop shop, Player player) {
+    public ShopMenu(Stage parentStage, StockManager stock, Player player) {
         this.player = player;
-        this.shop = shop;
+        this.stock = stock;
         this.manager = null;
         menuStage = new Stage();
         menuStage.initOwner(parentStage);
@@ -79,7 +79,7 @@ public class ShopMenu {
         table.getColumns().add(costColumn);
 
         //Adding column for purchase item button to table (adapted from https://riptutorial.com/javafx/example/27946/add-button-to-tableview)
-        TableColumn<Item, String> buttonColumn = new TableColumn("Purchase Item");
+        TableColumn<Item, String> buttonColumn = new TableColumn<>("Purchase Item");
 
         Callback<TableColumn<Item, String>, TableCell<Item, String>> cellFactory = new Callback<>() {
             @Override
@@ -120,7 +120,7 @@ public class ShopMenu {
 
 
         //Adding items to created table
-        for (Item item : shop.getCurrentStock()) {
+        for (Item item : stock.getLoadedStock()) {
             table.getItems().add(item);
         }
 

@@ -293,7 +293,6 @@ public class IntermediateMenu {
 
         System.out.println(result.get());
         if (result.get().equals(quitButtonType)) { //If user confirmed choice to quit game
-            //FIXME are these two synchronised properly? Probably yes
             manager.exitGame();
             menuStage.close();
         }
@@ -311,7 +310,6 @@ public class IntermediateMenu {
             weaponButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    System.out.println(weapon.getName() + " selected!"); //TODO what here
                     manager.chooseWeapon(weapon);
                     popup.close();
                 }

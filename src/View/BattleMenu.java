@@ -5,7 +5,6 @@ import Controller.BattleManager;
 import Controller.RemovableObserver;
 import Model.GameCharacter;
 import Model.Items.Potion;
-import Model.Observers.AbilityObserver;
 import Model.Observers.HealthChangeObserver;
 import Model.Player;
 import javafx.application.Platform;
@@ -30,7 +29,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class BattleMenu {
     private Player player;
@@ -82,21 +80,6 @@ public class BattleMenu {
         };
         manager.addBattleEventObserver(eventListObserver);
         observers.add(eventListObserver);
-
-        //Adding observer to track special abilities used by enemies
-        AbilityObserver enemyAbilityObserver = new AbilityObserver() { //TODO maybe move this to controller?
-            @Override
-            public void notify(String message) {
-                eventList.getChildren().add(new Text(message));
-            }
-
-            @Override
-            public void removeSelf() {
-                enemy.removeAbilityObserver(this);
-            }
-        };
-        enemy.addAbilityObserver(enemyAbilityObserver);
-        observers.add(enemyAbilityObserver);
 
         ScrollPane scrollPane = new ScrollPane(eventList);
         scrollPane.setMinSize(50, 250);
@@ -251,8 +234,8 @@ public class BattleMenu {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     manager.usePotion(potion, target);
-                    manager.continueBattle(); //FIXME is this the right order?
-                    popup.close();
+                    popup.close(); //FIXME check this
+                    manager.continueBattle();
                 }
             });
 

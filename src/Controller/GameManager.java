@@ -43,14 +43,13 @@ public class GameManager extends Application {
         mainStage.setScene(new Scene(new VBox(new Text("OOSE Quest II: TWOOSE"))));
 
         Player player = new Player();
-        Shop shop = new Shop();
 
         ChanceEnemyFactory enemyGen = new ChanceEnemyFactory(setEnemyChances(), setEnemyChanceUpdates());
 
         //Creating managers for game components
         StockManager stock = new FileStockManager("items.txt");
-        ShopMenu shopMenu = new ShopMenu(mainStage, shop, player);
-        ShopManager shopManager = new ShopManager(shop, stock, shopMenu);
+        ShopMenu shopMenu = new ShopMenu(mainStage, stock, player);
+        ShopManager shopManager = new ShopManager(stock, shopMenu);
         IntermediateMenu intermediateMenu = new IntermediateMenu(mainStage, player);
         IntermediateManager intermediate = new IntermediateManager(player, shopManager, intermediateMenu);
 

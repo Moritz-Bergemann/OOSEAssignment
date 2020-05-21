@@ -2,27 +2,18 @@ package Controller;
 
 import Model.Items.*;
 import Model.Player;
-import Model.Shop;
 import View.ShopMenu;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-
-/*TODO should buying an item create a duplicate of it? Or is it fine to have multiple items in the player's inventory
-    refer to the same base object?
- */
-//TODO should shop operations catch & rethrow ANY exception to ensure gold amounts remain accurate? CHECK WITH TUTOR
 
 public class ShopManager {
     private StockManager stockLoader; //Loads items from shop
-    private Shop shop; //Shop model object containing inventory
     private ShopMenu shopMenu;
 
-    public ShopManager(Shop shop, StockManager stockLoader, ShopMenu shopMenu) {
+    public ShopManager(StockManager stockLoader, ShopMenu shopMenu) {
         this.stockLoader = stockLoader;
-        this.shop = shop;
         this.shopMenu = shopMenu;
     }
 
@@ -33,12 +24,17 @@ public class ShopManager {
      */
     public void giveCheapestGear(Player player) {
         //Loading shop
-        shop.acquireStock(stockLoader);
+        try {
+            stockLoader.loadStock();
+        }
+        catch (StockManagerException s) {
+            //TODO
+        }
 
         //Getting cheapest weapon & cheapest armour using Comparator
-        Weapon cheapestWeapon = Collections.min(shop.getWeaponStock(),
+        Weapon cheapestWeapon = Collections.min(stockLoader.getLoadedWeapons(),
                 Comparator.comparing(Item::getCost));
-        Armour cheapestArmour = Collections.min(shop.getArmourStock(),
+        Armour cheapestArmour = Collections.min(stockLoader.getLoadedArmour(),
                 Comparator.comparing(Item::getCost));
 
         //Adding cheapest weapon & armour to player's inventory
@@ -56,16 +52,20 @@ public class ShopManager {
         player.setCurArmour(cheapestArmour);
     }
 
-    public void runShop(Player player) { //FIXME unused import here
+    public void runShop(Player player) throws ShopException { //FIXME unused import here
         //Re-acquiring stock for shop (in case has been updated)
-        shop.acquireStock(stockLoader);
+        try {
+            stockLoader.loadStock();
+        }
+        catch (StockManagerException s) {
+            throw new ShopException("Could not get shop inventory", s);
+        }
 
         shopMenu.setManager(this);
 
         shopMenu.runMenu();
     }
 
-    //TODO FIXME need to add item duplicates instead of item itself (so that can buy multiple of same item) OR just make items a list instead of a set?
     public void purchaseItem(Item item, Player player) {
         int initialGold = player.getGold();
 

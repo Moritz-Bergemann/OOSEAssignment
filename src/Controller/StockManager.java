@@ -23,27 +23,27 @@ public interface StockManager {
      * @return The List of all loaded items
      * @throws StockManagerException if loadStock() has not been called
      */
-    public List<Item> getLoadedStock() throws StockManagerException;
+    public List<Item> getLoadedStock();
 
     /**
      * Gets all weapons currently loaded by the StockManager
      * @return The List of all loaded weapons
      * @throws StockManagerException if loadStock() has not been called
      */
-    public List<Weapon> getLoadedWeapons() throws StockManagerException;
+    public List<Weapon> getLoadedWeapons();
 
     /**
      * Gets all items currently loaded by the StockManager
      * @return The List of all loaded armour
      * @throws StockManagerException if loadStock() has not been called
      */
-    public List<Armour> getLoadedArmour() throws StockManagerException;
+    public List<Armour> getLoadedArmour();
 
     /**
      * Gets all items currently loaded by the StockManager
      * @return The List of all loaded potions
      * @throws StockManagerException if loadStock() has not been called
      */
-    public List<Potion> getLoadedPotions() throws StockManagerException;
+    public List<Potion> getLoadedPotions();
 
 }

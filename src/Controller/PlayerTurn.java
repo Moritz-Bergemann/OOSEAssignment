@@ -1,7 +1,5 @@
 package Controller;
 
-import javafx.application.Platform;
-
 public class PlayerTurn extends BattleState {
     public PlayerTurn(BattleManager battle) {
         super(battle);

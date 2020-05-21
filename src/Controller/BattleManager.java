@@ -4,33 +4,35 @@ import Model.Enemies.DragonEnemy;
 import Model.GameCharacter;
 import Model.Items.InventoryException;
 import Model.Items.Potion;
+import Model.Observers.AbilityObserver;
 import Model.Player;
 import View.BattleMenu;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
-//TODO prettify
 public class BattleManager {
     private Player player;
     private GameCharacter enemy;
     private BattleMenu battleMenu;
     private BattleState state;
 
-    private Set<BattleEventObserver> battleEventListeners;
+    private List<BattleEventObserver> battleEventObservers;
+    private List<RemovableObserver> observers;
 
     public BattleManager(Player player, GameCharacter enemy, BattleMenu battleMenu) {
         this.player = player;
         this.enemy = enemy;
         this.battleMenu = battleMenu;
-        this.battleEventListeners = new HashSet<>();
-        this.state = new PlayerTurn(this); //Setting default state to avoid null value
-        this.state = new PlayerTurn(this); //Setting default state to avoid null value
+
+        battleEventObservers = new LinkedList<>();
+        observers = new LinkedList<>();
+        state = new PlayerTurn(this); //Setting default state to avoid null value
     }
 
     /**
      * Begins the running of a battle in the game menu
-     * @return whether the battle has killed the player TODO change this?
+     * @return whether the battle has killed the player
      */
     public boolean runBattle() {
         //Setting initial turn to player turn
@@ -38,13 +40,31 @@ public class BattleManager {
 
         battleMenu.setManager(this);
 
+        //Adding observer for enemy abilities that notifies the battle menu in the form of a battle event
+        AbilityObserver abilityObs = new AbilityObserver() {
+            @Override
+            public void notify(String message) {
+                notifyBattleEventObservers(message);
+            }
+
+            @Override
+            public void removeSelf() {
+                enemy.removeAbilityObserver(this);
+            }
+        };
+        enemy.addAbilityObserver(abilityObs);
+        observers.add(abilityObs);
+
         battleMenu.showMenu();
 
-        //FIXME is there a better way?
-        //Making player win if killed dragon
+        //Making all created observers remove themselves
+        for (RemovableObserver observer : observers) {
+            observer.removeSelf();
+        }
+
+        //Making player win if killed dragon //FIXME
         if (!enemy.isAlive() && enemy instanceof DragonEnemy) {
             player.setWonGame();
-            return true;
         }
 
         return !player.isAlive();
@@ -62,7 +82,7 @@ public class BattleManager {
         defender.loseHealth(damageDone);
 
         notifyBattleEventObservers(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
-                attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence)); //TODO refactor, should probably just pass values to view
+                attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence));
     }
 
     public void usePotion(Potion potion, GameCharacter target) {
@@ -137,7 +157,7 @@ public class BattleManager {
 
     //For listeners
     public void notifyBattleEventObservers(String message) {
-        for (BattleEventObserver listener : battleEventListeners) {
+        for (BattleEventObserver listener : battleEventObservers) {
             listener.notify(message);
         }
     }
@@ -147,7 +167,7 @@ public class BattleManager {
      * @param listener listener to be added
      */
     public void addBattleEventObserver(BattleEventObserver listener) {
-        battleEventListeners.add(listener);
+        battleEventObservers.add(listener);
     }
 
     /**
@@ -155,5 +175,5 @@ public class BattleManager {
      * @param listener listener to be removed
      */
     public void removeBattleEventObserver(BattleEventObserver listener) {
-        battleEventListeners.remove(listener);
+        battleEventObservers.remove(listener);
     }}

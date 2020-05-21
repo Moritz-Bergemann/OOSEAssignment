@@ -4,6 +4,7 @@ import Model.Items.Armour;
 import Model.Items.Weapon;
 import Model.Player;
 import View.IntermediateMenu;
+import View.MenuUtils;
 
 public class IntermediateManager {
     private Player player; //Player playing the game
@@ -39,7 +40,12 @@ public class IntermediateManager {
 
     //Responses to intermediate menu options
     public void goToShop() {
-        shopManager.runShop(player);
+        try {
+            shopManager.runShop(player);
+        }
+        catch (ShopException s) {
+            MenuUtils.showError("Shop failed", "Encountered error running shop - " + s.getMessage(), null);
+        }
     }
 
     public void chooseCharacterName(String name) {

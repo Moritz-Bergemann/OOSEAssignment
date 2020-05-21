@@ -55,7 +55,7 @@ public class FileStockManager implements StockManager {
     }
 
     @Override
-    public List<Item> getLoadedStock() throws StockManagerException {
+    public List<Item> getLoadedStock() {
         List<Item> entireStock = new  ArrayList<>();
 
         entireStock.addAll(weapons);
@@ -66,17 +66,17 @@ public class FileStockManager implements StockManager {
     }
 
     @Override
-    public List<Weapon> getLoadedWeapons() throws StockManagerException {
+    public List<Weapon> getLoadedWeapons() {
         return weapons;
     }
 
     @Override
-    public List<Armour> getLoadedArmour() throws StockManagerException {
+    public List<Armour> getLoadedArmour() {
         return armour;
     }
 
     @Override
-    public List<Potion> getLoadedPotions() throws StockManagerException {
+    public List<Potion> getLoadedPotions() {
         return potions;
     }
 
