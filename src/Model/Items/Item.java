@@ -17,13 +17,33 @@ public interface Item {
      */
     public String getType();
 
+    /**
+     * @return cost of the item
+     */
     public int getCost();
 
+    /**
+     * @return minimum effect of the item
+     */
     public int getMinEffect();
 
+    /**
+     * @return maximum effect of the item
+     */
     public int getMaxEffect();
 
+    /**
+     * Adds the item to the inventory of the imported item user (done as item users may keep track of different
+     * types of items individually
+     * @param itemUser item user to add item to
+     * @throws InventoryException if item cannot be added
+     */
     public void addToInventory(ItemUser itemUser) throws InventoryException;
 
+    /**
+     * Removes the item from the inventory of the imported item user
+     * @param itemUser item user to remove item from
+     * @throws InventoryException if item cannot be removed
+     */
     public void removeFromInventory(ItemUser itemUser) throws InventoryException;
 }

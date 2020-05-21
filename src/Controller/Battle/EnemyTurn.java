@@ -1,4 +1,6 @@
-package Controller;
+package Controller.Battle;
+
+import View.MenuUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +26,7 @@ public class EnemyTurn extends BattleState {
             TimeUnit.MILLISECONDS.sleep(500);
         }
         catch (InterruptedException interrupt) {
-            System.out.println("Error - enemy turn sleep interrupted");
+            MenuUtils.logError("Enemy turn sleep interrupted");
         }
 
         //End the turn (since the enemy cannot do anything else)

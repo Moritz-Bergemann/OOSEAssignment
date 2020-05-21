@@ -1,12 +1,16 @@
-package Controller;
+package Controller.Shop;
 
 import Model.Items.*;
+import Model.Items.WeaponBase;
+import View.MenuUtils;
 
 import java.io.*;
-import java.util.Collections;
 import java.util. ArrayList;
 import java.util.List;
 
+/**
+ * Loads in item stock via file-IO. Takes in the name of the file to load items from as a parameter.
+ */
 public class FileStockManager implements StockManager {
     private String filePath;
     private List<Weapon> weapons;
@@ -39,7 +43,7 @@ public class FileStockManager implements StockManager {
                     interpretLine(line, lineNum);
                 }
                 catch (FileStockManagerException e) {
-                    System.out.println("Error reading line in file - " + e.getMessage()); //TODO proper error reporting
+                    MenuUtils.logError("Error reading line in file - " + e.getMessage());
                 }
 
                 line = br.readLine();

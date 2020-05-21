@@ -1,5 +1,6 @@
-package Controller;
+package Controller.Shop;
 
+import Controller.EnchantmentFactory;
 import Model.Items.*;
 import Model.Player;
 import View.ShopMenu;
@@ -8,6 +9,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * (Pseudo) event-driven manager for the shop that the player can visit.
+ * Displays the shop's user interface (which calls this class' methods to perform shop operations)
+ */
 public class ShopManager {
     private StockManager stockLoader; //Loads items from shop
     private ShopMenu shopMenu;
@@ -22,13 +27,13 @@ public class ShopManager {
      *
      * @param player Player to equip gear with
      */
-    public void giveCheapestGear(Player player) {
+    public void giveCheapestGear(Player player) throws ShopException {
         //Loading shop
         try {
             stockLoader.loadStock();
         }
         catch (StockManagerException s) {
-            //TODO
+            throw new ShopException("Failed to load stock cheapest stock", s);
         }
 
         //Getting cheapest weapon & cheapest armour using Comparator
@@ -43,16 +48,16 @@ public class ShopManager {
             cheapestArmour.addToInventory(player);
         }
         catch (InventoryException inv) {
-            throw new IllegalArgumentException("Failed to add cheapest weapon and armour",
-                    inv); //TODO make sure this is right for final design
+            throw new ShopException("Failed to add cheapest weapon and armour to player inventory",
+                    inv);
         }
 
-        //Making player equip cheapest weapon & armour FIXME should we do this?
+        //Making player equip cheapest weapon & armour
         player.setCurWeapon(cheapestWeapon);
         player.setCurArmour(cheapestArmour);
     }
 
-    public void runShop(Player player) throws ShopException { //FIXME unused import here
+    public void runShop() throws ShopException {
         //Re-acquiring stock for shop (in case has been updated)
         try {
             stockLoader.loadStock();
@@ -63,7 +68,7 @@ public class ShopManager {
 
         shopMenu.setManager(this);
 
-        shopMenu.runMenu();
+        shopMenu.showMenu();
     }
 
     public void purchaseItem(Item item, Player player) {
@@ -85,8 +90,6 @@ public class ShopManager {
 
             shopMenu.showMessage("Could not purchase item - " + inv.getMessage());
         }
-
-        System.out.println("DEBUG player gold after purchase - " + player.getGold());
     }
 
     public void sellItem(Player player, Item item) {
@@ -96,8 +99,8 @@ public class ShopManager {
             //Giving player half of item's cost in gold
             player.gainGold(item.getCost() / 2);
 
-            //Removing item from player's inventory (throws exception if item is currently equipped) //TODO test this
-            item.removeFromInventory(player); //BUG - this doesn't necessarily remove the exact same item
+            //Removing item from player's inventory (throws exception if item is currently equipped)
+            item.removeFromInventory(player);
 
             shopMenu.showMessage(String.format("You sold '%s' for %d gold!", item.getName(), item.getCost() / 2));
         }

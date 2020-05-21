@@ -1,4 +1,4 @@
-package Controller;
+package Controller.Shop;
 
 import Model.Items.Armour;
 import Model.Items.Item;

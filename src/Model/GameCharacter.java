@@ -1,12 +1,13 @@
 package Model;
-import Model.Observers.AbilityObserver;
-import Model.Observers.HealthChangeObserver;
+import Model.ModelObservers.AbilityObserver;
+import Model.ModelObservers.HealthChangeObserver;
 
 import java.lang.Math;
 import java.util.LinkedList;
 import java.util.List;
 
-/** Class representing a character with health that can attack and defend within the game.
+/**
+ * Class representing a character with health that can attack and defend within the game.
  */
 public abstract class GameCharacter {
     protected int maxHealth; //Maximum health of character
@@ -112,7 +113,7 @@ public abstract class GameCharacter {
      */
     public abstract int getGold();
 
-
+    //For observers
     public void addHealthChangeObserver(HealthChangeObserver observer) {
         healthChangeObservers.add(observer);
     }

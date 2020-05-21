@@ -1,26 +1,26 @@
-package Model.Items.Enchantments;
+package Model.Items.WeaponEnchantments;
 
 import Model.Items.Weapon;
 import Model.Items.WeaponEnchantment;
 
-public class DamageUp5Enchantment extends WeaponEnchantment {
-    private static int cost = 10;
+public class DamageUp2Enchantment extends WeaponEnchantment {
+    private static int cost = 5;
 
     public static int getIndividualCost() {
         return cost;
     }
 
     public static String getIndividualDescripton() {
-        return "Increases weapon damage by 5";
+        return "Increases weapon damage by 2";
     }
 
-    public DamageUp5Enchantment(Weapon next) {
+    public DamageUp2Enchantment(Weapon next) {
         super(next);
     }
 
     public int calcAttack() {
-        //Returning previous attack with added 5 damage
-        return next.calcAttack() + 5;
+        //Returning previous attack with added 2 damage
+        return next.calcAttack() + 2;
     }
 
     @Override
@@ -30,17 +30,17 @@ public class DamageUp5Enchantment extends WeaponEnchantment {
 
     @Override
     public int getMinEffect() {
-        return next.getMinEffect() + 5;
+        return next.getMinEffect() + 2;
     }
 
     @Override
     public int getMaxEffect() {
-        return next.getMaxEffect() + 5;
+        return next.getMaxEffect() + 2;
     }
 
     @Override
     public String getDescription() {
-        return next.getDescription() + "\n\t- Damage up 5";
+        return next.getDescription() + "\n\t- Damage up 2";
     }
 
     @Override
@@ -49,7 +49,7 @@ public class DamageUp5Enchantment extends WeaponEnchantment {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DamageUp5Enchantment that = (DamageUp5Enchantment)o;
+        DamageUp2Enchantment that = (DamageUp2Enchantment) o;
         return next.equals(that.next);
     }
 }

@@ -1,11 +1,11 @@
 package View;
 
 import Controller.RemovableObserver;
-import Controller.ShopManager;
-import Controller.StockManager;
+import Controller.Shop.ShopManager;
+import Controller.Shop.StockManager;
 import Model.Items.Item;
 import Model.Items.Weapon;
-import Model.Observers.GoldChangeObserver;
+import Model.ModelObservers.GoldChangeObserver;
 import Model.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,8 +30,8 @@ import java.util.List;
 public class ShopMenu {
     private StockManager stock;
     private Player player;
-    private Stage menuStage;
     private ShopManager manager;
+    private Stage menuStage;
 
     private List<RemovableObserver> observers;
 
@@ -51,7 +51,7 @@ public class ShopMenu {
         this.manager = manager;
     }
 
-    public void runMenu() {
+    public void showMenu() {
         if (manager == null) {
             throw new IllegalArgumentException("Shop menu manager not set");
         }
@@ -93,8 +93,6 @@ public class ShopMenu {
                             @Override
                             public void handle(ActionEvent actionEvent) {
                                 Item item = getTableView().getItems().get(getIndex());
-                                System.out.println("DEBUG Selected Item: " + item.getName());
-
                                 buyItemPrompt(item);
                             }
                         });
@@ -194,6 +192,10 @@ public class ShopMenu {
         for (RemovableObserver observer : observers) {
             observer.removeSelf();
         }
+    }
+
+    public void showMessage(String message) {
+        MenuUtils.showMessage("Shop notice", message, menuStage);
     }
 
     private void buyItemPrompt(Item item) {
@@ -329,9 +331,5 @@ public class ShopMenu {
 
         popup.setScene(new Scene(root));
         popup.showAndWait();
-    }
-
-    public void showMessage(String message) {
-        MenuUtils.showMessage("Shop notice", message, menuStage);
     }
 }

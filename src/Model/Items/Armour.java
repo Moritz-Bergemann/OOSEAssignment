@@ -1,10 +1,13 @@
 package Model.Items;
 
-import Controller.Chance;
+import Model.Chance;
 import Model.ItemUser;
 
 import java.util.Objects;
 
+/**
+ * Class for armour item type - can be used to calculate the armour's defence
+ */
 public class Armour implements Item {
     String name;
     String material;
@@ -34,6 +37,7 @@ public class Armour implements Item {
         return Chance.randBetween(minDefence, maxDefence);
     }
 
+    //From Item interface
     @Override
     public String getName() {
         return name;

@@ -1,6 +1,6 @@
 package Model.Enemies;
 
-import Controller.Chance;
+import Model.Chance;
 
 /**
  * Class for dragon enemy type.

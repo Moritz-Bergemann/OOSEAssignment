@@ -1,9 +1,10 @@
 package Testing;
 
 import Model.Items.*;
-import Model.Items.Enchantments.DamageUp5Enchantment;
-import Model.Items.Enchantments.FireDamageEnchantment;
-import Model.Items.Enchantments.PowerUpEnchantment;
+import Model.Items.WeaponEnchantments.DamageUp5Enchantment;
+import Model.Items.WeaponEnchantments.FireDamageEnchantment;
+import Model.Items.WeaponEnchantments.PowerUpEnchantment;
+import Model.Items.WeaponBase;
 
 public class ItemTest {
     public static void main(String[] args) {

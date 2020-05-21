@@ -2,12 +2,14 @@ package Controller;
 
 import Model.Enemies.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Factory for creating enemies based on the contained chances.
+ */
 public class ChanceEnemyFactory {
-    private final Map<String, Double> chances; //Chances to spawn different enemies FIXME are these final keywords right?
-    private final Map<String, Double> chanceUpdates; //Amounts by which chances change after each battle
+    private Map<String, Double> chances; //Chances to spawn different enemies
+    private Map<String, Double> chanceUpdates; //Amounts by which chances change after each battle
 
     public ChanceEnemyFactory(Map<String, Double> chances, Map<String, Double> chanceUpdates) {
         if (!chances.keySet().equals(chanceUpdates.keySet())) {
@@ -23,8 +25,6 @@ public class ChanceEnemyFactory {
      * @return selected enemy
      */
     public Enemy makeEnemy() { //TODO add commenting
-        System.out.println("DEBUG Making enemy: " + chances.toString());
-
         double randChance = Math.random();
         double chanceHit = 0.0;
         String chosenEnemy = null;
@@ -42,7 +42,7 @@ public class ChanceEnemyFactory {
             throw new IllegalArgumentException("Chances do not sum correctly");
         }
 
-        Enemy enemy = chooseFromString(chosenEnemy);
+        Enemy enemy = makeFromString(chosenEnemy);
 
         return enemy;
     }
@@ -71,7 +71,7 @@ public class ChanceEnemyFactory {
      * @param name name of the enemy to be chosen
      * @return chosen enemy
      */
-    public Enemy chooseFromString(String name) {
+    public Enemy makeFromString(String name) {
         Enemy newEnemy;
 
         switch (name) {

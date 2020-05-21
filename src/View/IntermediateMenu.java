@@ -3,7 +3,7 @@ package View;
 import Controller.IntermediateManager;
 import Controller.RemovableObserver;
 import Model.Items.*;
-import Model.Observers.*;
+import Model.ModelObservers.*;
 import Model.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,9 +20,9 @@ import javafx.stage.WindowEvent;
 import java.util.*;
 
 public class IntermediateMenu {
-    private Stage menuStage;
     private Player player;
     private IntermediateManager manager;
+    private Stage menuStage;
 
     private List<RemovableObserver> observers;
 
@@ -234,7 +234,21 @@ public class IntermediateMenu {
         }
     }
 
-    public void showInventory() {
+    public void showNotReadyForBattle() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        alert.setTitle("Not ready for battle");
+        alert.setHeaderText(null);
+        alert.setContentText("You are not yet ready for battle. To be ready for battle, you must be equipped with a " +
+                "weapon, a set of armour and must have chosen your name.");
+        alert.showAndWait();
+    }
+
+    public void startBattle() {
+        menuStage.close();
+    }
+
+    private void showInventory() {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Entire Inventory");
 
@@ -243,7 +257,8 @@ public class IntermediateMenu {
 
         //Creating list of items
         for (Item item : player.getItemSet()) {
-            Text newText = new Text(String.format("%s (%s)", item.getName(), item.getDescription()));
+            Text newText = new Text(String.format("%s (%s) - %s with %d-%d effect", item.getName(),
+                    item.getDescription(), item.getType(), item.getMinEffect(), item.getMaxEffect()));
 
             itemList.getChildren().add(newText);
         }
@@ -264,21 +279,7 @@ public class IntermediateMenu {
         popup.show();
     }
 
-    public void showNotReadyForBattle() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-        alert.setTitle("Not ready for battle");
-        alert.setHeaderText(null);
-        alert.setContentText("You are not yet ready for battle. To be ready for battle, you must be equipped with a " +
-                "weapon, a set of armour and must have chosen your name.");
-        alert.showAndWait();
-    }
-
-    public void startBattle() {
-        menuStage.close();
-    }
-
-    public void exitPrompt() {
+    private void exitPrompt() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Quit Game");
         alert.setHeaderText(null);
@@ -291,7 +292,6 @@ public class IntermediateMenu {
 
         Optional<ButtonType> result = alert.showAndWait();
 
-        System.out.println(result.get());
         if (result.get().equals(quitButtonType)) { //If user confirmed choice to quit game
             manager.exitGame();
             menuStage.close();
@@ -306,7 +306,8 @@ public class IntermediateMenu {
 
         //Creating a button for each weapon and adding it to the set
         for (Weapon weapon : player.getWeaponList()) {
-            Button weaponButton = new Button(String.format("%s (%s)", weapon.getName(), weapon.getDescription()));
+            Button weaponButton = new Button(String.format("%s (%s) - %d-%d damage", weapon.getName(),
+                    weapon.getDescription(), weapon.getMinEffect(), weapon.getMaxEffect()));
             weaponButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
@@ -338,11 +339,11 @@ public class IntermediateMenu {
 
         //Creating a button for each armour and adding it to the set
         for (Armour armour : player.getArmourList()) {
-            Button armourButton = new Button(String.format("%s (%s)", armour.getName(), armour.getDescription()));
+            Button armourButton = new Button(String.format("%s (%s) - %d-%d defence", armour.getName(),
+                    armour.getDescription(), armour.getMinEffect(), armour.getMaxEffect()));
             armourButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    System.out.println(armour.getName() + " selected!");
                     manager.chooseArmour(armour);
                     popup.close();
                 }
@@ -376,7 +377,6 @@ public class IntermediateMenu {
                 String inputName = nameField.getText();
                 try {
                     manager.chooseCharacterName(inputName.strip());
-                    System.out.println("User input name " + inputName);
                 }
                 catch (IllegalArgumentException i) {
                     MenuUtils.showError("Invalid input", i.getMessage(), menuStage);

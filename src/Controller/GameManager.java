@@ -1,5 +1,10 @@
 package Controller;
 
+import Controller.Battle.BattleManager;
+import Controller.Shop.FileStockManager;
+import Controller.Shop.ShopException;
+import Controller.Shop.ShopManager;
+import Controller.Shop.StockManager;
 import Model.*;
 import View.BattleMenu;
 import View.IntermediateMenu;
@@ -13,12 +18,12 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
-/*
- * GENERAL NOTES
- *  TODO where do unhandled exceptions (i.e. IllegalArgumentException) go?
- *  TODO add causes to rethrown exceptions
- */
 
+/**
+ * Overall manager for game, contains main() method.
+ * Creates all relevant classes and controls flow of game.
+ * While some of the other controllers are individually even-driven, this primary controller is procedural.
+ */
 public class GameManager extends Application {
     public static void main(String[] args) {
         Application.launch(args); //Launching JavaFX application
@@ -55,19 +60,18 @@ public class GameManager extends Application {
 
         //Equipping player with shop's cheapest gear to start adventure
         try {
-            stock.loadStock();
+            shopManager.giveCheapestGear(player);
         }
-        catch (StockManagerException s) {
-            throw new GameException("Could not load items - " + s.getMessage(), s);
+        catch (ShopException s) {
+            throw new GameException("Failed to give cheapest gear", s);
         }
-        shopManager.giveCheapestGear(player);
 
         //Starting main game loop
         boolean gameOver = false;
         boolean quit = false;
         while (!gameOver && !quit) {
             //Running intermediate menu (including option to go to shop)
-            quit = intermediate.intermediateMenu();
+            quit = intermediate.runIntermediate();
 
             if (!quit) {
                 //Running battle

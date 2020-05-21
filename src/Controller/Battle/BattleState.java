@@ -1,4 +1,6 @@
-package Controller;
+package Controller.Battle;
+
+import Controller.Battle.BattleManager;
 
 public abstract class BattleState {
     protected BattleManager battle;
@@ -6,8 +8,6 @@ public abstract class BattleState {
     public BattleState(BattleManager battle) {
         this.battle = battle;
     }
-
-
 
     /**
      * Initiates the running of the current turn

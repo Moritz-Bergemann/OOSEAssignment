@@ -1,8 +1,11 @@
 package Model.Items;
 
-import Controller.Chance;
+import Model.Chance;
 import Model.GameCharacter;
 
+/**
+ * Class for potion type that heals characters
+ */
 public class HealingPotion extends Potion {
     int minHealing;
     int maxHealing;

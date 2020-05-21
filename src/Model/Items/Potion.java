@@ -3,6 +3,10 @@ package Model.Items;
 import Model.GameCharacter;
 import Model.ItemUser;
 
+/**
+ * Abstract class for potions that can be applied to characters.
+ * Must be extended by individual potion types.
+ */
 public abstract class Potion implements Item{
     protected String name;
     protected int cost;
@@ -24,6 +28,7 @@ public abstract class Potion implements Item{
         return cost;
     }
 
+    @Override
     public String getName() {
         return name;
     }

@@ -1,4 +1,4 @@
-package Controller;
+package Controller.Shop;
 
 public class ShopException extends Exception {
     public ShopException(String message) {

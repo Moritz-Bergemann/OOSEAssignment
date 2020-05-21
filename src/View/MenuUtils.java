@@ -97,4 +97,8 @@ public class MenuUtils {
         menuStage.setScene(new Scene(root));
         menuStage.showAndWait();
     }
+
+    public static void logError(String s) {
+        System.out.println("ERROR LOG: " + s);
+    }
 }

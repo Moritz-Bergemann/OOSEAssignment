@@ -1,4 +1,4 @@
-package Controller;
+package Controller.Shop;
 
 public class StockManagerException extends Exception{
     public StockManagerException(String message, Throwable cause) {

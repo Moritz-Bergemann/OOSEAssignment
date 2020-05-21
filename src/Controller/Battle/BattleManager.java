@@ -1,16 +1,21 @@
-package Controller;
+package Controller.Battle;
 
+import Controller.RemovableObserver;
 import Model.Enemies.DragonEnemy;
 import Model.GameCharacter;
 import Model.Items.InventoryException;
 import Model.Items.Potion;
-import Model.Observers.AbilityObserver;
+import Model.ModelObservers.AbilityObserver;
 import Model.Player;
 import View.BattleMenu;
 
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * (Pseudo) Event-driven controller for battles that occur.
+ * Creates the battle user interface and waits for the view to call its methods to perform operations during the battle.
+ */
 public class BattleManager {
     private Player player;
     private GameCharacter enemy;
@@ -62,7 +67,7 @@ public class BattleManager {
             observer.removeSelf();
         }
 
-        //Making player win if killed dragon //FIXME
+        //Making player win if killed dragon //FIXME instanceof bad
         if (!enemy.isAlive() && enemy instanceof DragonEnemy) {
             player.setWonGame();
         }
@@ -70,6 +75,11 @@ public class BattleManager {
         return !player.isAlive();
     }
 
+    /**
+     * Run an attack between two game characters, using their respective attack and defense
+     * @param attacker attacking character
+     * @param defender defending character
+     */
     public void runAttack(GameCharacter attacker, GameCharacter defender) {
         //Running calculations to determine damage to deal
         int attackerDamage = attacker.calcAttack();
@@ -85,6 +95,11 @@ public class BattleManager {
                 attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence));
     }
 
+    /**
+     * Applies the potion's effect to the targeted character
+     * @param potion potion to use
+     * @param target character to use the potion on
+     */
     public void usePotion(Potion potion, GameCharacter target) {
         //Removing potion from player's inventory
         try {
@@ -126,8 +141,6 @@ public class BattleManager {
         return player;
     }
 
-//    TODO remove these + dependencies
-
     /**
      * Ends the current turn (likely causing move to next turn)
      */
@@ -141,12 +154,10 @@ public class BattleManager {
      */
     public void continueBattle() {
         if (!player.isAlive()) { //If player has died
-            System.out.println("DEBUG " + player.getHealth());
             battleMenu.showBattleEnded(String.format("%s has been defeated!", player.getName()));
         }
         else if (!enemy.isAlive()) { //If enemy has died
             player.gainGold(enemy.getGold());
-            System.out.println("DEBUG " + enemy.getHealth());
             battleMenu.showBattleEnded(String.format("%s has been defeated! %d gold earned.",
                     enemy.getName(), enemy.getGold()));
         }
@@ -155,7 +166,7 @@ public class BattleManager {
         }
     }
 
-    //For listeners
+    //Methods for observers
     public void notifyBattleEventObservers(String message) {
         for (BattleEventObserver listener : battleEventObservers) {
             listener.notify(message);

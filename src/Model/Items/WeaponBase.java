@@ -1,8 +1,6 @@
 package Model.Items;
-import Controller.Chance;
+import Model.Chance;
 import Model.ItemUser;
-
-import java.util.Objects;
 
 public class WeaponBase implements Weapon {
     String name;

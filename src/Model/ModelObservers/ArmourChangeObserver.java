@@ -1,4 +1,4 @@
-package Model.Observers;
+package Model.ModelObservers;
 
 import Controller.RemovableObserver;
 import Model.Items.Armour;

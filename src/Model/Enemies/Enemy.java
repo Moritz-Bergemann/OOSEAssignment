@@ -1,12 +1,11 @@
 package Model.Enemies;
 
-import Controller.Chance;
+import Model.Chance;
 import Model.GameCharacter;
-import Model.Observers.AbilityObserver;
 
-import java.util.LinkedList;
-import java.util.List;
-
+/**
+ * Class that all enemy types inherit from (containing standard enemy attributes such as health, attack, defence etc)
+ */
 public abstract class Enemy extends GameCharacter {
     protected int minAttack;
     protected int maxAttack;

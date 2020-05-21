@@ -1,8 +1,11 @@
 package Model.Items;
 
-import Controller.Chance;
+import Model.Chance;
 import Model.GameCharacter;
 
+/**
+ * Class for potion type that damages characters
+ */
 public class DamagingPotion extends Potion {
     int minDamage;
     int maxDamage;

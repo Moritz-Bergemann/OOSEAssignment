@@ -1,4 +1,8 @@
-package Controller;
+package Controller.Battle;
+
+import Controller.Battle.BattleManager;
+import Controller.Battle.BattleState;
+import Controller.Battle.EnemyTurn;
 
 public class PlayerTurn extends BattleState {
     public PlayerTurn(BattleManager battle) {

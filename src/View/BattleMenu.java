@@ -1,11 +1,11 @@
 package View;
 
-import Controller.BattleEventObserver;
-import Controller.BattleManager;
+import Controller.Battle.BattleEventObserver;
+import Controller.Battle.BattleManager;
 import Controller.RemovableObserver;
 import Model.GameCharacter;
 import Model.Items.Potion;
-import Model.Observers.HealthChangeObserver;
+import Model.ModelObservers.HealthChangeObserver;
 import Model.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -33,8 +33,8 @@ import java.util.Set;
 public class BattleMenu {
     private Player player;
     private GameCharacter enemy;
-    private Stage menuStage;
     private BattleManager manager;
+    private Stage menuStage;
 
     private List<RemovableObserver> observers;
     private Text stateInfo;
@@ -135,6 +135,7 @@ public class BattleMenu {
             }
         });
 
+        //Initiating the first turn of the battle
         manager.continueBattle();
         menuStage.showAndWait();
 
@@ -144,12 +145,32 @@ public class BattleMenu {
         }
     }
 
+    public void setStateInfo(String stateMessage) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                stateInfo.setText(stateMessage);
+            }
+        });
+
+    }
+
+    public void showBattleEnded(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        //Showing the battle-ending message and then exiting the battle
+        alert.showAndWait();
+        menuStage.close();
+    }
+
     /**
      * Creates an information grid containing all the character's battle-relevant information
      * @param character Character to create grid for
      * @return information grid
      */
-    public GridPane createInfoGrid(GameCharacter character) {
+    private GridPane createInfoGrid(GameCharacter character) {
         GridPane infoGrid = new GridPane();
         infoGrid.setMinSize(100, 80);
         infoGrid.setHgap(10);
@@ -207,8 +228,12 @@ public class BattleMenu {
             potionButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    potionTargetMenu(potion, characterSet);
+                    boolean potionChosen = potionTargetMenu(potion, characterSet);
                     popup.close();
+
+                    if (potionChosen) {
+                        manager.endTurn(); //Ending turn if potion was chosen (but ONLY once this popup has been closed)
+                    }
                 }
             });
 
@@ -223,8 +248,14 @@ public class BattleMenu {
         popup.showAndWait();
     }
 
-    private void potionTargetMenu(Potion potion, Set<GameCharacter> targetSet) {
+    /**
+     * Menu for choosing potion target.
+     * @return whether a potion was chosen or not
+     */
+    private boolean potionTargetMenu(Potion potion, Set<GameCharacter> targetSet) {
         Stage popup = MenuUtils.createPopup(menuStage);
+
+        final boolean[] potionChosen = {false};
 
         Text prompt = new Text("Choose target for potion");
         VBox targetList = new VBox();
@@ -234,8 +265,10 @@ public class BattleMenu {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     manager.usePotion(potion, target);
-                    popup.close(); //FIXME check this
-                    manager.continueBattle();
+
+                    potionChosen[0] = true;
+
+                    popup.close();
                 }
             });
 
@@ -248,25 +281,7 @@ public class BattleMenu {
         root.setPadding(new Insets(10, 10, 10, 10));
         popup.setScene(new Scene(root));
         popup.showAndWait();
-    }
 
-    public void setStateInfo(String stateMessage) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                stateInfo.setText(stateMessage);
-            }
-        });
-
-    }
-
-    public void showBattleEnded(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-
-        //Showing the battle-ending message and then exiting the battle
-        alert.showAndWait();
-        menuStage.close();
+        return potionChosen[0];
     }
 }

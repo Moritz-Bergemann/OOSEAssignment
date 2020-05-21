@@ -2,10 +2,13 @@ package Model;
 
 
 import Model.Items.*;
-import Model.Observers.*;
+import Model.ModelObservers.*;
 
 import java.util.*;
 
+/**
+ *
+ */
 public class Player extends GameCharacter implements ItemUser {
     private static final int startingHealth = 30; //Starting health of player
     private static final int startingGold = 100; //Starting gold of player

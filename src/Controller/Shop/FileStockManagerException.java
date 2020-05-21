@@ -1,4 +1,4 @@
-package Controller;
+package Controller.Shop;
 
 public class FileStockManagerException extends Exception {
     public FileStockManagerException(String message, Throwable cause) {

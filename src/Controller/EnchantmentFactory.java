@@ -1,15 +1,25 @@
 package Controller;
 
 import Model.Items.*;
-import Model.Items.Enchantments.DamageUp2Enchantment;
-import Model.Items.Enchantments.DamageUp5Enchantment;
-import Model.Items.Enchantments.FireDamageEnchantment;
-import Model.Items.Enchantments.PowerUpEnchantment;
+import Model.Items.WeaponEnchantments.DamageUp2Enchantment;
+import Model.Items.WeaponEnchantments.DamageUp5Enchantment;
+import Model.Items.WeaponEnchantments.FireDamageEnchantment;
+import Model.Items.WeaponEnchantments.PowerUpEnchantment;
 
 import java.util. ArrayList;
 import java.util.List;
 
+/**
+ * Factory for creating (and getting information about) enchantments using the enchantment name as a string to retrieve
+ *  the desired enchantment
+ */
 public class EnchantmentFactory {
+    /**
+     * Applies an enchantment to a weapon. Throws IllegalArgumentException if the enchantment is not known about.
+     * @param name name of enchantment to apply
+     * @param weapon weapon to apply enchantment to
+     * @return weapon with enchantment applied to it
+     */
     public static Weapon applyEnchantment(String name, Weapon weapon) {
         Weapon enchantedWeapon;
 
@@ -34,6 +44,11 @@ public class EnchantmentFactory {
         return enchantedWeapon;
     }
 
+    /**
+     * Retrieve the cost of an enchantment by name
+     * @param name name of enchantment
+     * @return cost of enchantment
+     */
     public static int getEnchantmentCost(String name) {
         int cost;
 
@@ -57,6 +72,11 @@ public class EnchantmentFactory {
         return cost;
     }
 
+    /**
+     * Retrieve the description of an enchantment by name
+     * @param name name of enchantment
+     * @return description of enchantment
+     */
     public static String getEnchantmentDescription(String name) {
         String description;
 
@@ -80,6 +100,10 @@ public class EnchantmentFactory {
         return description;
     }
 
+    /**
+     * Creates a list of the names of all enchantments the factory knows about
+     * @return list of all known enchantment names
+     */
     public static List<String> getAllEnchantmentNames() {
         List<String> nameSet = new  ArrayList<>();
         nameSet.add("DamageUp2");
