@@ -17,9 +17,6 @@ import java.util.Map;
  * GENERAL NOTES
  *  TODO where do unhandled exceptions (i.e. IllegalArgumentException) go?
  *  TODO add causes to rethrown exceptions
- *  TODO make flavour text better
- *  TODO fix bug with item selection (removes every item (SHOULD ONLY REMOVE FIRST))
- *  TODO fix player/enemy turn timing wonkiness
  */
 
 public class GameManager extends Application {
@@ -30,13 +27,14 @@ public class GameManager extends Application {
     public void start(Stage mainStage) {
         try {
             runGame(mainStage);
-        } //TODO change exception messages from println to JavaFX related
-        catch (GameException g) {
-            System.out.println("Failed to run game - " + g.getMessage());
         }
-//        catch (Exception e) {
-//            System.out.println("An unexpected exception has occurred - " + e.getMessage());
-//        }
+        catch (GameException g) {
+            MenuUtils.showError("Game Error", "Failed to run game - " + g.getMessage(), mainStage);
+        }
+        catch (Exception e) {
+            MenuUtils.showError("Unknown Error", "An unexpected exception has occurred - " + e.getMessage(),
+                    mainStage);
+        }
     }
 
     public void runGame(Stage mainStage) throws GameException {
@@ -50,7 +48,7 @@ public class GameManager extends Application {
         ChanceEnemyFactory enemyGen = new ChanceEnemyFactory(setEnemyChances(), setEnemyChanceUpdates());
 
         //Creating managers for game components
-        StockManager stock = new FileStockManager("items.txt"); //TODO make this get file name from somewhere else?
+        StockManager stock = new FileStockManager("items.txt");
         ShopMenu shopMenu = new ShopMenu(mainStage, shop, player);
         ShopManager shopManager = new ShopManager(shop, stock, shopMenu);
         IntermediateMenu intermediateMenu = new IntermediateMenu(mainStage, player);
@@ -74,7 +72,7 @@ public class GameManager extends Application {
 
             if (!quit) {
                 //Running battle
-                GameCharacter enemy = enemyGen.makeEnemy(); //FIXME can I get away with polymorphism here?
+                GameCharacter enemy = enemyGen.makeEnemy();
                 BattleMenu battleMenu = new BattleMenu(player, enemy, mainStage);
                 BattleManager battle = new BattleManager(player, enemy, battleMenu);
                 gameOver = battle.runBattle();

@@ -8,6 +8,7 @@ import Model.Items.Potion;
 import Model.Observers.AbilityObserver;
 import Model.Observers.HealthChangeObserver;
 import Model.Player;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class BattleMenu {
     private Player player;
@@ -266,8 +268,13 @@ public class BattleMenu {
     }
 
     public void setStateInfo(String stateMessage) {
-        stateInfo.setText(stateMessage);
-        System.out.println("State info set!");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                stateInfo.setText(stateMessage);
+            }
+        });
+
     }
 
     public void showBattleEnded(String message) {

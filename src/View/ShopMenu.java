@@ -157,9 +157,13 @@ public class ShopMenu {
         buttons.setSpacing(10);
         buttons.setPadding(new Insets(5, 10, 5, 10));
 
-        //Creating title text for shop
+        //Creating title & subtitle text for shop
         Text title = new Text("Steve's Emporium");
         title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.REGULAR, 20));
+
+        Text subtitile = new Text("Welcome to the shop! Here's everything we've got for sale at the moment.");
+
+        VBox titleBox = new VBox(title, subtitile);
 
         //Creating text showing current gold
         Text goldAmount = new Text(String.format("Current gold - %d", player.getGold()));
@@ -179,7 +183,7 @@ public class ShopMenu {
         player.addGoldChangeObserver(goldObs);
         observers.add(goldObs);
 
-        VBox root = new VBox(title, table, goldAmount, buttons);
+        VBox root = new VBox(titleBox, table, goldAmount, buttons);
         root.setSpacing(10);
         Scene scene = new Scene(root);
 
@@ -188,14 +192,6 @@ public class ShopMenu {
         menuStage.showAndWait();
 
         for (RemovableObserver observer : observers) {
-            observer.removeSelf();
-            observer.removeSelf();
-            observer.removeSelf();
-            observer.removeSelf();
-            observer.removeSelf();
-            observer.removeSelf();
-            observer.removeSelf();
-            observer.removeSelf();
             observer.removeSelf();
         }
     }
@@ -207,7 +203,7 @@ public class ShopMenu {
         //Creating item info
         Text itemText = new Text(String.format("%s (%s) - %s", item.getName(), item.getType(), item.getDescription()));
 
-        Text confirmText = new Text("Are you sure you want to buy this item?");
+        Text confirmText = new Text("Are you sure you want to buy this?");
 
         Button yesButton = new Button("Yes");
         yesButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -243,7 +239,7 @@ public class ShopMenu {
         Stage popup = MenuUtils.createPopup(parent);
         popup.setTitle("Choose Enchantment");
 
-        Text promptText = new Text(String.format("Choose enchantment to apply to %s:", weapon.getName()));
+        Text promptText = new Text(String.format("What enchantment do you want to apply to '%s'?", weapon.getName()));
 
         //Add button for each existing enchantment that initiates enchantment purchase
         VBox enchantmentList = new VBox();
@@ -273,7 +269,8 @@ public class ShopMenu {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Weapon");
 
-        Text promptText = new Text("Choose weapon to enchant:");
+        Text promptText = new Text("What weapon do you want to enchant?\nI'll need to take the weapon from your " +
+                "hands to apply the enchantment, so it can't be the one you've got equipped right now.");
         VBox weaponList = new VBox();
 
         Weapon chosenWeapon = null;
@@ -299,6 +296,7 @@ public class ShopMenu {
         scrollPane.setContent(weaponList);
 
         VBox root = new VBox(promptText, scrollPane);
+        root.setPadding(new Insets(10, 10, 10, 10));
 
         popup.setScene(new Scene(root));
         popup.showAndWait();
@@ -308,7 +306,7 @@ public class ShopMenu {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Sell Item");
 
-        Text promptText = new Text("Choose item to sell:");
+        Text promptText = new Text("What item do you want to sell?");
 
         VBox itemList = new VBox();
         for (Item item : player.getItemSet()) {

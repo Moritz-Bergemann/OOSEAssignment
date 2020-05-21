@@ -280,7 +280,7 @@ public class Player extends GameCharacter implements ItemUser {
 
         //Remove this specific object from the list (since there may be multiple objects with identical properties in
         // the list if the player removes multiple of the same item
-        boolean present = weaponSet.removeIf(e -> e == weapon);
+        boolean present = removeItem(weaponSet, weapon);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
@@ -293,7 +293,7 @@ public class Player extends GameCharacter implements ItemUser {
             throw new InventoryException("Cannot remove current armour");
         }
 
-        boolean present = armourSet.removeIf(e -> e == armour);
+        boolean present = removeItem(armourSet, armour);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
@@ -302,11 +302,30 @@ public class Player extends GameCharacter implements ItemUser {
 
     @Override
     public void removePotion(Potion potion) throws InventoryException {
-        boolean present = potionSet.removeIf(e -> e == potion);
+        boolean present = removeItem(potionSet, potion);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
         }
+    }
+
+    private boolean removeItem(List<? extends Item> itemList, Item itemToRemove) {
+        int ii = 0;
+        boolean found = false;
+
+        for (Item item : itemList) {
+            //If found item to be removed
+            if (item == itemToRemove) {
+                itemList.remove(ii); //Removing the item at the determined index
+                found = true;
+                break; //Stopping the search (since only one of the item's instances should be removed if there are
+                    // multiple
+            }
+
+            ii++;
+        }
+
+        return found;
     }
 
     //Methods for using observers
