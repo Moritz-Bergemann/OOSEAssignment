@@ -33,6 +33,15 @@ public class Armour implements Item {
         this.cost = cost;
     }
 
+    public Armour(Armour armour) {
+        this.name = armour.name;
+        this.material = armour.material;
+        this.minDefence = armour.minDefence;
+        this.maxDefence = armour.maxDefence;
+        this.cost = armour.cost;
+    }
+
+
     public int calcDefence() {
         return Chance.randBetween(minDefence, maxDefence);
     }
@@ -95,5 +104,10 @@ public class Armour implements Item {
     @Override
     public int hashCode() {
         return Objects.hash(name, material, minDefence, maxDefence, cost);
+    }
+
+    @Override
+    public Armour clone() {
+        return new Armour(this);
     }
 }

@@ -52,7 +52,7 @@ public class FileStockManager implements StockManager {
             }
         }
         catch (FileNotFoundException fnf) {
-            throw new StockManagerException("File not found", fnf);
+            throw new StockManagerException(String.format("File '%s' not found", filePath), fnf);
         }
         catch (IOException io) {
             throw new StockManagerException("Failed to read file", io);

@@ -9,6 +9,11 @@ public abstract class WeaponEnchantment implements Weapon {
         this.next = next;
     }
 
+    public WeaponEnchantment(WeaponEnchantment weaponEnchantment) {
+        //Constructing next item decorator chain (to prevent the 2 decorator chains sharing any items)
+        this.next = weaponEnchantment.next.clone();
+    }
+
     //Standard implementations for weapon properties (may be overridden depending on the enchantment)
     @Override
     public int calcAttack() {
@@ -19,6 +24,9 @@ public abstract class WeaponEnchantment implements Weapon {
     public String getName() {
         return next.getName();
     }
+
+    @Override
+    public abstract String getDescription();
 
     @Override
     public int getCost() {
@@ -54,4 +62,7 @@ public abstract class WeaponEnchantment implements Weapon {
 
     @Override
     public abstract boolean equals(Object o);
+
+    @Override
+    public abstract WeaponEnchantment clone();
 }

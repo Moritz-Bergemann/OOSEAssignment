@@ -5,7 +5,6 @@ import game.model.items.*;
 import game.model.Player;
 import game.view.ShopMenu;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +33,7 @@ public class ShopManager {
             stockLoader.loadStock();
         }
         catch (StockManagerException s) {
-            throw new ShopException("Failed to load stock cheapest stock", s);
+            throw new ShopException("Failed to load item stock - " + s.getMessage(), s);
         }
 
         //Getting cheapest weapon & cheapest armour using Comparator
@@ -58,6 +57,10 @@ public class ShopManager {
         player.setCurArmour(cheapestArmour);
     }
 
+    /**
+     * Initiates shop
+     * @throws ShopException if shop fails to run
+     */
     public void runShop() throws ShopException {
         //Re-acquiring stock for shop (in case has been updated)
         try {
@@ -72,6 +75,11 @@ public class ShopManager {
         shopMenu.showMenu();
     }
 
+    /**
+     * Contains logic for player purchasing item (creates copy of the purchased item in player's inventory)
+     * @param item item to purchase
+     * @param player player to purchase item
+     */
     public void purchaseItem(Item item, Player player) {
         int initialGold = player.getGold();
 
@@ -79,9 +87,8 @@ public class ShopManager {
             //Making player pay cost of item (throws exception if insufficient gold)
             player.loseGold(item.getCost());
 
-            //Adding item to player's inventory (throws exception if insufficient inventory capacity)
-
-            item.addToInventory(player);
+            //Adding copy item to player's inventory (throws exception if insufficient inventory capacity)
+            item.clone().addToInventory(player);
 
             shopMenu.showMessage(String.format("You bought '%s' for %d gold!", item.getName(), item.getCost()));
         }
@@ -93,6 +100,11 @@ public class ShopManager {
         }
     }
 
+    /**
+     * Contains logic for player selling an item (that is in player's inventory)
+     * @param player player to sell item
+     * @param item item (in player's inventory) for player to sell
+     */
     public void sellItem(Player player, Item item) {
         int initialGold = player.getGold();
 

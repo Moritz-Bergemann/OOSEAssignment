@@ -46,4 +46,10 @@ public interface Item {
      * @throws InventoryException if item cannot be removed
      */
     public void removeFromInventory(ItemUser itemUser) throws InventoryException;
+
+    /**
+     * Creates a duplicate of the item
+     * @return duplicate of item
+     */
+    public Item clone();
 }

@@ -29,6 +29,15 @@ public class WeaponBase implements Weapon {
         this.cost = cost;
     }
 
+    public WeaponBase(WeaponBase weaponBase) {
+        this.name = weaponBase.name;
+        this.cost = weaponBase.cost;
+        this.weaponType = weaponBase.weaponType;
+        this.damageType = weaponBase.damageType;
+        this.minAttack = weaponBase.minAttack;
+        this.maxAttack = weaponBase.maxAttack;
+    }
+
     @Override
     public int calcAttack() {
         return Chance.randBetween(minAttack, maxAttack);
@@ -87,5 +96,10 @@ public class WeaponBase implements Weapon {
                 name.equals(that.name) &&
                 weaponType.equals(that.weaponType) &&
                 damageType.equals(that.damageType);
+    }
+
+    @Override
+    public WeaponBase clone() {
+        return new WeaponBase(this);
     }
 }

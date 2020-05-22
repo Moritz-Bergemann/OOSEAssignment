@@ -19,6 +19,11 @@ public class FireDamageEnchantment extends WeaponEnchantment {
         super(next);
     }
 
+    public FireDamageEnchantment(FireDamageEnchantment enchantment) {
+        super(enchantment);
+    }
+
+
     public int calcAttack() {
         //Returning previous attack with added random 5-10 damage
         return next.calcAttack() + Chance.randBetween(5, 10);
@@ -52,5 +57,10 @@ public class FireDamageEnchantment extends WeaponEnchantment {
         }
         FireDamageEnchantment that = (FireDamageEnchantment) o;
         return next.equals(that.next);
+    }
+
+    @Override
+    public FireDamageEnchantment clone() {
+        return new FireDamageEnchantment(this);
     }
 }

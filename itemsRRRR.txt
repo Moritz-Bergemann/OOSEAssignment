@@ -7,10 +7,3 @@ A, Dragon Skin, 20, 30, 80, Dragon Scale
 P, Potion of Healing, 5, 10, 12, H
 P, Potion of Greater Healing, 15, 20, 20, H
 P, Explosive Potion, 20, 20, 20, D
-BROKEN ONES START HERE
-X, Chain Mail, 10, 18, 50, Chain
-A, , 10, 18, 50, Chain
-A, Chain Mail, -10, 18, 50, Chain
-A, Chain Mail, 10, 9999999999999999999999999, 50, Chain
-A, Chain Mail, 10, 18, e, Chain
-A, Chain Mail, 10, 18, 50, Chain

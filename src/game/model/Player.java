@@ -281,9 +281,8 @@ public class Player extends GameCharacter implements ItemUser {
             throw new InventoryException("Cannot remove current weapon");
         }
 
-        //Remove this specific object from the list (since there may be multiple objects with identical properties in
-        // the list if the player removes multiple of the same item
-        boolean present = removeItem(weaponSet, weapon);
+        //Removing from inventory if it is the same weapon instance as the one to remove
+        boolean present = weaponSet.removeIf(e -> e == weapon);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
@@ -296,7 +295,8 @@ public class Player extends GameCharacter implements ItemUser {
             throw new InventoryException("Cannot remove current armour");
         }
 
-        boolean present = removeItem(armourSet, armour);
+        //Removing from inventory if it is the same armour instance as the one to remove
+        boolean present = armourSet.removeIf(e -> e == armour);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
@@ -305,30 +305,12 @@ public class Player extends GameCharacter implements ItemUser {
 
     @Override
     public void removePotion(Potion potion) throws InventoryException {
-        boolean present = removeItem(potionSet, potion);
+        //Removing from inventory if it is the same potion instance as the one to remove
+        boolean present = potionSet.removeIf(e -> e == potion);
 
         if (!present) {
             throw new IllegalArgumentException("Item not present");
         }
-    }
-
-    private boolean removeItem(List<? extends Item> itemList, Item itemToRemove) {
-        int ii = 0;
-        boolean found = false;
-
-        for (Item item : itemList) {
-            //If found item to be removed
-            if (item == itemToRemove) {
-                itemList.remove(ii); //Removing the item at the determined index
-                found = true;
-                break; //Stopping the search (since only one of the item's instances should be removed if there are
-                    // multiple
-            }
-
-            ii++;
-        }
-
-        return found;
     }
 
     //Methods for using observers

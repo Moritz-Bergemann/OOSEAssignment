@@ -101,7 +101,11 @@ public class IntermediateMenu {
         playerInfoGrid.setVgap(10);
         playerInfoGrid.setAlignment(Pos.CENTER);
 
-        Text nameText = new Text("Name: " + player.getName());
+        String name = player.getName();
+        if (name == null) {
+            name = "-";
+        }
+        Text nameText = new Text("Name: " + name);
         Text goldText = new Text("Gold: " + player.getGold());
         Text weaponText = new Text("Weapon: " + player.getCurWeapon().getName());
         Text armourText = new Text("Armour: " + player.getCurArmour().getName());
@@ -160,7 +164,11 @@ public class IntermediateMenu {
         WeaponChangeObserver weaponObs = new WeaponChangeObserver() {
             @Override
             public void notify(Weapon newWeapon) {
-                weaponText.setText("Weapon: " + newWeapon.getName());
+                String weaponName = "-";
+                if (newWeapon != null) {
+                    weaponName = newWeapon.getName();
+                }
+                weaponText.setText("Weapon: " + weaponName);
             }
 
             @Override
@@ -174,7 +182,11 @@ public class IntermediateMenu {
         ArmourChangeObserver armourObs = new ArmourChangeObserver() {
             @Override
             public void notify(Armour newArmour) {
-                armourText.setText("Armour: " + newArmour.getName());
+                String armourName = "-";
+                if (newArmour != null) {
+                    armourName = newArmour.getName();
+                }
+                armourText.setText("Weapon: " + armourName);
             }
 
             @Override
@@ -302,7 +314,10 @@ public class IntermediateMenu {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Weapon");
 
-        Set<Button> buttonSet = new HashSet<>();
+
+        //Creating box to hold all weapons as selectable items
+        VBox weaponList = new VBox();
+        weaponList.setPadding(new Insets(10, 10, 10, 10));
 
         //Creating a button for each weapon and adding it to the set
         for (Weapon weapon : player.getWeaponList()) {
@@ -316,13 +331,19 @@ public class IntermediateMenu {
                 }
             });
 
-            buttonSet.add(weaponButton);
+            weaponList.getChildren().add(weaponButton);
         }
 
-        //Creating box to hold all weapons as selectable items
-        VBox weaponList = new VBox();
-        weaponList.setPadding(new Insets(10, 10, 10, 10));
-        weaponList.getChildren().addAll(buttonSet);
+        //Adding button to just remove current weapon
+        Button noneButton = new Button("None (remove current weapon)");
+        noneButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                manager.chooseWeapon(null);
+                popup.close();
+            }
+        });
+        weaponList.getChildren().add(noneButton);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(weaponList);
@@ -335,7 +356,9 @@ public class IntermediateMenu {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Armour");
 
-        Set<Button> buttonSet = new HashSet<>();
+        //Creating box to hold all weapons as selectable items
+        VBox armourList = new VBox();
+        armourList.setPadding(new Insets(10, 10, 10, 10));
 
         //Creating a button for each armour and adding it to the set
         for (Armour armour : player.getArmourList()) {
@@ -349,13 +372,19 @@ public class IntermediateMenu {
                 }
             });
 
-            buttonSet.add(armourButton);
+            armourList.getChildren().add(armourButton);
         }
 
-        //Creating box to hold all weapons as selectable items
-        VBox armourList = new VBox();
-        armourList.setPadding(new Insets(10, 10, 10, 10));
-        armourList.getChildren().addAll(buttonSet);
+        //Adding button to just remove current weapon
+        Button noneButton = new Button("None (remove current weapon)");
+        noneButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                manager.chooseArmour(null);
+                popup.close();
+            }
+        });
+        armourList.getChildren().add(noneButton);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(armourList);

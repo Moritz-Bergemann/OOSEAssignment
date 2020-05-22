@@ -24,6 +24,12 @@ public class HealingPotion extends Potion {
         this.maxHealing = maxHealing;
     }
 
+    public HealingPotion(HealingPotion healingPotion) {
+        super(healingPotion);
+        this.minHealing = healingPotion.minHealing;
+        this.maxHealing = healingPotion.maxHealing;
+    }
+
     private int calcHealing() {
         return Chance.randBetween(minHealing, maxHealing);
     }
@@ -71,5 +77,10 @@ public class HealingPotion extends Potion {
         HealingPotion that = (HealingPotion) o;
         return minHealing == that.minHealing &&
                 maxHealing == that.maxHealing;
+    }
+
+    @Override
+    public Potion clone() {
+        return new HealingPotion(this);
     }
 }

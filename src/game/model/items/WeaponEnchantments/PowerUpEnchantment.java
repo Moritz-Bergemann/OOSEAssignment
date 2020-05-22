@@ -18,6 +18,10 @@ public class PowerUpEnchantment extends WeaponEnchantment {
         super(next);
     }
 
+    public PowerUpEnchantment(PowerUpEnchantment enchantment) {
+        super(enchantment);
+    }
+
     public int calcAttack() {
         //Returning previous attack with damage increased 10%
         return (int)Math.round(next.calcAttack() * 1.1);
@@ -51,5 +55,10 @@ public class PowerUpEnchantment extends WeaponEnchantment {
         }
         PowerUpEnchantment that = (PowerUpEnchantment) o;
         return next.equals(that.next);
+    }
+
+    @Override
+    public PowerUpEnchantment clone() {
+        return new PowerUpEnchantment(this);
     }
 }

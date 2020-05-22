@@ -11,7 +11,7 @@ buildscript
     }
 }
 
-apply plugin: 'application'
+apply plugin: 'application' //Plugin for running as pure application
 
 //Checking if Java version is Java 11 compatible (required for use of javaFX)
 if(JavaVersion.current().isJava11Compatible())
@@ -43,7 +43,6 @@ defaultTasks 'run'
 
 //Setting source directory to only 'src' (instead of standard gradle configuration)
 sourceSets.main.java.srcDirs = ['src']
-
 
 jar
 {

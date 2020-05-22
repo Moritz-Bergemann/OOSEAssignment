@@ -18,6 +18,10 @@ public class DamageUp5Enchantment extends WeaponEnchantment {
         super(next);
     }
 
+    public DamageUp5Enchantment(DamageUp5Enchantment enchantment) {
+        super(enchantment);
+    }
+
     public int calcAttack() {
         //Returning previous attack with added 5 damage
         return next.calcAttack() + 5;
@@ -51,5 +55,10 @@ public class DamageUp5Enchantment extends WeaponEnchantment {
         }
         DamageUp5Enchantment that = (DamageUp5Enchantment)o;
         return next.equals(that.next);
+    }
+
+    @Override
+    public DamageUp5Enchantment clone() {
+        return new DamageUp5Enchantment(this);
     }
 }

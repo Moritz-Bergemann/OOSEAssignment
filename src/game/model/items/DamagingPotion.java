@@ -24,6 +24,12 @@ public class DamagingPotion extends Potion {
         this.maxDamage = maxDamage;
     }
 
+    public DamagingPotion(DamagingPotion damagingPotion) {
+        super(damagingPotion);
+        this.minDamage = damagingPotion.minDamage;
+        this.maxDamage = damagingPotion.maxDamage;
+    }
+
     private int calcDamage() {
         return Chance.randBetween(minDamage, maxDamage);
     }
@@ -73,5 +79,10 @@ public class DamagingPotion extends Potion {
         DamagingPotion that = (DamagingPotion) o;
         return minDamage == that.minDamage &&
                 maxDamage == that.maxDamage;
+    }
+
+    @Override
+    public Potion clone() {
+        return new DamagingPotion(this);
     }
 }

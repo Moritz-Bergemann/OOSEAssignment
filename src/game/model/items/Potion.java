@@ -23,6 +23,11 @@ public abstract class Potion implements Item{
         this.cost = cost;
     }
 
+    public Potion(Potion potion) {
+        this.name = potion.name;
+        this.cost = potion.cost;
+    }
+
     @Override
     public int getCost() {
         return cost;
@@ -74,5 +79,9 @@ public abstract class Potion implements Item{
     }
 
     //Declaring equals method as abstract to ensure it is implemented by subclasses
+    @Override
     public abstract boolean equals(Object o);
+
+    @Override
+    public abstract Potion clone();
 }
