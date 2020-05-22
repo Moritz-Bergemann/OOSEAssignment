@@ -263,6 +263,38 @@ public class Player extends GameCharacter implements ItemUser {
         return potionSet;
     }
 
+    /**
+     * Gets the list of all weapons not currently equipped
+     * @return all unequipped weapons
+     */
+    public List<Weapon> getUnequippedWeaponList() {
+        List<Weapon> weaponList = new LinkedList<>();
+
+        for (Weapon weapon : weaponSet) {
+            if (weapon != curWeapon) {
+                weaponList.add(weapon);
+            }
+        }
+
+        return weaponList;
+    }
+
+    /**
+     * Gets the list of all armour not currently equipped
+     * @return all unequipped armour
+     */
+    public List<Armour> getUnequippedArmourList() {
+        List<Armour> armourList = new LinkedList<>();
+
+        for (Armour armour : armourSet) {
+            if (armour != curArmour) {
+                armourList.add(armour);
+            }
+        }
+
+        return armourList;
+    }
+
     @Override
     public List<Item> getItemSet() {
         List<Item> allItems = new  ArrayList<>();

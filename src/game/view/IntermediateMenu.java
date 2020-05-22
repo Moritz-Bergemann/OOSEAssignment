@@ -314,13 +314,18 @@ public class IntermediateMenu {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Weapon");
 
+        String curWeaponName = "-";
+        if (player.getCurWeapon() != null) {
+            curWeaponName = player.getCurWeapon().getName();
+        }
+        Text weaponText = new Text("Current weapon: " + curWeaponName);
 
         //Creating box to hold all weapons as selectable items
         VBox weaponList = new VBox();
         weaponList.setPadding(new Insets(10, 10, 10, 10));
 
         //Creating a button for each weapon and adding it to the set
-        for (Weapon weapon : player.getWeaponList()) {
+        for (Weapon weapon : player.getUnequippedWeaponList()) {
             Button weaponButton = new Button(String.format("%s (%s) - %d-%d damage", weapon.getName(),
                     weapon.getDescription(), weapon.getMinEffect(), weapon.getMaxEffect()));
             weaponButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -348,7 +353,9 @@ public class IntermediateMenu {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(weaponList);
 
-        popup.setScene(new Scene(scrollPane));
+        VBox root = new VBox(weaponText, scrollPane);
+
+        popup.setScene(new Scene(root));
         popup.show();
     }
 
@@ -356,12 +363,18 @@ public class IntermediateMenu {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Armour");
 
+        String curArmourName = "-";
+        if (player.getCurArmour() != null) {
+            curArmourName = player.getCurArmour().getName();
+        }
+        Text armourText = new Text("Current armour: " + curArmourName);
+
         //Creating box to hold all weapons as selectable items
         VBox armourList = new VBox();
         armourList.setPadding(new Insets(10, 10, 10, 10));
 
         //Creating a button for each armour and adding it to the set
-        for (Armour armour : player.getArmourList()) {
+        for (Armour armour : player.getUnequippedArmourList()) {
             Button armourButton = new Button(String.format("%s (%s) - %d-%d defence", armour.getName(),
                     armour.getDescription(), armour.getMinEffect(), armour.getMaxEffect()));
             armourButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -389,7 +402,9 @@ public class IntermediateMenu {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(armourList);
 
-        popup.setScene(new Scene(scrollPane));
+        VBox root = new VBox(armourText, scrollPane);
+
+        popup.setScene(new Scene(root));
         popup.show();
     }
 

@@ -41,8 +41,7 @@ public class ShopMenu {
         this.manager = null;
         menuStage = new Stage();
         menuStage.initOwner(parentStage);
-        menuStage.initModality(Modality.APPLICATION_MODAL); /*Ensures player cannot interact with intermediate menu
-            while in the shop*/
+        menuStage.initModality(Modality.NONE);
 
         observers = new LinkedList<>();
     }
@@ -160,8 +159,9 @@ public class ShopMenu {
         title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         Text subtitile = new Text("Welcome to the shop! Here's everything we've got for sale at the moment.");
-
-        VBox titleBox = new VBox(title, subtitile);
+        Text noteText = new Text("NOTE: You can still see all your information in the intermediate window, just " +
+                "move this one out of the way.");
+        VBox titleBox = new VBox(title, subtitile, noteText);
 
         //Creating text showing current gold
         Text goldAmount = new Text(String.format("Current gold - %d", player.getGold()));

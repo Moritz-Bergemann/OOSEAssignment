@@ -100,7 +100,7 @@ public class BattleManager {
      * @param potion potion to use
      * @param target character to use the potion on
      */
-    public void usePotion(Potion potion, GameCharacter target) {
+    public void usePotion(Potion potion, GameCharacter target) { //TODO make this automatic
         //Removing potion from player's inventory
         try {
             potion.removeFromInventory(player);
@@ -111,7 +111,7 @@ public class BattleManager {
 
         int effect = potion.apply(target);
 
-        notifyBattleEventObservers(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(),
+        notifyBattleEventObservers(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(), //TODO make this say who used the potion
                 effect, potion.getEffectType()));
     }
 
@@ -157,9 +157,15 @@ public class BattleManager {
             battleMenu.showBattleEnded(String.format("%s has been defeated!", player.getName()));
         }
         else if (!enemy.isAlive()) { //If enemy has died
+            //Giving player enemy's gold
             player.gainGold(enemy.getGold());
-            battleMenu.showBattleEnded(String.format("%s has been defeated! %d gold earned.",
-                    enemy.getName(), enemy.getGold()));
+
+            //Multiplying player's health by 1.5x (i.e. adding half of health)
+            int prevHealth = player.getHealth(); //Used to track how much health gained
+            player.gainHealth(player.getHealth() / 2);
+
+            battleMenu.showBattleEnded(String.format("%s has been defeated! %d gold earned. %d health gained.",
+                    enemy.getName(), enemy.getGold(), player.getHealth() - prevHealth));
         }
         else { //If battle is still ongoing
             state.runTurn(); //Continue battle

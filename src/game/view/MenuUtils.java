@@ -27,7 +27,7 @@ public class MenuUtils {
     public static Stage createPopup(Stage parent) {
         Stage popup = new Stage();
         popup.initOwner(parent);
-        popup.initModality(Modality.WINDOW_MODAL);
+        popup.initModality(Modality.APPLICATION_MODAL);
 
         return popup;
     }

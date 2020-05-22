@@ -19,6 +19,9 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO make potions only work on the required character
+//TODO make dragon victory less scuffed
+
 /**
  * Overall manager for game, contains main() method.
  * Creates all relevant classes and controls flow of game.
