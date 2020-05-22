@@ -1,0 +1,54 @@
+buildscript
+{
+    repositories
+    {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+
+    dependencies
+    {
+        classpath 'org.openjfx:javafx-plugin:0.0.7'
+    }
+}
+
+apply plugin: 'application'
+
+//Checking if Java version is Java 11 compatible (required for use of javaFX)
+if(JavaVersion.current().isJava11Compatible())
+{
+    apply plugin: 'org.openjfx.javafxplugin'
+
+    repositories
+    {
+        mavenCentral()
+    }
+
+    javafx
+    {
+        modules = [ 'javafx.controls' ]
+    }
+}
+else
+{
+    throw new GradleException('Invalid java version (11 or above required)');
+}
+
+mainClassName = 'game.controller.GameManager'
+
+//Forcing java 11
+sourceCompatibility = 11
+
+//Setting default task to pure 'run'
+defaultTasks 'run'
+
+//Setting source directory to only 'src' (instead of standard gradle configuration)
+sourceSets.main.java.srcDirs = ['src']
+
+
+jar
+{
+    manifest
+    {
+        attributes 'Main-Class': mainClassName
+    }
+}

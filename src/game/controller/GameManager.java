@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,10 +36,12 @@ public class GameManager extends Application {
         }
         catch (GameException g) {
             MenuUtils.showError("Game Error", "Failed to run game - " + g.getMessage(), mainStage);
+            g.printStackTrace(); //TODO remove this
         }
         catch (Exception e) {
             MenuUtils.showError("Unknown Error", "An unexpected exception has occurred - " + e.getMessage(),
                     mainStage);
+            e.printStackTrace(); //TODO remove this
         }
     }
 
