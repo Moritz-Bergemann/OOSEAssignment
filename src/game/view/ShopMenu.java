@@ -328,6 +328,7 @@ public class ShopMenu {
         ScrollPane scrollPane = new ScrollPane(itemList);
 
         VBox root = new VBox(promptText, scrollPane);
+        root.setPadding(new Insets(10, 10, 10, 10));
 
         popup.setScene(new Scene(root));
         popup.showAndWait();

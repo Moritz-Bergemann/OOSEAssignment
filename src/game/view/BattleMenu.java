@@ -70,6 +70,7 @@ public class BattleMenu {
         BattleEventObserver eventListObserver = new BattleEventObserver() {
             @Override
             public void notify(String message) {
+                //Add event text
                 eventList.getChildren().add(new Text(message));
             }
 
@@ -213,6 +214,9 @@ public class BattleMenu {
         return infoGrid;
     }
 
+    /**
+     * Menu for using potion
+     */
     private void usePotionMenu() {
         Stage popup = MenuUtils.createPopup(menuStage);
 
@@ -228,12 +232,11 @@ public class BattleMenu {
             potionButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    boolean potionChosen = potionTargetMenu(potion, characterSet);
+                    manager.usePotion(potion, enemy);
+
                     popup.close();
 
-                    if (potionChosen) {
-                        manager.endTurn(); //Ending turn if potion was chosen (but ONLY once this popup has been closed)
-                    }
+                    manager.endTurn();
                 }
             });
 
@@ -246,42 +249,5 @@ public class BattleMenu {
         root.setPadding(new Insets(10, 10, 10, 10));
         popup.setScene(new Scene(root));
         popup.showAndWait();
-    }
-
-    /**
-     * Menu for choosing potion target.
-     * @return whether a potion was chosen or not
-     */
-    private boolean potionTargetMenu(Potion potion, Set<GameCharacter> targetSet) {
-        Stage popup = MenuUtils.createPopup(menuStage);
-
-        final boolean[] potionChosen = {false};
-
-        Text prompt = new Text("Choose target for potion");
-        VBox targetList = new VBox();
-        for (GameCharacter target : targetSet) {
-            Button targetButton = new Button(target.getName());
-            targetButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    manager.usePotion(potion, target);
-
-                    potionChosen[0] = true;
-
-                    popup.close();
-                }
-            });
-
-            targetList.getChildren().add(targetButton);
-        }
-        ScrollPane scrollPane = new ScrollPane(targetList);
-
-        VBox root = new VBox(prompt, scrollPane);
-        root.setSpacing(10);
-        root.setPadding(new Insets(10, 10, 10, 10));
-        popup.setScene(new Scene(root));
-        popup.showAndWait();
-
-        return potionChosen[0];
     }
 }

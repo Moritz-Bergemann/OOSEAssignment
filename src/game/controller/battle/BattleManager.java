@@ -95,12 +95,33 @@ public class BattleManager {
                 attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence));
     }
 
+//    /**
+//     * Applies the potion's effect to the targeted character
+//     * @param potion potion to use
+//     * @param target character to use the potion on
+//     */
+//    public void usePotion(Potion potion, GameCharacter target) { //TODO make this automatic
+//        //Removing potion from player's inventory
+//        try {
+//            potion.removeFromInventory(player);
+//        }
+//        catch (InventoryException inv) {
+//            throw new IllegalArgumentException("Tried to use potion not in inventory", inv);
+//        }
+//
+//        int effect = potion.apply(target);
+//
+//        notifyBattleEventObservers(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(), //TODO make this say who used the potion
+//                effect, potion.getEffectType()));
+//    }
+
     /**
-     * Applies the potion's effect to the targeted character
+     * Performs a 'use' action on the potion with the player and given enemy (may have an effect on the user, enemy or
+     * both). Removes potion from the player's inventory.
      * @param potion potion to use
-     * @param target character to use the potion on
+     * @param enemy enemy in the context that the potion is used
      */
-    public void usePotion(Potion potion, GameCharacter target) { //TODO make this automatic
+    public void usePotion(Potion potion, GameCharacter enemy) {
         //Removing potion from player's inventory
         try {
             potion.removeFromInventory(player);
@@ -109,10 +130,10 @@ public class BattleManager {
             throw new IllegalArgumentException("Tried to use potion not in inventory", inv);
         }
 
-        int effect = potion.apply(target);
+        //Using the potion and getting the description of how it was used
+        String description = potion.use(player, enemy);
 
-        notifyBattleEventObservers(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(), //TODO make this say who used the potion
-                effect, potion.getEffectType()));
+        notifyBattleEventObservers(description);
     }
 
 

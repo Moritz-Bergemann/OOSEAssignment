@@ -49,6 +49,15 @@ public class HealingPotion extends Potion {
     }
 
     @Override
+    public String use(GameCharacter user, GameCharacter enemy) {
+        int healing = calcHealing();
+
+        int gainedHealth = user.gainHealth(healing);
+
+        return String.format("%s drank %s, causing him to regain %d health!", user.getName(), name, gainedHealth);
+    }
+
+    @Override
     public String getEffectType() {
         return "healing";
     }

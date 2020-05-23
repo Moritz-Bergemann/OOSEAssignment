@@ -36,22 +36,32 @@ public abstract class GameCharacter {
 
     /**
      * Reduces the character's health by the imported value (or to at most 0)
-     * @param lostHealth
+     * @param healthToLose amount of health to lose
+     * @return health lost
      */
-    public void loseHealth(int lostHealth) {
-        health = Math.max(0, health - lostHealth);
+    public int loseHealth(int healthToLose) {
+        int oldHealth = health;
+
+        health = Math.max(0, health - healthToLose);
 
         notifyHealthChangeObservers(health);
+
+        return oldHealth - health;
     }
 
     /**
      * Increases the character's health by the imported amount (or to at most maxHealth)
-     * @param gainedHealth
+     * @param healthToGain amount of health to gain
+     * @return health gained
      */
-    public void gainHealth(int gainedHealth) {
-        health = Math.min(maxHealth, health + gainedHealth);
+    public int gainHealth(int healthToGain) {
+        int oldHealth = health;
+
+        health = Math.min(maxHealth, health + healthToGain);
 
         notifyHealthChangeObservers(health);
+
+        return health - oldHealth;
     }
 
     /**

@@ -49,6 +49,16 @@ public class DamagingPotion extends Potion {
     }
 
     @Override
+    public String use(GameCharacter user, GameCharacter enemy) {
+        int damage = calcDamage();
+
+        enemy.loseHealth(damage);
+
+        return (String.format("%s throws a %s at %s, dealing %d damage!", user.getName(), name, enemy.getName(),
+                damage));
+    }
+
+    @Override
     public String getEffectType() {
         return "damage";
     }

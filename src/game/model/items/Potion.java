@@ -45,7 +45,9 @@ public abstract class Potion implements Item{
      * @param target target for the potion application
      * @return the amount of effect caused by the potion (as an integer)
      */
-    public abstract int apply(GameCharacter target);
+    public abstract int apply(GameCharacter target); //FIXME deprecated
+
+    public abstract String use(GameCharacter user, GameCharacter enemy);
 
     @Override
     public void addToInventory(ItemUser itemUser) throws InventoryException {
