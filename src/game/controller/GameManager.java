@@ -52,11 +52,8 @@ public class GameManager extends Application {
      * @throws GameException If (expected) error occurs during running of game (e.g. resource not being available)
      */
     public void runGame(Stage mainStage) throws GameException {
-        mainStage.setTitle("OOSE Quest II: TWOOSE");
-
+        //Setting up main stage's scene (required to allow others to inherit it as parent)
         mainStage.setScene(new Scene(new VBox(new Text("OOSE Quest II: TWOOSE"))));
-        mainStage.show();
-
 
         Player player = new Player();
 

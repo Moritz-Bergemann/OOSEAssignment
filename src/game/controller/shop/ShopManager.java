@@ -8,6 +8,7 @@ import game.view.ShopMenu;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * (Pseudo) event-driven manager for the shop that the player can visit.
@@ -36,11 +37,21 @@ public class ShopManager {
             throw new ShopException("Failed to load item stock - " + s.getMessage(), s);
         }
 
-        //Getting cheapest weapon & cheapest armour using Comparator
-        Weapon cheapestWeapon = Collections.min(stockLoader.getLoadedWeapons(),
-                Comparator.comparing(Item::getCost));
-        Armour cheapestArmour = Collections.min(stockLoader.getLoadedArmour(),
-                Comparator.comparing(Item::getCost));
+        //Getting cheapest weapon & cheapest armour from loaded set
+        Weapon cheapestWeapon;
+        Armour cheapestArmour;
+        try {
+            //Using comparator to search through loaded weapon & armour sets to get smallest value
+            cheapestWeapon = Collections.min(stockLoader.getLoadedWeapons(),
+                    Comparator.comparing(Item::getCost));
+            cheapestArmour = Collections.min(stockLoader.getLoadedArmour(),
+                    Comparator.comparing(Item::getCost));
+        }
+        catch (NoSuchElementException n) {
+            throw new ShopException("Could not find at least one armour & weapon to add to player " +
+                    "inventory", n);
+        }
+
 
         //Adding cheapest weapon & armour to player's inventory
         try {
