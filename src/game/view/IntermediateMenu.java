@@ -246,6 +246,9 @@ public class IntermediateMenu {
         }
     }
 
+    /**
+     * Informs the player they are not yet ready for battle
+     */
     public void showNotReadyForBattle() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
@@ -256,10 +259,16 @@ public class IntermediateMenu {
         alert.showAndWait();
     }
 
+    /**
+     * Indicates the next battle should start to the view
+     */
     public void startBattle() {
         menuStage.close();
     }
 
+    /**
+     * Displays the player's entire inventory (all item types)
+     */
     private void showInventory() {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Entire Inventory");
@@ -291,6 +300,9 @@ public class IntermediateMenu {
         popup.show();
     }
 
+    /**
+     * Prompts the user for if they want to exit the game
+     */
     private void exitPrompt() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Quit Game");
@@ -310,6 +322,9 @@ public class IntermediateMenu {
         }
     }
 
+    /**
+     * Prompts the user to choose a weapon from their inventory (then prompts the controller to equip it)
+     */
     private void chooseWeapon() {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Weapon");
@@ -359,6 +374,9 @@ public class IntermediateMenu {
         popup.show();
     }
 
+    /**
+     * prompts the user to choose a piece of armour from their inventory, then calls the controller to equip it
+     */
     private void chooseArmour() {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Armour");
@@ -408,6 +426,9 @@ public class IntermediateMenu {
         popup.show();
     }
 
+    /**
+     * Allows the user to input a string to choose their name, then calls the controller to set it
+     */
     private void chooseName() {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Name");

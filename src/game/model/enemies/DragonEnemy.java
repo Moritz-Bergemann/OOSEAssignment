@@ -7,12 +7,12 @@ import game.model.Chance;
  */
 public class DragonEnemy extends Enemy {
     //Enemy type attributes
-    private static int typeHealth = 100;
-    private static int typeMinAttack = 15;
-    private static int typeMaxAttack = 30;
-    private static int typeMinDefence = 15;
-    private static int typeMaxDefence = 20;
-    private static int typeGold = 100;
+    private static final int typeHealth = 100;
+    private static final int typeMinAttack = 15;
+    private static final int typeMaxAttack = 30;
+    private static final int typeMinDefence = 15;
+    private static final int typeMaxDefence = 20;
+    private static final int typeGold = 100;
 
     public DragonEnemy() {
         super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefence, typeMaxDefence, typeGold);

@@ -2,6 +2,10 @@ package game.model.items;
 
 import game.model.ItemUser;
 
+/**
+ * Class for enchantment (decorators) that can be applied to weapons (base weapon type - this includes weapons that
+ * already have enchantments applied to them)
+ */
 public abstract class WeaponEnchantment implements Weapon {
     protected Weapon next;
 

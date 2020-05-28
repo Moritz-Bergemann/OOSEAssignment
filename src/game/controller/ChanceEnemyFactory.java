@@ -24,11 +24,13 @@ public class ChanceEnemyFactory {
      * Returns a new enemy randomly depending on the current state of this object's probabilities.
      * @return selected enemy
      */
-    public Enemy makeEnemy() { //TODO add commenting
+    public Enemy makeEnemy() {
         double randChance = Math.random();
         double chanceHit = 0.0;
         String chosenEnemy = null;
 
+        //Continually summing the probabilities of different enemies and seeing whether the randomly chosen number
+        //  is within the total sum
         for (String enemyName : chances.keySet()) {
             chanceHit += chances.get(enemyName);
 

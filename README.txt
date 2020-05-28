@@ -1,5 +1,5 @@
 OOSE Game by Moritz Bergemann
-Last Updated: 22/05/2020
+Last Updated: 27/05/2020
 
 REQUIREMENTS - Java 11
 NOTE - this game uses a graphical user interface and therefore cannot be run purely from a terminal
@@ -13,5 +13,3 @@ Compiling/Running the program:
 - The program uses the file 'items.txt' to get information about the items in this game, which should be populated as
     per the assignment specification. This file should be in the root directory of the program (the same place as the
     'src' folder and gradlew scripts).
-
-Other information:

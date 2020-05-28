@@ -7,7 +7,8 @@ import game.model.observers.*;
 import java.util.*;
 
 /**
- *
+ * Class for player character within the game. Posses their own inventory, and has equipped weapons/armour that
+ * their attack/defense.
  */
 public class Player extends GameCharacter implements ItemUser {
     private static final int startingHealth = 30; //Starting health of player
@@ -30,7 +31,6 @@ public class Player extends GameCharacter implements ItemUser {
     private List<WeaponChangeObserver> weaponChangeObservers;
     private List<ArmourChangeObserver> armourChangeObservers;
     private List<GoldChangeObserver> goldChangeObservers;
-
 
     /**
      * Default constructor

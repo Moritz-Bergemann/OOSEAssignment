@@ -28,6 +28,21 @@ public abstract class Potion implements Item{
         this.cost = potion.cost;
     }
 
+    /**
+     * Makes the imported user use the potion within the context of conflict with the imported enemy. This usage
+     *  may or may not involve effects on the user and/or the enemy, depending on the potion type.
+     * @param user Character that used the potion
+     * @param enemy Character user was battling when using the potion
+     * @return A description of the events that occurred during the potion's usage (for user interface purposes)
+     */
+    public abstract String use(GameCharacter user, GameCharacter enemy);
+
+    /**
+     * Returns the effect of the potion. Used PURELY for interface purposes, not as an instanceof equivalent.
+     * @return Type of potion (as a string)
+     */
+    public abstract String getEffectType();
+
     @Override
     public int getCost() {
         return cost;
@@ -38,27 +53,10 @@ public abstract class Potion implements Item{
         return name;
     }
 
-    /**
-     * Applies the potion to a character.
-     * The logic for this is defined in the 'Potion' class rather than the controller (like applying attacks is)
-     *  as the logic for what should be done by the potion is highly correlated with the potion itself.
-     * @param target target for the potion application
-     * @return the amount of effect caused by the potion (as an integer)
-     */
-    public abstract int apply(GameCharacter target); //FIXME deprecated
-
-    public abstract String use(GameCharacter user, GameCharacter enemy);
-
     @Override
     public void addToInventory(ItemUser itemUser) throws InventoryException {
         itemUser.addPotion(this);
     }
-
-    /**
-     * Returns the effect of the potion. Used PURELY for interface purposes, not as an instanceof equivalent.
-     * @return Type of potion (as a string)
-     */
-    public abstract String getEffectType();
 
 
     @Override

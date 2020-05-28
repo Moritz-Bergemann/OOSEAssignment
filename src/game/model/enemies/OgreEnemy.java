@@ -7,12 +7,12 @@ import game.model.Chance;
  */
 public class OgreEnemy extends Enemy {
     //Enemy type attributes
-    private static int typeHealth = 40;
-    private static int typeMinAttack = 5;
-    private static int typeMaxAttack = 10;
-    private static int typeMinDefence = 6;
-    private static int typeMaxDefence = 12;
-    private static int typeGold = 40;
+    private static final int typeHealth = 40;
+    private static final int typeMinAttack = 5;
+    private static final int typeMaxAttack = 10;
+    private static final int typeMinDefence = 6;
+    private static final int typeMaxDefence = 12;
+    private static final int typeGold = 40;
 
     public OgreEnemy() {
         super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefence, typeMaxDefence, typeGold);

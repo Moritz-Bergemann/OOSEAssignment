@@ -37,7 +37,7 @@ public class BattleManager {
 
     /**
      * Begins the running of a battle in the game menu
-     * @return whether the battle has killed the player
+     * @return whether the battle has ended the game
      */
     public boolean runBattle() {
         //Setting initial turn to player turn
@@ -67,12 +67,19 @@ public class BattleManager {
             observer.removeSelf();
         }
 
-        //Making player win if killed dragon //FIXME instanceof bad
+        //Making player win if killed dragon
+        // NOTE: This is done via instanceof, which may be considered poor polymorphism - BattleManager has to know
+        //  about the Dragon enemy type. However, the requirement that a dragon is defeated to win the game is a
+        //  fundamental part of the game flow, which I believe makes this dependency reasonable. It could also be
+        //  removed in the future by adding an 'on death' method or similar to enemies, which could then trigger the
+        //  victory. However, I do not believe adding this additional functionality is warranted since only one enemy
+        //  type would currently use it.
         if (!enemy.isAlive() && enemy instanceof DragonEnemy) {
             player.setWonGame();
         }
 
-        return !player.isAlive();
+        //Return if the game has ended (player has died OR player has won the game)
+        return !player.isAlive() || player.wonGame();
     }
 
     /**
@@ -94,26 +101,6 @@ public class BattleManager {
         notifyBattleEventObservers(String.format("%s attacked %s, dealing %d damage! (% d attack vs %d defence)",
                 attacker.getName(), defender.getName(), damageDone, attackerDamage, defenderDefence));
     }
-
-//    /**
-//     * Applies the potion's effect to the targeted character
-//     * @param potion potion to use
-//     * @param target character to use the potion on
-//     */
-//    public void usePotion(Potion potion, GameCharacter target) { //TODO make this automatic
-//        //Removing potion from player's inventory
-//        try {
-//            potion.removeFromInventory(player);
-//        }
-//        catch (InventoryException inv) {
-//            throw new IllegalArgumentException("Tried to use potion not in inventory", inv);
-//        }
-//
-//        int effect = potion.apply(target);
-//
-//        notifyBattleEventObservers(String.format("%s used on %s, causing %d %s", potion.getName(), target.getName(), //TODO make this say who used the potion
-//                effect, potion.getEffectType()));
-//    }
 
     /**
      * Performs a 'use' action on the potion with the player and given enemy (may have an effect on the user, enemy or
@@ -200,18 +187,10 @@ public class BattleManager {
         }
     }
 
-    /**
-     * Adds battle event listener
-     * @param listener listener to be added
-     */
     public void addBattleEventObserver(BattleEventObserver listener) {
         battleEventObservers.add(listener);
     }
 
-    /**
-     * Removes battle event listener
-     * @param listener listener to be removed
-     */
     public void removeBattleEventObserver(BattleEventObserver listener) {
         battleEventObservers.remove(listener);
     }}

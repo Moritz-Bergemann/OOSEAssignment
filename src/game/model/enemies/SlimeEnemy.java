@@ -7,12 +7,12 @@ import game.model.Chance;
  */
 public class SlimeEnemy extends Enemy {
     //Enemy type attributes
-    private static int typeHealth = 10;
-    private static int typeMinAttack = 3;
-    private static int typeMaxAttack = 5;
-    private static int typeMinDefence = 0;
-    private static int typeMaxDefence = 2;
-    private static int typeGold = 10;
+    private static final int typeHealth = 10;
+    private static final int typeMinAttack = 3;
+    private static final int typeMaxAttack = 5;
+    private static final int typeMinDefence = 0;
+    private static final int typeMaxDefence = 2;
+    private static final int typeGold = 10;
 
     public SlimeEnemy() {
         super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefence, typeMaxDefence, typeGold);

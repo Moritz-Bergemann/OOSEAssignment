@@ -7,12 +7,12 @@ import game.model.Chance;
  */
 public class GoblinEnemy extends Enemy {
     //Enemy type attributes
-    private static int typeHealth = 30;
-    private static int typeMinAttack = 3;
-    private static int typeMaxAttack = 8;
-    private static int typeMinDefence = 4;
-    private static int typeMaxDefence = 8;
-    private static int typeGold = 20;
+    private static final int typeHealth = 30;
+    private static final int typeMinAttack = 3;
+    private static final int typeMaxAttack = 8;
+    private static final int typeMinDefence = 4;
+    private static final int typeMaxDefence = 8;
+    private static final int typeGold = 20;
 
     public GoblinEnemy() {
         super(typeHealth, typeMinAttack, typeMaxAttack, typeMinDefence, typeMaxDefence, typeGold);

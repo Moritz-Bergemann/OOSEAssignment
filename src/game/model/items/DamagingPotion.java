@@ -35,19 +35,11 @@ public class DamagingPotion extends Potion {
     }
 
     /**
-     * Application of potion - here causing a certain amount of damage
-     * @param gameCharacter the character to be damaged
-     * @return damage done
+     * Damages the enemy by an amount between the minimum & maximum effect (ignoring defense)
+     * @param user Character that used the potion
+     * @param enemy Character user was battling when using the potion
+     * @return a description of the event
      */
-    @Override
-    public int apply(GameCharacter gameCharacter) {
-        int damage = calcDamage();
-
-        gameCharacter.loseHealth(damage);
-
-        return damage;
-    }
-
     @Override
     public String use(GameCharacter user, GameCharacter enemy) {
         int damage = calcDamage();

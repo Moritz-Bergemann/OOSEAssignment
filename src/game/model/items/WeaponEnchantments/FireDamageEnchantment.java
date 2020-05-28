@@ -4,6 +4,9 @@ import game.model.Chance;
 import game.model.items.Weapon;
 import game.model.items.WeaponEnchantment;
 
+/**
+ * Weapon enchantment that increases damage by between 5-10 (randomly)
+ */
 public class FireDamageEnchantment extends WeaponEnchantment {
     private static int cost = 20;
 

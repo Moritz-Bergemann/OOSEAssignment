@@ -156,6 +156,10 @@ public class BattleMenu {
 
     }
 
+    /**
+     * Displays a final message showing the battle has ended and the final events, then ends the battle menu
+     * @param message message to display for battle end
+     */
     public void showBattleEnded(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -215,7 +219,7 @@ public class BattleMenu {
     }
 
     /**
-     * Menu for using potion
+     * Allows the user to choose a potion in their inventory which they then use
      */
     private void usePotionMenu() {
         Stage popup = MenuUtils.createPopup(menuStage);

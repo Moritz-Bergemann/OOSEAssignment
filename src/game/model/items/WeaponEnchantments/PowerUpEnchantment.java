@@ -3,6 +3,9 @@ package game.model.items.WeaponEnchantments;
 import game.model.items.Weapon;
 import game.model.items.WeaponEnchantment;
 
+/**
+ * Weapon enchantment that increases damage by 10%
+ */
 public class PowerUpEnchantment extends WeaponEnchantment {
     private static int cost = 10;
 

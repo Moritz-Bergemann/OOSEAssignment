@@ -19,9 +19,6 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO make potions only work on the required character
-//TODO make dragon victory less scuffed
-
 /**
  * Overall manager for game, contains main() method.
  * Creates all relevant classes and controls flow of game.
@@ -32,6 +29,10 @@ public class GameManager extends Application {
         Application.launch(args); //Launching JavaFX application
     }
 
+    /**
+     * 'Main' method for JavaFX application
+     * @param mainStage stage loaded in from call to Application.launch()
+     */
     public void start(Stage mainStage) {
         try {
             runGame(mainStage);
@@ -40,15 +41,22 @@ public class GameManager extends Application {
             MenuUtils.showError("Game Error", "Failed to run game - " + g.getMessage(), mainStage);
         }
         catch (Exception e) {
-            MenuUtils.showError("Unknown Error", "An unexpected exception has occurred - " + e.getMessage(),
-                    mainStage);
+            MenuUtils.showError("Unknown Error", String.format("An unexpected exception has occurred (%s) - %s",
+                    e.getClass().getSimpleName(), e.getMessage()), mainStage);
         }
     }
 
+    /**
+     * Central method for game. Runs controls central program flow, contains constructors for Controller/View methods
+     * @param mainStage Stage for main window of game (not currently shown during game)
+     * @throws GameException If (expected) error occurs during running of game (e.g. resource not being available)
+     */
     public void runGame(Stage mainStage) throws GameException {
         mainStage.setTitle("OOSE Quest II: TWOOSE");
 
         mainStage.setScene(new Scene(new VBox(new Text("OOSE Quest II: TWOOSE"))));
+        mainStage.show();
+
 
         Player player = new Player();
 

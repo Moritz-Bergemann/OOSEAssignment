@@ -58,6 +58,10 @@ public class IntermediateManager {
         player.setCurArmour(armour);
     }
 
+    /**
+     * Checks if the player is ready for battle, and initiates the next battle if they are. Otherwise,
+     * informs the player they are not ready.
+     */
     public void startBattle() {
         if (player.readyForBattle()) {
             menu.startBattle();

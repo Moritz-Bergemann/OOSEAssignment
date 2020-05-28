@@ -77,7 +77,9 @@ public class ShopMenu {
         table.getColumns().add(maxEffectColumn);
         table.getColumns().add(costColumn);
 
-        //Adding column for purchase item button to table (adapted from https://riptutorial.com/javafx/example/27946/add-button-to-tableview)
+        //Adding column for purchase item button to table
+        //  Adapted from https://riptutorial.com/javafx/example/27946/add-button-to-tableview with permission from
+        //  lecturer
         TableColumn<Item, String> buttonColumn = new TableColumn<>("Purchase Item");
 
         Callback<TableColumn<Item, String>, TableCell<Item, String>> cellFactory = new Callback<>() {
@@ -112,8 +114,8 @@ public class ShopMenu {
         };
 
         buttonColumn.setCellFactory(cellFactory);
-
         table.getColumns().add(buttonColumn);
+        //Adapted code ends here
 
 
         //Adding items to created table
@@ -194,10 +196,18 @@ public class ShopMenu {
         }
     }
 
+    /**
+     * Show popup message in shop
+     * @param message message to display
+     */
     public void showMessage(String message) {
         MenuUtils.showMessage("Shop notice", message, menuStage);
     }
 
+    /**
+     * Displays prompt to confirm item purchase
+     * @param item to purchase
+     */
     private void buyItemPrompt(Item item) {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Confirm Purchase");
@@ -237,36 +247,9 @@ public class ShopMenu {
         popup.showAndWait();
     }
 
-    private void enchantWeaponMenu(Weapon weapon, Stage parent) {
-        Stage popup = MenuUtils.createPopup(parent);
-        popup.setTitle("Choose Enchantment");
-
-        Text promptText = new Text(String.format("What enchantment do you want to apply to '%s'?", weapon.getName()));
-
-        //Add button for each existing enchantment that initiates enchantment purchase
-        VBox enchantmentList = new VBox();
-        for (String enchantmentName : manager.getAllEnchantmentNames()) {
-            Button enchantmentButton = new Button(String.format("%s (%s) - %s gold", enchantmentName,
-                    manager.getEnchantmentDescription(enchantmentName), manager.getEnchantmentCost(enchantmentName)));
-            enchantmentButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    manager.purchaseEnchantment(player, weapon, enchantmentName);
-                    popup.close();
-                }
-            });
-
-            enchantmentList.getChildren().add(enchantmentButton);
-        }
-
-        //Adding scrollpane for enchantment list
-        ScrollPane scrollPane = new ScrollPane(enchantmentList);
-
-        VBox root = new VBox(promptText, scrollPane);
-        popup.setScene(new Scene(root));
-        popup.showAndWait();
-    }
-
+    /**
+     * Displays menu for selecting weapon to apply enchantment to
+     */
     private void chooseWeaponForEnchantmentMenu() {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Choose Weapon");
@@ -304,6 +287,44 @@ public class ShopMenu {
         popup.showAndWait();
     }
 
+    /**
+     * Displays menu for selecting enchantment to apply to chosen weapon (called by chooseWeaponForEnchantmentMenu())
+     * @param weapon weapon to enchant
+     * @param parent parent of this window
+     */
+    private void enchantWeaponMenu(Weapon weapon, Stage parent) {
+        Stage popup = MenuUtils.createPopup(parent);
+        popup.setTitle("Choose Enchantment");
+
+        Text promptText = new Text(String.format("What enchantment do you want to apply to '%s'?", weapon.getName()));
+
+        //Add button for each existing enchantment that initiates enchantment purchase
+        VBox enchantmentList = new VBox();
+        for (String enchantmentName : manager.getAllEnchantmentNames()) {
+            Button enchantmentButton = new Button(String.format("%s (%s) - %s gold", enchantmentName,
+                    manager.getEnchantmentDescription(enchantmentName), manager.getEnchantmentCost(enchantmentName)));
+            enchantmentButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    manager.purchaseEnchantment(player, weapon, enchantmentName);
+                    popup.close();
+                }
+            });
+
+            enchantmentList.getChildren().add(enchantmentButton);
+        }
+
+        //Adding scrollpane for enchantment list
+        ScrollPane scrollPane = new ScrollPane(enchantmentList);
+
+        VBox root = new VBox(promptText, scrollPane);
+        popup.setScene(new Scene(root));
+        popup.showAndWait();
+    }
+
+    /**
+     * Displays menu for choosing item to sell
+     */
     private void sellItemMenu() {
         Stage popup = MenuUtils.createPopup(menuStage);
         popup.setTitle("Sell Item");

@@ -8,7 +8,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -17,8 +16,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 public class MenuUtils {
 
@@ -35,6 +32,12 @@ public class MenuUtils {
         return popup;
     }
 
+    /**
+     * Displays an error to the user
+     * @param title title of error message
+     * @param message content of error message
+     * @param parent parent window of error message
+     */
     public static void showError(String title, String message, Stage parent) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initOwner(parent);
@@ -46,6 +49,12 @@ public class MenuUtils {
         alert.showAndWait();
     }
 
+    /**
+     * Displays a message to the user in generic format
+     * @param title message title
+     * @param message message content
+     * @param parent parent window
+     */
     public static void showMessage(String title, String message, Stage parent)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -58,6 +67,11 @@ public class MenuUtils {
         alert.showAndWait();
     }
 
+    /**
+     * Displays a final message for when the game has ended. Message content changes depending on if player is alive or
+     * dead
+     * @param player player of game that has ended
+     */
     public static void gameEndedMenu(Player player) {
         Stage menuStage = new Stage();
 
@@ -101,7 +115,12 @@ public class MenuUtils {
         menuStage.showAndWait();
     }
 
-    public static void logError(String s) {
-        System.out.println("ERROR LOG: " + s);
+    /**
+     * Logs a non-fatal/expected error
+     * @param message error message
+     */
+    public static void logError(String message) {
+        //Currently just prints to terminal, could be changed to writing to logfile in the future
+        System.out.println("ERROR LOG: " + message);
     }
 }

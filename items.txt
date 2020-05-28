@@ -8,3 +8,4 @@ P, Potion of Healing, 5, 10, 12, H
 P, Potion of Greater Healing, 15, 20, 20, H
 P, Explosive Potion, 20, 20, 20, D
 P, Cheap Potion, 1, 1, 1, D
+W, ULTRA Staff, 9999, 9999, 0, Really Overpowered, Staff

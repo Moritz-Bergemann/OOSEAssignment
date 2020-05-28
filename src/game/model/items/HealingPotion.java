@@ -35,19 +35,11 @@ public class HealingPotion extends Potion {
     }
 
     /**
-     * Application of potion - here causing a certain amount of healing
-     * @param gameCharacter the character to be healed
-     * @return healing done
+     * Heals the potion user by an amount between the minimum & maximum effect
+     * @param user Character that used the potion
+     * @param enemy Character user was battling when using the potion
+     * @return a description of the event
      */
-    @Override
-    public int apply(GameCharacter gameCharacter) {
-        int healing = calcHealing();
-
-        gameCharacter.gainHealth(healing);
-
-        return healing;
-    }
-
     @Override
     public String use(GameCharacter user, GameCharacter enemy) {
         int healing = calcHealing();
